@@ -1,0 +1,21 @@
+int main(){
+	int a,b;
+	a=a+1;
+	char ch='\n';
+	ch='\t';
+	char c[]="ab\td";
+	printf("a\tbc\
+def\
+ghi");
+
+"This is another\
+multiline string\
+look ma 3rd line   \
+and 4th line.
+
+
+// a comment
+/** another
+*** comment ***/
+	return 0;
+}	
