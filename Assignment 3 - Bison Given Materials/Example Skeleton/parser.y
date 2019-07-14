@@ -3,25 +3,16 @@
 #include<cstdlib>
 #include<cstring>
 #include<cmath>
-#include <bits/stdc++.h>
+#include "symbol.h"
 #define YYSTYPE SymbolInfo*
-#include "1605115_symboltable.cpp"
-
 
 using namespace std;
 
 int yyparse(void);
 int yylex(void);
-
 extern FILE *yyin;
 
-int line_no = 1; 
-
-FILE *fp;
-ofstream logfile;
-ofstream errorfile;
-
-SymbolTable symbolTable(10);
+SymbolTable *table;
 
 
 void yyerror(char *s)
@@ -29,27 +20,15 @@ void yyerror(char *s)
 	//write your code
 }
 
-void addLineNoLog() {
-	logfile <<"At line no: " << line_no << " ";
-}
 
 %}
 
-%token IF ELSE FOR WHILE DO BREAK
-%token INT FLOAT CHAR DOUBLE VOID
-%token RETURN SWITCH CASE DEFAULT CONTINUE
-%token CONST_INT CONST_FLOAT CONST_CHAR
-%token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT DECOP
-%token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
-%token STRING ID PRINTLN
+%token IF ELSE FOR WHILE
 
-%left RELOP LOGICOP BITOP 
-%left ADDOP 
-%left MULOP
+%left 
+%right
 
-%nonassoc LOWER_THAN_ELSE
-%nonassoc ELSE
-
+%nonassoc 
 
 
 %%
@@ -64,13 +43,13 @@ program : program unit
 	| unit
 	;
 	
-unit : var_declaration { addLineNoLog(); }
-     | func_declaration { addLineNoLog(); }
-     | func_definition { addLineNoLog(); }
+unit : var_declaration
+     | func_declaration
+     | func_definition
      ;
      
-func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON { addLineNoLog(); }
-		| type_specifier ID LPAREN RPAREN SEMICOLON { addLineNoLog(); }
+func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
+		| type_specifier ID LPAREN RPAREN SEMICOLON
 		;
 		 
 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
@@ -111,7 +90,7 @@ statement : var_declaration
 	  | expression_statement
 	  | compound_statement
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement
-	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE
+	  | IF LPAREN expression RPAREN statement
 	  | IF LPAREN expression RPAREN statement ELSE statement
 	  | WHILE LPAREN expression RPAREN statement
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON
@@ -148,13 +127,13 @@ term :	unary_expression
 
 unary_expression : ADDOP unary_expression  
 		 | NOT unary_expression 
-		 | factor { }
+		 | factor 
 		 ;
 	
 factor	: variable 
 	| ID LPAREN argument_list RPAREN
 	| LPAREN expression RPAREN
-	| CONST_INT  { }
+	| CONST_INT 
 	| CONST_FLOAT
 	| variable INCOP 
 	| variable DECOP
@@ -179,19 +158,21 @@ int main(int argc,char *argv[])
 		exit(1);
 	}
 
- errorfile.open("1605115_token.txt");
-	   logfile.open("1605115_log.txt");
-
-
+	fp2= fopen(argv[2],"w");
+	fclose(fp2);
+	fp3= fopen(argv[3],"w");
+	fclose(fp3);
+	
+	fp2= fopen(argv[2],"a");
+	fp3= fopen(argv[3],"a");
 	
 
 	yyin=fp;
 	yyparse();
 	
-	
-    errorfile.close();
-	logfile.close();
 
+	fclose(fp2);
+	fclose(fp3);
 	
 	return 0;
 }

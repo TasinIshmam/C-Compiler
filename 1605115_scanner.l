@@ -13,13 +13,18 @@ using namespace std;
 int word_count=0;
 int err_count = 0;
 
-extern ofstream tokenstream;
-extern ofstream logstream;
+extern ofstream logfile;
+extern ofstream errorfile;
+extern int line_no;
+//log and error file defined in parser. 
 
-SymbolTable symbolTable(3);
+
 extern YYSTYPE yylval;
 
 
+void updateLineNo(int line) {
+	line_no = line;
+}
 
 void startLogLine(int line_no) {
 	cout<< "\nLine No. " << line_no << ": ";
@@ -41,11 +46,6 @@ void updateLogWithError(string errorType, string symbolName, int line_no) {
 	cout << "\nError at line " << line_no << ": " << errorType << " " << symbolName << endl;
 }
 
-void updateSymbolTable(string tokenType, string symbolName) {
- SymbolInfo *symbolInfo = new SymbolInfo(symbolName , tokenType);
- symbolTable.insert(symbolInfo);
- //symbolTable.printAllScopeTable();
-}
 
 void updateTokenFile(string tokenType, string symbolName) {
 	
@@ -135,20 +135,23 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	}
 
 ([1-9][0-9]*|0) {string symbol(yytext);
+	updateLineNo(yylineno);
  	yylval = getSymbolInfo(symbol, "CONST_INT");
 	return CONST_INT; 
  }
 
 ([0-9]*\.[0-9]+|[0-9]+\.|[0-9]+){EXP}? {string symbol(yytext);
  	yylval = getSymbolInfo(symbol, "CONST_FLOAT");
-	return CONST_FLOAT; 	
+	updateLineNo(yylineno);
+ 	return CONST_FLOAT; 	
  }
 
 
 \'({ESCAPE_CHAR}|[a-zA-Z0-9])\' {string symbol(yytext);
  //updateLogFile("CHAR_CONST", symbol, yylineno);
  symbol = stringFormatter(symbol);
- 
+ updateLineNo(yylineno);
+ 	
  symbol = symbol.substr(1, symbol.size() - 2);
 	//yylval = getSymbolInfo(symbol, "CONST_CHAR");
 	//return CONST_CHAR;
@@ -158,95 +161,112 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 
 
 
-{ADDOP} {
+{ADDOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "ADDOP");
 	return ADDOP;
 }
 
-{INCOP} {
+{INCOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "INCOP");
 	return INCOP;
 }
 
-{MULOP} {
+{MULOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "MULOP");
 	return MULOP;
 }
 
-{RELOP} {
+{RELOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "RELOP");
 	return RELOP;
 }
 
-{ASSIGNOP} {
+{ASSIGNOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "ASSIGNOP");
 	return ASSIGNOP;
 }
 
-{LOGICOP} {
+{LOGICOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "LOGICOP");
 	return LOGICOP;
 }
 
-{BITOP} {
+{BITOP} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "BITOP");
 	return BITOP;
 }
 
-{NOT} {
+{NOT} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	yylval = getSymbolInfo(symbol, "NOT");
 	return NOT;
 }
 
-{LPAREN} {
+{LPAREN} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return LPAREN; 
 }
 
-{RPAREN} {
+{RPAREN} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return RPAREN; 
 }
 
-{LCURL} {
+{LCURL} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return LCURL; 
 }
 
-{RCURL} {
+{RCURL} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return RCURL;
 }
 
-{LTHIRD} {
+{LTHIRD} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return LTHIRD;
 }
 
-{RTHIRD} {
+{RTHIRD} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return RTHIRD; 
 }
 
-{COMMA} {
+{COMMA} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return COMMA; 
 }
 
-{SEMICOLON} {
+{SEMICOLON} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 	return SEMICOLON;
 }
 
-{keyword} { 
+{keyword} { updateLineNo(yylineno);
+ 	
 	string yyString(yytext); string yytextString = getUpper(yyString);
 	//startLogLine(yylineno); logstream << "Token <" << yytextString << "> Lexeme " << yytext << " found" << endl;
 	//tokenstream << "<" << yytextString << "> ";
@@ -287,20 +307,24 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	
 }
 
-{COMMENT_SINGLE_LINE} {
+{COMMENT_SINGLE_LINE} {updateLineNo(yylineno);
+ 	
 	string symbol(yytext);
 
 }
-{COMMENT_MULTI_LINE} {string symbol(yytext); }
+{COMMENT_MULTI_LINE} {updateLineNo(yylineno);
+ 	string symbol(yytext); }
 
 
 
-\"(([^\"\n]|\\\n)*[^\\\n])?\" {
+\"(([^\"\n]|\\\n)*[^\\\n])?\" {updateLineNo(yylineno);
+ 	
 	
  }
 
 
-{IDENTIFIER} { string symbol(yytext);  
+{IDENTIFIER} {updateLineNo(yylineno);
+ 	 string symbol(yytext);  
 yylval = getSymbolInfo(symbol, "ID");
 return ID; 
 }
@@ -309,43 +333,52 @@ return ID;
 
 
 
-[0-9]{1,30}{IDENTIFIER} {
+[0-9]{1,30}{IDENTIFIER} {updateLineNo(yylineno);
+ 	
 	//INVALID PREFIX ON ID OR INVALID SUFFIX ON NUMBER
 }
 
-([0-9]*\.[0-9]*){2,} {
+([0-9]*\.[0-9]*){2,} {updateLineNo(yylineno);
+ 	
 	//TOO MANY DECILMAL POINT ERROR 
 }
 
-\'({ESCAPE_CHAR}|[a-zA-Z0-9]|[ \t]){2,}\' {
+\'({ESCAPE_CHAR}|[a-zA-Z0-9]|[ \t]){2,}\' {updateLineNo(yylineno);
+ 	
 	//MULTI CHARACTER COUNT ERROR 
 }
 
-\'\' {
+\'\' {updateLineNo(yylineno);
+ 	
 	//EMPTY CHARACTER CONSTANT ERROR 
 }
 
-\'([a-zA-Z0-9]*|\\\') {
+\'([a-zA-Z0-9]*|\\\') {updateLineNo(yylineno);
+ 	
 	//UNTERMINATE CAHRACTER ERROR 
 }
 
-\"(([^\"\n]|\\\n)*[^\\\n])? {
+\"(([^\"\n]|\\\n)*[^\\\n])? {updateLineNo(yylineno);
+ 	
 	//UNTERMINATED STRING ERROR 
 
 }
 
 
-([0-9]*\.[0-9]+|[0-9]+\.|[0-9]+){EXP}([0-9]*\.[0-9]*)+ {
+([0-9]*\.[0-9]+|[0-9]+\.|[0-9]+){EXP}([0-9]*\.[0-9]*)+ {updateLineNo(yylineno);
+ 	
 	//ILL FORMED NUMBER 
 }
 
-{UNFINISHED_COMMENT} {
+{UNFINISHED_COMMENT} {updateLineNo(yylineno);
+ 	
 	//UNFINISHED COMMENT 
 }
 
 
 
-. { 
+. { updateLineNo(yylineno);
+ 	
 	//UNRECOGNIZED CHARACTER
 }
 
