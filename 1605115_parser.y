@@ -31,6 +31,12 @@ void yyerror(char *s)
 
 void addLineNoLog() {
 	logfile <<"At line no: " << line_no << " ";
+	
+}
+
+SymbolInfo* deepCopySymbolInfo(SymbolInfo* oldCopy) {
+	SymbolInfo* ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType());
+	return ret; 
 }
 
 %}
@@ -42,7 +48,7 @@ void addLineNoLog() {
 %token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT DECOP
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token STRING ID PRINTLN
-
+//todo Ensure this stuff has right associativity. Or atleast that you can explain its associativity. 
 %left RELOP LOGICOP BITOP 
 %left ADDOP 
 %left MULOP
@@ -122,11 +128,20 @@ expression_statement 	: SEMICOLON
 			| expression SEMICOLON 
 			;
 	  
-variable : ID 		
-	 | ID LTHIRD expression RTHIRD 
+variable : ID	{
+				$$ = new SymbolInfo($1->getName(), "variable");
+				$$->addChildSymbol($1);
+				addLineNoLog();
+				 logfile << "variable : ID" << endl << endl;
+				 logfile << $1->getName() << endl << endl; 
+				}
+
+	 | ID LTHIRD expression RTHIRD {
+		 
+	 }
 	 ;
 	 
- expression : logic_expression	
+expression : logic_expression	
 	   | variable ASSIGNOP logic_expression 	
 	   ;
 			

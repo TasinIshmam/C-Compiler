@@ -1,6 +1,7 @@
 int main(){
 	int a,b;
 	a=a+1;
+	a = b + 3;
 	char ch='\n';
 	ch='\t';
 	char c[]="ab\td";

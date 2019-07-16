@@ -96,10 +96,16 @@ void yyerror(char *s)
 
 void addLineNoLog() {
 	logfile <<"At line no: " << line_no << " ";
+	
+}
+
+SymbolInfo* deepCopySymbolInfo(SymbolInfo* oldCopy) {
+	SymbolInfo* ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType());
+	return ret; 
 }
 
 
-#line 103 "y.tab.c" /* yacc.c:339  */
+#line 109 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -234,7 +240,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 238 "y.tab.c" /* yacc.c:358  */
+#line 244 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -535,13 +541,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    57,    57,    63,    64,    67,    68,    69,    72,    73,
-      76,    77,    81,    82,    83,    84,    88,    89,    92,    95,
-      96,    97,   100,   101,   102,   103,   106,   107,   110,   111,
-     112,   113,   114,   115,   116,   117,   118,   121,   122,   125,
-     126,   129,   130,   133,   134,   137,   138,   141,   142,   145,
-     146,   149,   150,   151,   154,   155,   156,   157,   158,   159,
-     160,   163,   164,   167,   168
+       0,    63,    63,    69,    70,    73,    74,    75,    78,    79,
+      82,    83,    87,    88,    89,    90,    94,    95,    98,   101,
+     102,   103,   106,   107,   108,   109,   112,   113,   116,   117,
+     118,   119,   120,   121,   122,   123,   124,   127,   128,   131,
+     139,   144,   145,   148,   149,   152,   153,   156,   157,   160,
+     161,   164,   165,   166,   169,   170,   171,   172,   173,   174,
+     175,   178,   179,   182,   183
 };
 #endif
 
@@ -1406,57 +1412,77 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 58 "1605115_parser.y" /* yacc.c:1646  */
+#line 64 "1605115_parser.y" /* yacc.c:1646  */
     {
 		//write your code in this block in all the similar blocks below
 	}
-#line 1414 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 5:
-#line 67 "1605115_parser.y" /* yacc.c:1646  */
-    { addLineNoLog(); }
 #line 1420 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 6:
-#line 68 "1605115_parser.y" /* yacc.c:1646  */
+  case 5:
+#line 73 "1605115_parser.y" /* yacc.c:1646  */
     { addLineNoLog(); }
 #line 1426 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 7:
-#line 69 "1605115_parser.y" /* yacc.c:1646  */
+  case 6:
+#line 74 "1605115_parser.y" /* yacc.c:1646  */
     { addLineNoLog(); }
 #line 1432 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 8:
-#line 72 "1605115_parser.y" /* yacc.c:1646  */
+  case 7:
+#line 75 "1605115_parser.y" /* yacc.c:1646  */
     { addLineNoLog(); }
 #line 1438 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 9:
-#line 73 "1605115_parser.y" /* yacc.c:1646  */
+  case 8:
+#line 78 "1605115_parser.y" /* yacc.c:1646  */
     { addLineNoLog(); }
 #line 1444 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 53:
-#line 151 "1605115_parser.y" /* yacc.c:1646  */
-    {addLineNoLog(); logfile <<"Factor" << endl; }
+  case 9:
+#line 79 "1605115_parser.y" /* yacc.c:1646  */
+    { addLineNoLog(); }
 #line 1450 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 39:
+#line 131 "1605115_parser.y" /* yacc.c:1646  */
+    {
+				(yyval) = new SymbolInfo((yyvsp[0])->getName(), "variable");
+				(yyval)->addChildSymbol((yyvsp[0]));
+				addLineNoLog();
+				 logfile << "variable : ID" << endl << endl;
+				 logfile << (yyvsp[0])->getName() << endl << endl; 
+				}
+#line 1462 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 139 "1605115_parser.y" /* yacc.c:1646  */
+    {
+		 
+	 }
+#line 1470 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 166 "1605115_parser.y" /* yacc.c:1646  */
+    { }
+#line 1476 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 57:
-#line 157 "1605115_parser.y" /* yacc.c:1646  */
-    { addLineNoLog(); logfile <<"CONST_INT" << endl;}
-#line 1456 "y.tab.c" /* yacc.c:1646  */
+#line 172 "1605115_parser.y" /* yacc.c:1646  */
+    { }
+#line 1482 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1460 "y.tab.c" /* yacc.c:1646  */
+#line 1486 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1684,7 +1710,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 172 "1605115_parser.y" /* yacc.c:1906  */
+#line 187 "1605115_parser.y" /* yacc.c:1906  */
 
 int main(int argc,char *argv[])
 {

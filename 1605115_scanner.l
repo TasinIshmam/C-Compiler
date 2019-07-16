@@ -220,48 +220,57 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 {LPAREN} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+		yylval = getSymbolInfo(symbol, "LPAREN");
+
 	return LPAREN; 
 }
 
 {RPAREN} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RPAREN");
 	return RPAREN; 
 }
 
 {LCURL} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "LCURL");
 	return LCURL; 
 }
 
 {RCURL} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RCURL");
 	return RCURL;
 }
 
 {LTHIRD} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "LTHIRD");
 	return LTHIRD;
 }
 
 {RTHIRD} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RTHIRD");
 	return RTHIRD; 
 }
 
 {COMMA} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "COMMA");
 	return COMMA; 
 }
 
 {SEMICOLON} {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "SEMICOLON");
 	return SEMICOLON;
 }
 
@@ -271,8 +280,11 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	//startLogLine(yylineno); logstream << "Token <" << yytextString << "> Lexeme " << yytext << " found" << endl;
 	//tokenstream << "<" << yytextString << "> ";
 	//if|for|do|int|float|void|switch|else|default|while|break|char|double|return|case|continue
-	if(yytextString == "IF") {
+	
+		yylval = getSymbolInfo(yytextString, "KEYWORD");
 
+	if(yytextString == "IF") {
+		return IF;
 	} else if (yytextString == "FOR") {
 		return FOR;
 	} else if (yytextString == "DO" ) {

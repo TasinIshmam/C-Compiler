@@ -6,6 +6,7 @@ class SymbolInfo {
 private:
     string name, type;
     SymbolInfo *nextPtr;
+    vector<SymbolInfo*> childSymbols; 
 
 public:
 
@@ -40,6 +41,18 @@ public:
 
     void setNext(SymbolInfo *next) {
         SymbolInfo::nextPtr = next;
+    }
+
+    void addChildSymbol(SymbolInfo* child) {
+        childSymbols.push_back(child);
+    }
+
+    void setChildSymbolVector(vector<SymbolInfo*> argchildSymbols) {
+        childSymbols = argchildSymbols;
+    }
+
+    vector<SymbolInfo*> &getChildSymbols(){
+        return childSymbols;
     }
 };
 
