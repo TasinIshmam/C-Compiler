@@ -1,22 +1,14 @@
+int func(int a){
+	return a;
+}
+
 int main(){
-	int a,b;
-	a=a+1;
-	a = b + 3;
-	char ch='\n';
-	ch='\t';
-	char c[]="ab\td";
-	printf("a\tbc\
-def\
-ghi");
-
-"This is another\
-multiline string\
-look ma 3rd line   \
-and 4th line.
-
-
-// a comment
-/** another
-*** comment ***/
+	int a[2],c,i,j ; float c;
+	a[2.5]=1;
+	i=2.3;
+	j=2%3.7;
+	a=4;
+	func(a);
+	b=8;
 	return 0;
-}	
+}

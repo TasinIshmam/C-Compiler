@@ -1279,83 +1279,95 @@ YY_RULE_SETUP
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+		yylval = getSymbolInfo(symbol, "LPAREN");
+
 	return LPAREN; 
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 226 "1605115_scanner.l"
+#line 228 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RPAREN");
 	return RPAREN; 
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 232 "1605115_scanner.l"
+#line 235 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "LCURL");
 	return LCURL; 
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 238 "1605115_scanner.l"
+#line 242 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RCURL");
 	return RCURL;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 244 "1605115_scanner.l"
+#line 249 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "LTHIRD");
 	return LTHIRD;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 250 "1605115_scanner.l"
+#line 256 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "RTHIRD");
 	return RTHIRD; 
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 256 "1605115_scanner.l"
+#line 263 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "COMMA");
 	return COMMA; 
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 262 "1605115_scanner.l"
+#line 270 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "SEMICOLON");
 	return SEMICOLON;
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 268 "1605115_scanner.l"
+#line 277 "1605115_scanner.l"
 { updateLineNo(yylineno);
  	
 	string yyString(yytext); string yytextString = getUpper(yyString);
 	//startLogLine(yylineno); logstream << "Token <" << yytextString << "> Lexeme " << yytext << " found" << endl;
 	//tokenstream << "<" << yytextString << "> ";
 	//if|for|do|int|float|void|switch|else|default|while|break|char|double|return|case|continue
-	if(yytextString == "IF") {
+	
+		yylval = getSymbolInfo(yyString, "KEYWORD");
 
+	if(yytextString == "IF") {
+		return IF;
 	} else if (yytextString == "FOR") {
 		return FOR;
 	} else if (yytextString == "DO" ) {
@@ -1393,7 +1405,7 @@ YY_RULE_SETUP
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 310 "1605115_scanner.l"
+#line 322 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1403,14 +1415,14 @@ YY_RULE_SETUP
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 315 "1605115_scanner.l"
+#line 327 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	string symbol(yytext); }
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 320 "1605115_scanner.l"
+#line 332 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	
@@ -1418,7 +1430,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 326 "1605115_scanner.l"
+#line 338 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	 string symbol(yytext);  
 yylval = getSymbolInfo(symbol, "ID");
@@ -1427,7 +1439,7 @@ return ID;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 336 "1605115_scanner.l"
+#line 348 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//INVALID PREFIX ON ID OR INVALID SUFFIX ON NUMBER
@@ -1435,7 +1447,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 341 "1605115_scanner.l"
+#line 353 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//TOO MANY DECILMAL POINT ERROR 
@@ -1443,7 +1455,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 346 "1605115_scanner.l"
+#line 358 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//MULTI CHARACTER COUNT ERROR 
@@ -1451,7 +1463,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 351 "1605115_scanner.l"
+#line 363 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//EMPTY CHARACTER CONSTANT ERROR 
@@ -1459,7 +1471,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 356 "1605115_scanner.l"
+#line 368 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//UNTERMINATE CAHRACTER ERROR 
@@ -1468,7 +1480,7 @@ YY_RULE_SETUP
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
-#line 361 "1605115_scanner.l"
+#line 373 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//UNTERMINATED STRING ERROR 
@@ -1477,7 +1489,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 368 "1605115_scanner.l"
+#line 380 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//ILL FORMED NUMBER 
@@ -1486,7 +1498,7 @@ YY_RULE_SETUP
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 373 "1605115_scanner.l"
+#line 385 "1605115_scanner.l"
 {updateLineNo(yylineno);
  	
 	//UNFINISHED COMMENT 
@@ -1494,7 +1506,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 380 "1605115_scanner.l"
+#line 392 "1605115_scanner.l"
 { updateLineNo(yylineno);
  	
 	//UNRECOGNIZED CHARACTER
@@ -1502,10 +1514,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 385 "1605115_scanner.l"
+#line 397 "1605115_scanner.l"
 ECHO;
 	YY_BREAK
-#line 1509 "lex.yy.c"
+#line 1521 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2520,7 +2532,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 385 "1605115_scanner.l"
+#line 397 "1605115_scanner.l"
 
 
 

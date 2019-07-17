@@ -2,21 +2,121 @@
 
 using namespace std;
 
+class VariableInfo {
+
+    string variableType;
+
+public:
+
+    VariableInfo(const string& variableType) : variableType(variableType) {
+
+    }
+
+
+
+    const string &getVariableType() const {
+        return variableType;
+    }
+
+    void setVariableType(const string &type) {
+        VariableInfo::variableType = type;
+    }
+
+
+
+};
+
+
+
+class ArrayInfo {
+
+    string variableType;
+    int arraySize = -1;
+
+public:
+
+    ArrayInfo(const string& variableType, int arrSize) : variableType(variableType) {
+        arraySize = arrSize;
+    }
+
+
+    int getArraySize() {
+        return arraySize;
+    }
+
+
+    const string &getVariableType() const {
+        return variableType;
+    }
+
+    void setVariableType(const string &type) {
+        ArrayInfo::variableType = type;
+    }
+
+
+};
+
+
+class functionInfo {
+
+};
+
 class SymbolInfo {
 private:
     string name, type;
     SymbolInfo *nextPtr;
-    vector<SymbolInfo*> childSymbols; 
+    vector<SymbolInfo*> childSymbols;
+    VariableInfo* variableDataPtr;
+    ArrayInfo* arrayDataPtr;
+
 
 public:
+
+    bool isVariable() {
+        if(variableDataPtr != nullptr) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool isArray() {
+        if(arrayDataPtr != nullptr) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    VariableInfo* getVaraibleInfoPtr() {
+        return variableDataPtr;
+    }
+
+    void initializeVariable (const string &variableType) {
+        variableDataPtr = new VariableInfo(variableType);
+    }
+
+    ArrayInfo* getArrayInfoPtr() {
+        return arrayDataPtr;
+    }
+
+    void initializeArray(const string &variableType, int arrSize) {
+        arrayDataPtr = new ArrayInfo(variableType, arrSize);
+    }
+
 
 
     SymbolInfo(const string &name, const string &type) : name(name), type(type) {
         nextPtr = nullptr;
+        variableDataPtr = nullptr;
     }
 
     virtual ~SymbolInfo() {
         delete nextPtr;
+        delete variableDataPtr;
+        delete arrayDataPtr;
     }
 
     const string &getName() const {
@@ -167,14 +267,14 @@ public:
 
         if (hashTable[hash] == nullptr) {
             hashTable[hash] = item;
-           // cout << "\nInserted in ScopeTable# " << tableId << " at position " << hash << ", " << counter << "\n"; 
-                 
+            // cout << "\nInserted in ScopeTable# " << tableId << " at position " << hash << ", " << counter << "\n";
+
             return true;
         } else {
             SymbolInfo *iter = hashTable[hash];
 
             if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-               // cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+                // cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                 return false;
             }
 
@@ -186,7 +286,7 @@ public:
             while (iter != nullptr) {
 
                 if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-                //    cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+                    //    cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                     return false;
                 }
 
@@ -264,7 +364,7 @@ public:
         }
     }
 
-     void print(ofstream& out) {
+    void print(ofstream& out) {
         out << "\n ScopeTable # " << tableId << endl;
 
         for (int i = 0; i < tableSize; i++) {

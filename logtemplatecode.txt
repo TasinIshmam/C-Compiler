@@ -1,0 +1,77 @@
+1
+
+ {
+		 $$ = new SymbolInfo($1->getName() , "LEFTTERM");
+		 $$->addChildSymbol($1); 
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+
+2
+
+  {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() , "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+
+3
+
+ {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+4
+
+  {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+
+
+5
+ {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
+		 $5->getName(), "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
+		 $$->addChildSymbol($5);
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+
+6 
+ {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
+		 $5->getName() + 
+		 $6->getName(), "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
+		 $$->addChildSymbol($5);
+		 $$->addChildSymbol($6);
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}
+
+7 
+ {
+		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
+		 $5->getName() + 
+		 $6->getName() + $7->getName(), "LEFTTERM");
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
+		 $$->addChildSymbol($5);
+		 $$->addChildSymbol($6);
+		 $$->addChildSymbol($7);
+		 addLineNoLog();
+		 logfile << "LEFTTERM : RIGHTTERM\n\n";
+		 logfile << $$->getName() <<endl << endl;
+	 	}

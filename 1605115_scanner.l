@@ -281,7 +281,7 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	//tokenstream << "<" << yytextString << "> ";
 	//if|for|do|int|float|void|switch|else|default|while|break|char|double|return|case|continue
 	
-		yylval = getSymbolInfo(yytextString, "KEYWORD");
+		yylval = getSymbolInfo(yyString, "KEYWORD");
 
 	if(yytextString == "IF") {
 		return IF;
