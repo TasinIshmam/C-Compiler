@@ -771,7 +771,7 @@ char *yytext;
 #define YYSTYPE SymbolInfo*
 
 #include<bits/stdc++.h>
-#include "1605115_symboltable.cpp"
+#include "1605115_symboltable.h"
 #include "y.tab.h"
 
 using namespace std;

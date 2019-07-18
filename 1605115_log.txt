@@ -70,9 +70,9 @@ At line no: 5 type_specifier : INT
 
 int
 
-At line no: 7 type_specifier : INT
+At line no: 7 type_specifier : VOID
 
-int
+void
 
 At line no: 7 declaration_list : ID LTHIRD CONST_INT RTHIRD
 
@@ -92,15 +92,15 @@ a[2],c,i,j
 
 At line no: 7 var_declaration : type_specifier declaration_list SEMICOLON
 
-inta[2],c,i,j;
+voida[2],c,i,j;
 
 At line no: 7 statement : var_declaration
 
-inta[2],c,i,j;
+voida[2],c,i,j;
 
 At line no: 7 statements : statement
 
-inta[2],c,i,j;
+voida[2],c,i,j;
 
 At line no: 7 type_specifier : FLOAT
 
@@ -120,7 +120,7 @@ floatc[3];
 
 At line no: 7 statements : statements statement
 
-inta[2],c,i,j;floatc[3];
+voida[2],c,i,j;floatc[3];
 
 At line no: 8 factor : CONST_FLOAT
 
@@ -192,7 +192,7 @@ a[2.5]=1;
 
 At line no: 8 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;
+voida[2],c,i,j;floatc[3];a[2.5]=1;
 
 At line no: 9 variable : ID
 
@@ -236,7 +236,7 @@ i=2.3;
 
 At line no: 9 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;
 
 At line no: 10 variable : ID
 
@@ -292,7 +292,7 @@ j=2%3.7;
 
 At line no: 10 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;
 
 At line no: 11 variable : ID
 
@@ -336,7 +336,7 @@ a=4;
 
 At line no: 11 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;
 
 At line no: 12 variable : ID
 
@@ -412,7 +412,7 @@ func(a);
 
 At line no: 12 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);
 
 At line no: 13 variable : ID
 
@@ -456,7 +456,7 @@ b=8;
 
 At line no: 13 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;
 
 At line no: 14 factor : CONST_INT
 
@@ -492,27 +492,27 @@ return0;
 
 At line no: 14 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;
+voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;
 
 At line no: 15 compound_statement : LCURL statements RCURL
 
-{inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
+{voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
 
 At line no: 15 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
-intmain(){inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
+intmain(){voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
 
 At line no: 15 unit : func_definition
 
-intmain(){inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
+intmain(){voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
 
 At line no: 15 program : program unit
 
-intfunc(inta){returna;}intmain(){inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
+intfunc(inta){returna;}intmain(){voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
 
 At line no: 15 start : program
 
-intfunc(inta){returna;}intmain(){inta[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
+intfunc(inta){returna;}intmain(){voida[2],c,i,j;floatc[3];a[2.5]=1;i=2.3;j=2%3.7;a=4;func(a);b=8;return0;}
 
 
  ScopeTable # 1

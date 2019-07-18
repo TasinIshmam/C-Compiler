@@ -1,3 +1,6 @@
+#ifndef SYMBOLTABLE
+#define SYMBOLTABLE
+
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -577,3 +580,4 @@ public:
 };
 
 
+#endif

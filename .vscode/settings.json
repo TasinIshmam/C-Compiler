@@ -16,6 +16,7 @@
         "string_view": "cpp",
         "valarray": "cpp",
         "*.tcc": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "iosfwd": "cpp"
     }
 }

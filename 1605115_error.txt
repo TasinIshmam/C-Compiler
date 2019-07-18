@@ -1,1 +1,3 @@
+At line No: 7 variable(s) declared as type 'void' 
+
 Total Errors: 0
