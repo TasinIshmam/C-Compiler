@@ -10,6 +10,12 @@
         "scoped_allocator": "cpp",
         "type_traits": "cpp",
         "tuple": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp",
+        "valarray": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp"
     }
 }

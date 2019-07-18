@@ -3,7 +3,8 @@ int func(int a){
 }
 
 int main(){
-	int a[2],c,i,j ; float c;
+	
+	int a[2],c,i,j ; float c[3];
 	a[2.5]=1;
 	i=2.3;
 	j=2%3.7;

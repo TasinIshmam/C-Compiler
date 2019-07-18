@@ -28,6 +28,34 @@ public:
 
 
 
+class ArgumentInfo {
+
+    string argumentType, argumentName;
+
+public:
+
+    ArgumentInfo(const string &argumentType, const string &argumentName) : argumentType(argumentType),
+                                                                           argumentName(argumentName) {}
+
+    const string &getArgumentType() const {
+        return argumentType;
+    }
+
+    void setArgumentType(const string &argumentType) {
+        ArgumentInfo::argumentType = argumentType;
+    }
+
+    const string &getArgumentName() const {
+        return argumentName;
+    }
+
+    void setArgumentName(const string &argumentName) {
+        ArgumentInfo::argumentName = argumentName;
+    }
+};
+
+
+
 class ArrayInfo {
 
     string variableType;
@@ -57,9 +85,34 @@ public:
 };
 
 
-class functionInfo {
+class FunctionInfo {
+    string  returnType;
+    vector<ArgumentInfo> arguments;
+
+public:
+    FunctionInfo(const string &returnType) : returnType(returnType) {
+
+    }
+
+    const vector<ArgumentInfo> &getArguments() const {
+        return arguments;
+    }
+
+    void addArguments(ArgumentInfo argumentInfo) {
+        arguments.push_back(argumentInfo);
+
+
+    }
+
+    int getArgumentsNumber() {
+        return arguments.size();
+    }
+
+
 
 };
+
+
 
 class SymbolInfo {
 private:
@@ -68,7 +121,7 @@ private:
     vector<SymbolInfo*> childSymbols;
     VariableInfo* variableDataPtr;
     ArrayInfo* arrayDataPtr;
-
+    FunctionInfo* functionDataPtr;
 
 public:
 
@@ -89,6 +142,19 @@ public:
 
     }
 
+    bool isFunction() {
+        if(functionDataPtr != nullptr) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    bool isID() {
+        return isVariable() || isArray() || isFunction();
+    }
+
 
     VariableInfo* getVaraibleInfoPtr() {
         return variableDataPtr;
@@ -106,17 +172,27 @@ public:
         arrayDataPtr = new ArrayInfo(variableType, arrSize);
     }
 
+    FunctionInfo* getFunctionInfoDataPtr() {
+        return functionDataPtr;
+    }
+
+    void initializeAsFunction(const string &returnType ) {
+        functionDataPtr = new FunctionInfo(returnType);
+    }
+
 
 
     SymbolInfo(const string &name, const string &type) : name(name), type(type) {
         nextPtr = nullptr;
         variableDataPtr = nullptr;
+        functionDataPtr = nullptr;
     }
 
     virtual ~SymbolInfo() {
         delete nextPtr;
         delete variableDataPtr;
         delete arrayDataPtr;
+        delete functionDataPtr;
     }
 
     const string &getName() const {
@@ -145,6 +221,8 @@ public:
 
     void addChildSymbol(SymbolInfo* child) {
         childSymbols.push_back(child);
+
+
     }
 
     void setChildSymbolVector(vector<SymbolInfo*> argchildSymbols) {
@@ -388,6 +466,7 @@ class SymbolTable {
 private:
     ScopeTable *currentScope;
     int bucketSizeForTables;
+
     int scopeDepth;
 public:
     virtual ~SymbolTable() {

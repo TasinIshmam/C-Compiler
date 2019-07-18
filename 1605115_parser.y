@@ -1,8 +1,4 @@
 %{
-#include<iostream>
-#include<cstdlib>
-#include<cstring>
-#include<cmath>
 #include <bits/stdc++.h>
 #define YYSTYPE SymbolInfo*
 #include "1605115_symboltable.cpp"
@@ -15,7 +11,7 @@ int yylex(void);
 
 extern FILE *yyin;
 
-int line_no = 1; 
+int line_no = 1;
 int errorCount = 0;
 
 FILE *fp;
@@ -26,7 +22,9 @@ ofstream scratchfile;
 SymbolTable symbolTable(10);
 
 
-void yyerror(char *s)
+
+
+void yyerror(char *s) 
 {
 	string syntaxerror(s);
 	errorfile << "Error at line " << line_no <<" :" << syntaxerror << endl << endl ;
@@ -35,13 +33,96 @@ void yyerror(char *s)
 
 void addLineNoLog() {
 	logfile <<"At line no: " << line_no << " ";
-	
+
 }
 
 SymbolInfo* deepCopySymbolInfo(SymbolInfo* oldCopy) {
 	SymbolInfo* ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType());
-	return ret; 
+	return ret;
 }
+
+SymbolInfo* createSymbolInfoForArrayID(string name, string type, int arrSize) {
+	SymbolInfo* ret = new SymbolInfo(name, "ID");
+	ret->initializeArray(type, arrSize);
+
+	return ret;
+}
+
+SymbolInfo* createSymbolInfoForVariableID(string name, string type) {
+	SymbolInfo* ret = new SymbolInfo(name, "ID");
+	ret->initializeVariable(type);
+
+	return ret;
+}
+
+
+void symbolTableEntryForVarDeclaration (SymbolInfo* typeSpecifier, SymbolInfo* declarationList){
+
+    string typeOfVariables = typeSpecifier->getName();
+
+    vector<SymbolInfo*> variableNames;
+    vector<SymbolInfo*> arrayNames;
+    SymbolInfo* tempDeclarationList = declarationList;
+
+//	scratchfile << typeSpecifier->getName() << " " << declarationList->getName() << endl;
+
+	// scratchfile << declarationList->getChildSymbols()[0]->getType() << endl;
+
+	
+    while(tempDeclarationList->getChildSymbols()[0]->getType() == "declaration_list"){
+        if(tempDeclarationList->getChildSymbols().size() > 5) {
+            //is an array
+            string arrayName = tempDeclarationList->getChildSymbols()[2]->getName();
+            string arrayLenString = tempDeclarationList->getChildSymbols()[4]->getName();
+            int arrayLen = stoi(arrayLenString);
+
+			
+            scratchfile << arrayName << arrayLen << endl << endl;
+			symbolTable.insert(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+
+
+        } else {
+            //is a variable
+			//scratchfile <<(*tempDeclarationList).childSymbols.size() ;
+
+
+
+
+            string variableName = tempDeclarationList->getChildSymbols()[2]->getName();
+            scratchfile << variableName << endl << endl;
+			symbolTable.insert(createSymbolInfoForVariableID(variableName, typeOfVariables));
+
+
+        }
+
+
+        tempDeclarationList = tempDeclarationList->getChildSymbols()[0];
+
+    }
+
+
+    if(tempDeclarationList->getChildSymbols().size()> 3) {
+        //is an array
+        string arrayName = tempDeclarationList->getChildSymbols()[0]->getName();
+        string arrayLenString = tempDeclarationList->getChildSymbols()[2]->getName();
+        int arrayLen = stoi(arrayLenString);
+
+        scratchfile << arrayName << arrayLen <<  endl << endl;
+		symbolTable.insert(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+
+
+
+    } else {
+        //is a variable
+        string variableName = tempDeclarationList->getChildSymbols()[0]->getName();
+        scratchfile << variableName << endl<< endl;
+		symbolTable.insert(createSymbolInfoForVariableID(variableName, typeOfVariables));
+
+    }
+
+	scratchfile << "Ending" << endl;
+}
+
 
 %}
 
@@ -52,9 +133,9 @@ SymbolInfo* deepCopySymbolInfo(SymbolInfo* oldCopy) {
 %token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT DECOP
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token STRING ID PRINTLN
-//todo Ensure this stuff has right associativity. Or atleast that you can explain its associativity. 
-%left RELOP LOGICOP BITOP 
-%left ADDOP 
+//todo Ensure this stuff has right associativity. Or atleast that you can explain its associativity.
+%left RELOP LOGICOP BITOP
+%left ADDOP
 %left MULOP
 
 %nonassoc LOWER_THAN_ELSE
@@ -66,7 +147,7 @@ SymbolInfo* deepCopySymbolInfo(SymbolInfo* oldCopy) {
 
 start : program	{
 		 $$ = new SymbolInfo($1->getName() , "start");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "start : program\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -75,46 +156,46 @@ start : program	{
 
 program : program unit	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "program");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 addLineNoLog();
 		 logfile << "program : program unit\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	} 
+	 	}
 	| unit	{
 		 $$ = new SymbolInfo($1->getName() , "program");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "program : unit\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	;
-	
+
 unit : var_declaration {
 		 $$ = new SymbolInfo($1->getName() , "unit");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "unit : var_declaration\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
      | func_declaration {
 		 $$ = new SymbolInfo($1->getName() , "unit");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "unit : func_declaration\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
      | func_definition {
 		 $$ = new SymbolInfo($1->getName() , "unit");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "unit : func_definition\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
      ;
-     
+
 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
-		 $5->getName() + 
+		 $5->getName() +
 		 $6->getName(), "func_declaration");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 $$->addChildSymbol($5);
@@ -131,12 +212,12 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 addLineNoLog();
 		 logfile << "func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON	\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	} 	
+	 	}
 		;
-		 
+
 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
-		 $5->getName() + 
+		 $5->getName() +
 		 $6->getName(), "func_definition");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 $$->addChildSymbol($5);
@@ -154,7 +235,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statem
 		 logfile << "func_definition : type_specifier ID LPAREN RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
- 		;				
+ 		;
 
 
 parameter_list  : parameter_list COMMA type_specifier ID	{
@@ -166,86 +247,91 @@ parameter_list  : parameter_list COMMA type_specifier ID	{
 	 	}
 		| parameter_list COMMA type_specifier	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "parameter_list");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "parameter_list : parameter_list COMMA type_specifier\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		| type_specifier ID	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "parameter_list");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 addLineNoLog();
 		 logfile << "parameter_list : type_specifier ID\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		| type_specifier	{
 		 $$ = new SymbolInfo($1->getName() , "parameter_list");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "parameter_list : type_specifier\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}	
+	 	}
  		;
 
- 		
+
 compound_statement : LCURL statements RCURL 	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "compound_statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL statements RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		| LCURL RCURL	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "compound_statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		    ;
- 		    
+
 var_declaration : type_specifier declaration_list SEMICOLON	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "var_declaration");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
+
+		 
 		 addLineNoLog();
 		 logfile << "var_declaration : type_specifier declaration_list SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		
+		 symbolTableEntryForVarDeclaration($1, $2);
 	 	}
  		 ;
- 		 
-type_specifier	: INT 	{
+
+type_specifier  : INT 	{
 		 $$ = new SymbolInfo($1->getName() , "type_specifier");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "type_specifier : INT\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		| FLOAT {
 		 $$ = new SymbolInfo($1->getName() , "type_specifier");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "type_specifier : FLOAT\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		| VOID {
 		 $$ = new SymbolInfo($1->getName() , "type_specifier");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "type_specifier : VOID\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		;
- 		
+
+
 declaration_list : declaration_list COMMA ID	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "declaration_list");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "declaration_list : declaration_list COMMA ID\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
-		 $5->getName() + 
+		 $5->getName() +
 		 $6->getName(), "declaration_list");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 $$->addChildSymbol($5);
@@ -256,7 +342,7 @@ declaration_list : declaration_list COMMA ID	{
 	 	}
  		  | ID	{
 		 $$ = new SymbolInfo($1->getName() , "declaration_list");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "declaration_list : ID\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -269,44 +355,44 @@ declaration_list : declaration_list COMMA ID	{
 		 logfile << $$->getName() <<endl << endl;
 	 	}
  		  ;
- 		  
+
 statements : statement	{
 		 $$ = new SymbolInfo($1->getName() , "statements");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "statements : statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	   | statements statement	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "statements");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 addLineNoLog();
 		 logfile << "statements : statements statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	   ;
-	   
+
 statement : var_declaration	{
 		 $$ = new SymbolInfo($1->getName() , "statement");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "statement : var_declaration\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	} 
+	 	}
 	  | expression_statement {
 		 $$ = new SymbolInfo($1->getName() , "statement");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "statement : expression_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	} 
+	 	}
 	  | compound_statement {
 		 $$ = new SymbolInfo($1->getName() , "statement");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "statement : compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	} 
+	 	}
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement  {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
 		 $5->getName() + $6->getName() + $7->getName(), "statement");
@@ -358,36 +444,36 @@ statement : var_declaration	{
 	 	}
 	  | RETURN expression SEMICOLON {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "statement : RETURN expression SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	  ;
-	  
-expression_statement 	: SEMICOLON	{
+
+expression_statement : SEMICOLON	{
 		 $$ = new SymbolInfo($1->getName() , "expression_statement");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "expression_statement : SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}		
+	 	}
 			| expression SEMICOLON  {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "expression_statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 addLineNoLog();
 		 logfile << "expression_statement : expression SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 			;
-	  
+
 variable : ID	{
 				$$ = new SymbolInfo($1->getName(), "variable");
-			
+
 				$$->addChildSymbol($1);
 				addLineNoLog();
 				 logfile << "variable : ID" << endl << endl;
-				 logfile << $1->getName() << endl << endl; 
+				 logfile << $1->getName() << endl << endl;
 				}
 	 | ID LTHIRD expression RTHIRD {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "variable");
@@ -397,71 +483,71 @@ variable : ID	{
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	 ;
-	 
+
 expression : logic_expression	{
 		 $$ = new SymbolInfo($1->getName() , "expression");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "expression : logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	   | variable ASSIGNOP logic_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "expression");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "expression : variable ASSIGNOP logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}	
+	 	}
 	   ;
-			
+
 logic_expression : rel_expression 	{
 		 $$ = new SymbolInfo($1->getName() , "logic_expression");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		 | rel_expression LOGICOP rel_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "logic_expression");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression LOGICOP rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}	
+	 	}
 		 ;
-			
+
 rel_expression	: simple_expression {
 		 $$ = new SymbolInfo($1->getName() , "rel_expression");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "rel_expression : simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		| simple_expression RELOP simple_expression	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "rel_expression");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "rel_expression : simple_expression RELOP simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		;
-				
+
 simple_expression : term {
 		 $$ = new SymbolInfo($1->getName() , "simple_expression");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "simple_expression : term\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		  | simple_expression ADDOP term {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "simple_expression");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "simple_expression : simple_expression ADDOP term\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 		  ;
-					
+
 term :	unary_expression {
 						$$ = new SymbolInfo($1->getName(), "term");
 						$$->addChildSymbol($1);
@@ -471,7 +557,7 @@ term :	unary_expression {
 	}
      |  term MULOP unary_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "term");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "term : term MULOP unary_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -500,7 +586,7 @@ unary_expression : ADDOP unary_expression  {
 						logfile << $$->getName() << endl << endl;
 	}
 		 ;
-	
+
 factor	: variable  {
 						$$ = new SymbolInfo($1->getName(), "factor");
 						$$->addChildSymbol($1);
@@ -517,7 +603,7 @@ factor	: variable  {
 	}
 	| LPAREN expression RPAREN	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "factor");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "factor : LPAREN expression RPAREN\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -551,33 +637,33 @@ factor	: variable  {
 			logfile << $$->getName() << endl << endl;
 	}
 	;
-	
+
 argument_list : arguments {
 		 $$ = new SymbolInfo($1->getName() , "argument_list");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "argument_list : arguments\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 			  |
 			  ;
-	
+
 arguments : arguments COMMA logic_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "arguments");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); 
+		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "arguments : arguments COMMA logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	      | logic_expression {
 		 $$ = new SymbolInfo($1->getName() , "arguments");
-		 $$->addChildSymbol($1); 
+		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "arguments : logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
 	      ;
- 
+
 
 %%
 int main(int argc,char *argv[])
@@ -589,26 +675,29 @@ int main(int argc,char *argv[])
 		exit(1);
 	}
 
- errorfile.open("1605115_error.txt");
+ 	errorfile.open("1605115_error.txt");
 	   logfile.open("1605115_log.txt");
 	   scratchfile.open("scratch.txt");
 
+		
 
-	
 
 	yyin=fp;
 	yyparse();
-	
+
+
+	symbolTable.printAllScopeTable(logfile);
+
 
 	logfile << "Total Lines: " << line_no << endl;
 	logfile << "Total Errors: " << errorCount << endl;
 	errorfile << "Total Errors: " << errorCount << endl;
 
-	
+
     errorfile.close();
 	logfile.close();
+	scratchfile.close();
 
-	
+
 	return 0;
 }
-

@@ -27,7 +27,7 @@ void updateLineNo(int line) {
 }
 
 void startLogLine(int line_no) {
-	cout<< "\nLine No. " << line_no << ": ";
+//	cout<< "\nLine No. " << line_no << ": ";
 	
 }
 
@@ -39,17 +39,17 @@ string getUpper(string input) {
 
 void updateLogFile(string tokenType, string symbolName, int line_no ) {
  startLogLine(line_no);
- cout << "Token <" << tokenType << "> lexeme " << symbolName << " Found" << endl;
+ //cout << "Token <" << tokenType << "> lexeme " << symbolName << " Found" << endl;
 }
 
 void updateLogWithError(string errorType, string symbolName, int line_no) {
-	cout << "\nError at line " << line_no << ": " << errorType << " " << symbolName << endl;
+//	cout << "\nError at line " << line_no << ": " << errorType << " " << symbolName << endl;
 }
 
 
 void updateTokenFile(string tokenType, string symbolName) {
 	
-	cout << "<" << tokenType << ", " << symbolName << "> ";
+	//cout << "<" << tokenType << ", " << symbolName << "> ";
 }
 
 void IncWc(){
@@ -93,11 +93,12 @@ string stringFormatter(string input) {
 %}
 
 Letter [a-zA-Z]
-keyword if|for|do|int|float|void|switch|else|default|while|break|char|double|return|case|continue
+keyword if|for|do|int|println|float|void|switch|else|default|while|break|char|double|return|case|continue
 EXP ([Ee][-+]?[0-9]+)
 UCN (\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8})
 ADDOP \+|-
-INCOP \+\+|-- 
+INCOP \+\+
+DECOP --
 MULOP \*|%|\/
 RELOP <|<=|>|>=|==|!=
 ASSIGNOP =
@@ -174,6 +175,15 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	yylval = getSymbolInfo(symbol, "INCOP");
 	return INCOP;
 }
+
+
+{DECOP} {updateLineNo(yylineno);
+ 	
+	string symbol(yytext);
+	yylval = getSymbolInfo(symbol, "DECOP");
+	return DECOP;
+}
+
 
 {MULOP} {updateLineNo(yylineno);
  	
@@ -281,7 +291,7 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 	//tokenstream << "<" << yytextString << "> ";
 	//if|for|do|int|float|void|switch|else|default|while|break|char|double|return|case|continue
 	
-		yylval = getSymbolInfo(yyString, "KEYWORD");
+		yylval = getSymbolInfo(yyString, yytextString);
 
 	if(yytextString == "IF") {
 		return IF;
@@ -315,6 +325,8 @@ UNFINISHED_COMMENT "/*"([^*]|("*"[^/]))*[^"*/"]
 		return CASE;
 	} else if (yytextString == "CONTINUE") {
 		return CONTINUE;
+	} else if (yytextString == "PRINTLN") {
+		return PRINTLN; 
 	}
 	
 }
