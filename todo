@@ -1,8 +1,5 @@
-When checking type 
-var_declaration : type_specifier declaration_list SEMICOLON	
-type_specifier can be void.  But this is for functions only and not variables. So in case of variables handle appropriately.
 
 
+Give error if multiple declaration/definition of same function.
 
-
-Make symboltable.cpp into header file. Naile jhamela hoi
+Do function scopetable entry stuff

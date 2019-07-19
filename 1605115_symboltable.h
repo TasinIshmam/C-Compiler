@@ -124,6 +124,10 @@ public:
 
     }
 
+    const string &getReturnType() const {
+        return returnType;
+    }
+
     int getArgumentsNumber() {
         return arguments.size();
     }

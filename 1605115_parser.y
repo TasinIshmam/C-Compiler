@@ -115,7 +115,7 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 logfile << "func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON \n\n";
 		 logfile << $$->getName() <<endl << endl;
 		
-		symbolTableEntryForFunctionDeclaration($1, $2, $4);
+		createSymbolTableEntryForFunctionID($1, $2, $4);
 
 	 	}
 		| type_specifier ID LPAREN RPAREN SEMICOLON		{
@@ -126,27 +126,62 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 addLineNoLog();
 		 logfile << "func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON	\n\n";
 		 logfile << $$->getName() <<endl << endl;
-		 		symbolTableEntryForFunctionDeclaration($1, $2);
+		createSymbolTableEntryForFunctionID($1, $2);
 
 	 	}
 		;
 
-func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement	{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
-		 $5->getName() +
-		 $6->getName(), "func_definition");
+// Exit function scope after compound statement execution complete.
+func_definition : type_specifier ID LPAREN parameter_list RPAREN {
+	string functionName = $2->getName();
+
+	SymbolInfo *tableEntry = symbolTable.lookup(functionName);
+	if (tableEntry == nullptr) { //function did not have a declaration. So do it now.
+	createSymbolTableEntryForFunctionID($1, $2, $4);
+
+	} else {
+		SymbolInfo* generateEntry = createSymbolInfoForFunctionID($1, $2, $4);
+		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
+			addLineNoErr();
+			errorfile << "Function declaration does not match function definition\n\n";
+		};
+	}
+
+	symbolTable.enterScope();
+	//todo -> Add arguments to the new scope in symboltable
+
+  } compound_statement	{
+		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() + $3->getName() + $4->getName() +
+		 $5->getName() + " " +  $7->getName(), "func_definition");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 $$->addChildSymbol($5);
-		 $$->addChildSymbol($6);
+		 $$->addChildSymbol($7);
 		 addLineNoLog();
 		 logfile << "func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
-		| type_specifier ID LPAREN RPAREN compound_statement	{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
-		 $5->getName(), "func_definition");
+		| type_specifier ID LPAREN RPAREN {
+	
+	string functionName = $2->getName();
+	SymbolInfo *tableEntry = symbolTable.lookup(functionName);
+	if (tableEntry == nullptr) { //function did not have a declaration. So do it now.
+	createSymbolTableEntryForFunctionID($1, $2);
+
+	} else {
+		SymbolInfo* generateEntry = createSymbolInfoForFunctionID($1, $2);
+		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
+			addLineNoErr();
+			errorfile << "Function declaration does not match function definition\n\n";
+		};
+	}
+
+	symbolTable.enterScope();
+	
+  } compound_statement	{
+		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + $3->getName() + $4->getName() + " " + 
+		 $6->getName(), "func_definition");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
-		 $$->addChildSymbol($5);
+		 $$->addChildSymbol($6);
 		 addLineNoLog();
 		 logfile << "func_definition : type_specifier ID LPAREN RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;

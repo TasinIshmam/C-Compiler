@@ -55,6 +55,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
     if (typeOfVariables == "void") {
         addLineNoErr();
         errorfile << "variable(s) declared as type 'void' " << endl << endl;
+
     }
 
 
@@ -121,7 +122,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 }
 
 
-void   symbolTableEntryForFunctionDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *functionID, SymbolInfo *parameterList) {
+SymbolInfo*   createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInfo *functionID, SymbolInfo *parameterList) {
 
     string functionRetType = typeSpecifier->getName();
     string functionName = functionID->getName();
@@ -138,12 +139,28 @@ void   symbolTableEntryForFunctionDeclaration(SymbolInfo *typeSpecifier, SymbolI
             string argType = tempParameterList->getChildSymbols()[2]->getName();
             string argName = tempParameterList->getChildSymbols()[3]->getName();
 
-            functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
+            if(argType == "void") {
+                    addLineNoErr();
+                    errorfile << "Function argument declared as type 'void' " << endl << endl;
+
+            } else {
+                functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
+            }
+
 
         } else {
             //ID not included
             string argType = tempParameterList->getChildSymbols()[2]->getName();
-            functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);
+
+            if(argType == "void") {
+                addLineNoErr();
+                errorfile << "Function argument declared as type 'void' " << endl << endl;
+
+            } else {
+                functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);
+            }
+
+
 
         }
         tempParameterList = tempParameterList->getChildSymbols()[0];
@@ -154,28 +171,37 @@ void   symbolTableEntryForFunctionDeclaration(SymbolInfo *typeSpecifier, SymbolI
         string argType = tempParameterList->getChildSymbols()[0]->getName();
         string argName = tempParameterList->getChildSymbols()[1]->getName();
 
-        functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
+        if(argType == "void") {
+            addLineNoErr();
+            errorfile << "Function argument declared as type 'void' " << endl << endl;
+
+        } else {
+            functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
+        }
+
 
     } else {
         //ID not included
         string argType = tempParameterList->getChildSymbols()[0]->getName();
-        functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);
+
+        if(argType == "void") {
+            addLineNoErr();
+            errorfile << "Function argument declared as type 'void' " << endl << endl;
+
+        } else {
+            functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);
+        }
 
     }
 
-
-    symbolTable.insert(functionSymbolInfo);
-    symbolTable.printAllScopeTable(scratchfile);
-
-    functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
-
-
-
+    return functionSymbolInfo; 
+    
 }
 
 
 
-void  symbolTableEntryForFunctionDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *functionID) {
+
+SymbolInfo*  createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInfo *functionID) {
 
     string functionRetType = typeSpecifier->getName();
     string functionName = functionID->getName();
@@ -186,14 +212,55 @@ void  symbolTableEntryForFunctionDeclaration(SymbolInfo *typeSpecifier, SymbolIn
 
 
 
+    return functionSymbolInfo;
 
+}
+
+
+void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID) {
+    SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID);
     symbolTable.insert(functionSymbolInfo);
     symbolTable.printAllScopeTable(scratchfile);
-
     functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
+}
 
 
 
+void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID, SymbolInfo *parameterList) {
+    SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID, parameterList);
+    symbolTable.insert(functionSymbolInfo);
+    symbolTable.printAllScopeTable(scratchfile);
+    functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
+}
+
+
+
+
+
+bool checkFunctionSymbolInfoEquality(SymbolInfo* functionDefinitionSymbolInfo, SymbolInfo* functionDeclarationSymbolInfo) {
+
+    if(!functionDeclarationSymbolInfo->isFunction() || !functionDefinitionSymbolInfo->isFunction()) {
+        return false;
+    }
+
+    FunctionInfo* definitionFunctionInfo = functionDefinitionSymbolInfo->getFunctionInfoDataPtr();
+    FunctionInfo* declarationFunctionInfo = functionDeclarationSymbolInfo->getFunctionInfoDataPtr();
+
+    if(declarationFunctionInfo->getReturnType() != definitionFunctionInfo->getReturnType()) {
+        return false;
+    }
+
+    if(declarationFunctionInfo->getArgumentsNumber() != definitionFunctionInfo->getArgumentsNumber()) {
+        return false;
+    }
+
+    for(int i = 0; i < declarationFunctionInfo->getArgumentsNumber() ; i++) {
+        if(declarationFunctionInfo->getArguments()[i].getArgumentType() != definitionFunctionInfo->getArguments()[i].getArgumentType() ) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 #endif

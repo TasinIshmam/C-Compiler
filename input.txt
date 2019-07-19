@@ -1,5 +1,5 @@
 
-int func(int, int b);
+int func(int b);
 int main();
 
 
@@ -9,7 +9,7 @@ int func(int a){
 
 int main(){
 
-	void a[2],c,i,j ; float c[3];
+	int a[2],c,i,j ; float c[3];
 	a[2.5]=1;
 	i=2.3;
 	j=2%3.7;

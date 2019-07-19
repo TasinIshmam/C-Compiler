@@ -13,7 +13,6 @@
 Function Return Type: int
 Arguments: 
 int  b
-int  
 
  ScopeTable # 1
  0--> 
@@ -26,5 +25,5 @@ int
  7--> 
  8--> 
  9--> 
-Function Return Type: int
+Function Return Type: void
 Arguments: 
