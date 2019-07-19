@@ -1,12 +1,30 @@
-j
 
-i
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2--> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6-->  < func : ID> 
+ 7--> 
+ 8--> 
+ 9--> 
+Function Return Type: int
+Arguments: 
+int  b
+int  
 
-c
-
-a2
-
-Ending
-c3
-
-Ending
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2-->  < main : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6-->  < func : ID> 
+ 7--> 
+ 8--> 
+ 9--> 
+Function Return Type: int
+Arguments: 

@@ -1,3 +1,8 @@
+
+int func(int, int b);
+int main();
+
+
 int func(int a){
 	return a;
 }

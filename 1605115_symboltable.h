@@ -40,6 +40,12 @@ public:
     ArgumentInfo(const string &argumentType, const string &argumentName) : argumentType(argumentType),
                                                                            argumentName(argumentName) {}
 
+
+    ArgumentInfo(const string &argumentType) : argumentType(argumentType){
+        argumentName = "";
+    }
+
+
     const string &getArgumentType() const {
         return argumentType;
     }
@@ -101,6 +107,17 @@ public:
         return arguments;
     }
 
+    void addArguments(const string &argumentType, const string &argumentName) {
+
+        ArgumentInfo argumentInfo(argumentType, argumentName);
+        arguments.push_back(argumentInfo);
+    }
+
+    void addArguments(const string &argumentType) {
+        ArgumentInfo argumentInfo(argumentType);
+        arguments.push_back(argumentInfo);
+    }
+
     void addArguments(ArgumentInfo argumentInfo) {
         arguments.push_back(argumentInfo);
 
@@ -109,6 +126,14 @@ public:
 
     int getArgumentsNumber() {
         return arguments.size();
+    }
+
+    void print(ofstream& out) {
+        out << "Function Return Type: " << returnType << endl;
+        out << "Arguments: \n";
+        for (int i = 0; i < arguments.size() ; i++) {
+            out << arguments[i].getArgumentType() << "  " << arguments[i].getArgumentName() << endl;
+        }
     }
 
 

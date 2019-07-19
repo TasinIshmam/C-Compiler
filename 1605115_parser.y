@@ -114,6 +114,9 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 addLineNoLog();
 		 logfile << "func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON \n\n";
 		 logfile << $$->getName() <<endl << endl;
+		
+		symbolTableEntryForFunctionDeclaration($1, $2, $4);
+
 	 	}
 		| type_specifier ID LPAREN RPAREN SEMICOLON		{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -123,6 +126,8 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 addLineNoLog();
 		 logfile << "func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON	\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 		symbolTableEntryForFunctionDeclaration($1, $2);
+
 	 	}
 		;
 
