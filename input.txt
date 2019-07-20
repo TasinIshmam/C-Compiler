@@ -5,7 +5,7 @@ int a;
 int b[3];
 
 
-int func(int a, float b, void c){
+void func(int a, float b, void c){
 
 	int b[5];
 	return a;
@@ -17,8 +17,7 @@ int main(){
 
 	int a[2],c,i,j ; float c[3];
 	a[2.5]=1;
-	hello = 34;
-	i=2.3;
+	i = 2 % func(3,2,3);
 	j=2%3.7;
 	a=4;
 	func(c,i,j);

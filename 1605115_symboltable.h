@@ -5,7 +5,11 @@
 
 using namespace std;
 
-
+extern int line_no;
+extern int errorCount;
+extern ofstream errorfile;
+extern ofstream logfile;
+extern ofstream scratchfile;
 
 class ArgumentInfo {
 
@@ -116,10 +120,10 @@ private:
     string name, type;
     SymbolInfo *nextPtr;
     vector<SymbolInfo*> childSymbols;
-    bool isVariableType;
+    bool isVariableType = false;
     ArrayInfo* arrayDataPtr;
     FunctionInfo* functionDataPtr;
-    string returnType;
+    string returnType = "";
 
 public:
 
@@ -190,10 +194,12 @@ public:
 
     }
 
-    SymbolInfo(const string &name, const string &type, const string&returnType) : name(name), type(type), returnType(returnType) {
+    SymbolInfo(const string &name, const string &type, const string &returnType) : name(name), type(type), returnType(returnType) {
         nextPtr = nullptr;
         functionDataPtr = nullptr;
         isVariableType = false;
+
+
 
     }
 
@@ -225,6 +231,17 @@ public:
 
     void setReturnType(const string &retType) {
         SymbolInfo::returnType = retType;
+
+        if(!isFunction() && retType == "void") {
+            cout << name << " of type " << type << " return type set to void\n";
+        }
+
+        if (retType == "") {
+            cout << name << " of type " << type << " return type set to empty\n";
+
+        }
+
+        scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
     }
 
     SymbolInfo *getNext() const {

@@ -444,6 +444,8 @@ variable : ID	{
 				 logfile << $1->getName() << endl << endl;
 
 				verifyVariableIDIsDeclared($1);
+				$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
+
 
 		}
 	 | ID LTHIRD expression RTHIRD {
@@ -454,6 +456,8 @@ variable : ID	{
 		 logfile << $$->getName() <<endl << endl;
 
 		verifyArrayIDIsDeclared($1);
+		$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
+
 	 }
 	 ;
 
@@ -527,6 +531,7 @@ term :	unary_expression {
 						addLineNoLog();
 						logfile << "term : unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
+						$$->setReturnType($1->getReturnType());
 	}
      |  term MULOP unary_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "term");
@@ -534,15 +539,22 @@ term :	unary_expression {
 		 addLineNoLog();
 		 logfile << "term : term MULOP unary_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 $$->setReturnType(evaluateReturnTypeForMULOP($1, $2, $3));
+
 	}
      ;
 
 unary_expression : ADDOP unary_expression  {
-						$$ = new SymbolInfo($1->getName() + $2->getName(), "unary_expression");
+						$$ = new SymbolInfo($1->getName() + " " +  $2->getName(), "unary_expression");
 						$$->addChildSymbol($1); $$->addChildSymbol($2);
 						addLineNoLog();
 						logfile << "unary_expression : ADDOP unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
+						checkIfValidFunctionReturnTypeInExpression($2);
+						string retType = $2->getReturnType();
+						$$->setReturnType(retType);
+
 	}
 		 | NOT unary_expression		{
 						$$ = new SymbolInfo($1->getName() + $2->getName(), "unary_expression");
@@ -550,6 +562,11 @@ unary_expression : ADDOP unary_expression  {
 						addLineNoLog();
 						logfile << "unary_expression : NOT unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
+						checkIfValidFunctionReturnTypeInExpression($2);
+						$$->setReturnType("int");
+
+						
+
 	}
 		 | factor	{
 						$$ = new SymbolInfo($1->getName(), "unary_expression");
@@ -557,16 +574,20 @@ unary_expression : ADDOP unary_expression  {
 						addLineNoLog();
 						logfile << "unary_expression : factor\n\n";
 						logfile << $$->getName() << endl << endl;
+						$$->setReturnType($1->getReturnType());
+
 	}
 		 ;
 
 factor	: variable  {
 						$$ = new SymbolInfo($1->getName(), "factor");
 						$$->addChildSymbol($1);
-						
+
 						addLineNoLog();
 						logfile << "factor : variable\n\n";
 						logfile << $$->getName() << endl << endl;
+						$$->setReturnType($1->getReturnType());
+						
 	}
 	| ID LPAREN argument_list RPAREN	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "factor");
@@ -574,6 +595,10 @@ factor	: variable  {
 		 addLineNoLog();
 		 logfile << "factor : ID LPAREN argument_list RPAREN\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 //todo Evaluate function called with appropriate number of variables etc etc
+
+		 $$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
 
 		 
 	}
@@ -583,6 +608,9 @@ factor	: variable  {
 		 addLineNoLog();
 		 logfile << "factor : LPAREN expression RPAREN\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 $$->setReturnType($2->getReturnType());
+		 //TODO EXPRESSION E RETURN TYPE RAKHAR PORE PUT IT HERE TO THE FACTOR
 	}
 	| CONST_INT  {
 			$$ = new SymbolInfo($1->getName(), "factor");
@@ -590,6 +618,7 @@ factor	: variable  {
 			addLineNoLog();
 			logfile << "factor : CONST_INT\n\n";
 			logfile << $$->getName() << endl << endl;
+			$$->setReturnType("int");
 	 }
 	| CONST_FLOAT	{
 			$$ = new SymbolInfo($1->getName(), "factor");
@@ -597,6 +626,7 @@ factor	: variable  {
 			addLineNoLog();
 			logfile << "factor : CONST_FLOAT\n\n";
 			logfile << $$->getName() << endl << endl;
+			$$->setReturnType("float");
 	 }
 	| variable INCOP {
 			$$ = new SymbolInfo($1->getName() + $2->getName(), "factor");
@@ -604,6 +634,10 @@ factor	: variable  {
 			addLineNoLog();
 			logfile << "factor : variable INCOP\n\n";
 			logfile << $$->getName() << endl << endl;
+
+			$$->setReturnType($1->getReturnType());
+
+			
 	}
 	| variable DECOP	{
 			$$ = new SymbolInfo($1->getName() + $2->getName(), "factor");
@@ -611,6 +645,8 @@ factor	: variable  {
 			addLineNoLog();
 			logfile << "factor : variable DECOP\n\n";
 			logfile << $$->getName() << endl << endl;
+
+			$$->setReturnType($1->getReturnType());
 	}
 	;
 

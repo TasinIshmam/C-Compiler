@@ -1,3 +1,4 @@
+main of type ID return type set to void
 
  ScopeTable # 1
  0--> 
@@ -11,6 +12,9 @@
  8--> 
  9--> 
 Arguments: 
+a of type ID return type set to int
+b of type ID return type set to int
+func of type ID return type set to void
 
  ScopeTable # 1
  0--> 
@@ -23,3 +27,72 @@ Arguments:
  7--> 
  8-->  < a : ID> 
  9--> 
+b of type ID return type set to b
+a of type ID return type set to a
+b of type ID return type set to int
+a of type variable return type set to a
+a of type factor return type set to a
+a of type unary_expression return type set to a
+a of type term return type set to a
+main of type ID return type set to int
+j of type ID return type set to int
+i of type ID return type set to int
+c of type ID return type set to int
+a of type ID return type set to int
+c of type ID return type set to float
+2.5 of type factor return type set to float
+2.5 of type unary_expression return type set to float
+2.5 of type term return type set to float
+a[2.5] of type variable return type set to int
+1 of type factor return type set to int
+1 of type unary_expression return type set to int
+1 of type term return type set to int
+i of type variable return type set to int
+2 of type factor return type set to int
+2 of type unary_expression return type set to int
+2 of type term return type set to int
+3 of type factor return type set to int
+3 of type unary_expression return type set to int
+3 of type term return type set to int
+2 of type factor return type set to int
+2 of type unary_expression return type set to int
+2 of type term return type set to int
+3 of type factor return type set to int
+3 of type unary_expression return type set to int
+3 of type term return type set to int
+func(3,2,3) of type factor return type set to void
+func(3,2,3) of type unary_expression return type set to void
+2%func(3,2,3) of type term return type set to int
+j of type variable return type set to int
+2 of type factor return type set to int
+2 of type unary_expression return type set to int
+2 of type term return type set to int
+3.7 of type factor return type set to float
+3.7 of type unary_expression return type set to float
+2%3.7 of type term return type set to int
+a of type variable return type set to int
+4 of type factor return type set to int
+4 of type unary_expression return type set to int
+4 of type term return type set to int
+c of type variable return type set to int
+c of type factor return type set to int
+c of type unary_expression return type set to int
+c of type term return type set to int
+i of type variable return type set to int
+i of type factor return type set to int
+i of type unary_expression return type set to int
+i of type term return type set to int
+j of type variable return type set to int
+j of type factor return type set to int
+j of type unary_expression return type set to int
+j of type term return type set to int
+func(c,i,j) of type factor return type set to void
+func(c,i,j) of type unary_expression return type set to void
+func(c,i,j) of type term return type set to void
+func of type variable return type set to void
+8 of type factor return type set to int
+8 of type unary_expression return type set to int
+8 of type term return type set to int
+0 of type factor return type set to int
+0 of type unary_expression return type set to int
+0 of type term return type set to int

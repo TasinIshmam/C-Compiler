@@ -6,10 +6,12 @@ At line No: 16 Function declaration does not match function definition
 
 At line No: 18 Multiple declarations of ID c in the same scope
 
-At line No: 20 Variable hello used without declaration
+At line No: 20 Both operand of modulus operator should be integer
 
-At line No: 23 Array a used without index
+At line No: 21 Both operand of modulus operator should be integer
 
-At line No: 25 Function func called without brackets and arguments
+At line No: 22 Array a used without index
 
-Total Errors: 0
+At line No: 24 Function func called without brackets and arguments
+
+Total Errors: 8

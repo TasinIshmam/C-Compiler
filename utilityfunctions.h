@@ -10,6 +10,7 @@ using namespace std;
 
 
 extern int line_no;
+extern int errorCount;
 extern ofstream errorfile;
 extern ofstream logfile;
 extern ofstream scratchfile;
@@ -18,6 +19,7 @@ extern SymbolTable symbolTable;
 
 void addLineNoErr() {
     errorfile << "At line No: " << line_no << " ";
+    errorCount++;
 
 }
 
@@ -75,6 +77,63 @@ bool verifyVariableIDIsDeclared(SymbolInfo* ID) {
 
 }
 
+bool checkIfValidFunctionReturnTypeInExpression(SymbolInfo* token) {
+
+    //todo cal in parser. Will basically just check if token has return type void or not. Will have to be called in every grammar rule which isn't
+    //of the form A -> B   in the chain from factor all the way up to expression.
+
+    if(token->getReturnType() == "void") {
+        addLineNoErr();
+        errorfile << "Void function cannot be called as a part of an expression\n\n";
+        return false;
+
+    } else return true;
+}
+
+
+//handles MOD er dui side e int thakte hobe error
+string evaluateReturnTypeForMULOP(SymbolInfo* term, SymbolInfo* MULOP, SymbolInfo* unaryExpression) {
+    string termRetType = term->getReturnType();
+    string expressionRetType = unaryExpression->getReturnType();
+    string mulOp = MULOP->getName();
+
+    string retType = "";  //defaults to int. Not sure how else to handle this.
+
+    if(termRetType == "int" && expressionRetType == "int") {
+        return "int";
+    }
+
+        if(mulOp == "%" ) {
+            addLineNoErr();
+            errorfile << "Both operand of modulus operator should be integer\n\n";
+            return "int";
+        }
+
+
+        if(termRetType == "" || expressionRetType == "") {
+            addLineNoErr();
+            errorfile << "Expression return type not set/undefined \n\n";
+
+            return "";
+        }
+
+        if(termRetType == "void" || expressionRetType == "void") {
+            addLineNoErr();
+            errorfile << "Void function cannot be called as a part of an expression \n\n";
+
+            return "void";
+        }
+
+        return "float";
+        //one or both are float
+
+
+
+
+
+
+}
+
 
 
 
@@ -105,7 +164,15 @@ bool verifyArrayIDIsDeclared(SymbolInfo* ID) {
 
 }
 
-//string getReturnTypeOfSymbolTableEntry
+string getReturnTypeOfSymbolTableEntry(string idName) {
+    SymbolInfo* entry = symbolTable.lookup(idName);
+
+    if(entry == nullptr) {
+        return "";
+    } else {
+        return entry->getReturnType();
+    }
+}
 
 
 

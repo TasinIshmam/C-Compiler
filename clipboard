@@ -1,1 +1,3 @@
 + " " + 
+
+$$->setReturnType($1->getReturnType());
