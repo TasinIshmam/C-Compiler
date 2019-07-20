@@ -105,7 +105,7 @@ unit : var_declaration {
      ;
 
 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
+		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + " " + $3->getName() + $4->getName() +
 		 $5->getName() +
 		 $6->getName(), "func_declaration");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
@@ -119,7 +119,7 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 
 	 	}
 		| type_specifier ID LPAREN RPAREN SEMICOLON		{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
+		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() + $3->getName() + $4->getName() +
 		 $5->getName(), "func_declaration");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 $$->addChildSymbol($5);
@@ -134,20 +134,31 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 // Exit function scope after compound statement execution complete.
 func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 	string functionName = $2->getName();
+	SymbolInfo* generateEntry = createSymbolInfoForFunctionID($1, $2, $4);
 
 	SymbolInfo *tableEntry = symbolTable.lookup(functionName);
 	if (tableEntry == nullptr) { //function did not have a declaration. So do it now.
-	createSymbolTableEntryForFunctionID($1, $2, $4);
+	    symbolTable.insert(generateEntry);
+		symbolTable.printAllScopeTable(scratchfile);
 
 	} else {
-		SymbolInfo* generateEntry = createSymbolInfoForFunctionID($1, $2, $4);
 		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
 			addLineNoErr();
 			errorfile << "Function declaration does not match function definition\n\n";
 		};
 	}
 
+
 	symbolTable.enterScope();
+
+	for (int i = 0; i < generateEntry->getFunctionInfoDataPtr()->getArgumentsNumber(); i++) {
+		ArgumentInfo arg = generateEntry->getFunctionInfoDataPtr()->getArguments()[i];
+		SymbolInfo* argIDEntry = new SymbolInfo(arg.getArgumentName(), "ID");
+		argIDEntry->initializeVariable(arg.getArgumentName());
+		symbolTable.insert(argIDEntry);
+		
+	}
+
 	//todo -> Add arguments to the new scope in symboltable
 
   } compound_statement	{
@@ -226,6 +237,9 @@ compound_statement : LCURL statements RCURL 	{
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL statements RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 symbolTable.printAllScopeTable(logfile);
+		 symbolTable.exitScope();
 	 	}
  		| LCURL RCURL	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "compound_statement");
@@ -233,6 +247,8 @@ compound_statement : LCURL statements RCURL 	{
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 symbolTable.printAllScopeTable(logfile);
+		 symbolTable.exitScope();
 	 	}
  		    ;
 

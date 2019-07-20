@@ -245,6 +245,9 @@ bool checkFunctionSymbolInfoEquality(SymbolInfo* functionDefinitionSymbolInfo, S
 
     FunctionInfo* definitionFunctionInfo = functionDefinitionSymbolInfo->getFunctionInfoDataPtr();
     FunctionInfo* declarationFunctionInfo = functionDeclarationSymbolInfo->getFunctionInfoDataPtr();
+    
+    
+    
 
     if(declarationFunctionInfo->getReturnType() != definitionFunctionInfo->getReturnType()) {
         return false;

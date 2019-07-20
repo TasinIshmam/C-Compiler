@@ -1,9 +1,10 @@
 
-int func(int b);
 int main();
 
 
-int func(int a){
+int func(int a, float b, void c){
+
+	int arrayvar[5];
 	return a;
 }
 
