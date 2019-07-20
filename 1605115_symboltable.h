@@ -5,30 +5,6 @@
 
 using namespace std;
 
-class VariableInfo {
-
-    string variableType;
-
-public:
-
-    VariableInfo(const string& variableType) : variableType(variableType) {
-
-    }
-
-
-
-    const string &getVariableType() const {
-        return variableType;
-    }
-
-    void setVariableType(const string &type) {
-        VariableInfo::variableType = type;
-    }
-
-
-
-};
-
 
 
 class ArgumentInfo {
@@ -67,12 +43,11 @@ public:
 
 class ArrayInfo {
 
-    string variableType;
     int arraySize = -1;
 
 public:
 
-    ArrayInfo(const string& variableType, int arrSize) : variableType(variableType) {
+    ArrayInfo( int arrSize)  {
         arraySize = arrSize;
     }
 
@@ -82,13 +57,7 @@ public:
     }
 
 
-    const string &getVariableType() const {
-        return variableType;
-    }
 
-    void setVariableType(const string &type) {
-        ArrayInfo::variableType = type;
-    }
 
 
 };
@@ -147,7 +116,7 @@ private:
     string name, type;
     SymbolInfo *nextPtr;
     vector<SymbolInfo*> childSymbols;
-    VariableInfo* variableDataPtr;
+    bool isVariableType;
     ArrayInfo* arrayDataPtr;
     FunctionInfo* functionDataPtr;
     string returnType;
@@ -155,11 +124,7 @@ private:
 public:
 
     bool isVariable() {
-        if(variableDataPtr != nullptr) {
-            return true;
-        } else {
-            return false;
-        }
+       return isVariableType;
     }
 
     bool isArray() {
@@ -185,12 +150,10 @@ public:
     }
 
 
-    VariableInfo* getVaraibleInfoPtr() {
-        return variableDataPtr;
-    }
 
     void initializeVariable (const string &variableType) {
-        variableDataPtr = new VariableInfo(variableType);
+        isVariableType = true;
+       this->setReturnType(variableType);
     }
 
     ArrayInfo* getArrayInfoPtr() {
@@ -198,7 +161,8 @@ public:
     }
 
     void initializeArray(const string &variableType, int arrSize) {
-        arrayDataPtr = new ArrayInfo(variableType, arrSize);
+        arrayDataPtr = new ArrayInfo( arrSize);
+        this->setReturnType(variableType);
     }
 
     FunctionInfo* getFunctionInfoDataPtr() {
@@ -211,7 +175,7 @@ public:
     }
 
     bool isReturnTypeSet() {
-        if(returnType.size() == 0) {
+        if(returnType == "") {
             return false;
         } else return true;
     }
@@ -220,22 +184,21 @@ public:
 
     SymbolInfo(const string &name, const string &type) : name(name), type(type) {
         nextPtr = nullptr;
-        variableDataPtr = nullptr;
         functionDataPtr = nullptr;
         returnType = "";
+        isVariableType = false;
 
     }
 
     SymbolInfo(const string &name, const string &type, const string&returnType) : name(name), type(type), returnType(returnType) {
         nextPtr = nullptr;
-        variableDataPtr = nullptr;
         functionDataPtr = nullptr;
+        isVariableType = false;
 
     }
 
     virtual ~SymbolInfo() {
         delete nextPtr;
-        delete variableDataPtr;
         delete arrayDataPtr;
         delete functionDataPtr;
     }

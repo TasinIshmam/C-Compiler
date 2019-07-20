@@ -105,7 +105,7 @@ bool verifyArrayIDIsDeclared(SymbolInfo* ID) {
 
 }
 
-string getReturnTypeOfSymbolTableEntry
+//string getReturnTypeOfSymbolTableEntry
 
 
 
