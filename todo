@@ -1,5 +1,5 @@
 
 
-Give error if multiple declaration/definition of same function.
 
-Do function scopetable entry stuff
+
+ID LPAREN argument_list RPAREN -> Check if function call done appropriately

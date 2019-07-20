@@ -28,8 +28,100 @@ void addLineNoLog() {
 }
 
 
+bool insertIDToSymbolTable(SymbolInfo* ID) {
+    if( symbolTable.insert(ID)) {
+        return true;
+    } else {
+        addLineNoErr();
+        errorfile << "Multiple declarations of ID " << ID->getName() << " in the same scope" << endl << endl;
+        return false;
+    }
+}
+
+bool verifyIDIsDeclared(SymbolInfo* ID) {
+   if(symbolTable.lookup(ID->getName()) != nullptr )  {
+       return true;
+   } else {
+       addLineNoErr();
+       errorfile << "Variable " << ID->getName() << " used without declaration";
+       return false;
+   }
+}
+
+bool verifyVariableIDIsDeclared(SymbolInfo* ID) {
+
+    SymbolInfo* tableEntry = symbolTable.lookup(ID->getName());
+
+    if( tableEntry == nullptr )  {
+        addLineNoErr();
+        errorfile << "Variable " << ID->getName() << " used without declaration\n\n";
+        return false;
+    } else if( tableEntry->isArray() )  {
+        addLineNoErr();
+        errorfile << "Array " << ID->getName() << " used without index\n\n";
+        return false;
+    } else if( tableEntry->isFunction()) {
+        addLineNoErr();
+        errorfile << "Function " << ID->getName() << " called without brackets and arguments\n\n";
+        return false;
+    } else if ( tableEntry->isVariable()) {
+        return true;
+    } else {
+        addLineNoErr();
+        errorfile << "ID " << ID->getName() << " is of unknown type\n\n";
+        return false;
+    }
+
+
+}
+
+
+
+
+bool verifyArrayIDIsDeclared(SymbolInfo* ID) {
+
+    SymbolInfo* tableEntry = symbolTable.lookup(ID->getName());
+
+    if( tableEntry == nullptr )  {
+        addLineNoErr();
+        errorfile << "Array " << ID->getName() << " used without declaration\n\n";
+        return false;
+    } else if( tableEntry->isVariable() )  {
+        addLineNoErr();
+        errorfile << "Variable " << ID->getName() << " used with index. It is not an array\n\n";
+        return false;
+    } else if( tableEntry->isFunction()) {
+        addLineNoErr();
+        errorfile << "Function " << ID->getName() << " called with array index\n\n";
+        return false;
+    } else if ( tableEntry->isArray()) {
+        return true;
+    } else {
+        addLineNoErr();
+        errorfile << "ID " << ID->getName() << " is of unknown type\n\n";
+        return false;
+    }
+
+
+}
+
+string getReturnTypeOfSymbolTableEntry
+
+
+
+
 SymbolInfo *deepCopySymbolInfo(SymbolInfo *oldCopy) {
-    SymbolInfo *ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType());
+
+    SymbolInfo* ret;
+
+    if(oldCopy->isReturnTypeSet()) {
+        ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType(), oldCopy->getReturnType());
+
+    } else {
+       ret = new SymbolInfo(oldCopy->getName(), oldCopy->getType());
+
+    }
+
     return ret;
 }
 
@@ -77,7 +169,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 
 
            // scratchfile << arrayName << arrayLen << endl << endl;
-            symbolTable.insert(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+            insertIDToSymbolTable(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
 
 
         } else {
@@ -89,7 +181,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 
             string variableName = tempDeclarationList->getChildSymbols()[2]->getName();
             //scratchfile << variableName << endl << endl;
-            symbolTable.insert(createSymbolInfoForVariableID(variableName, typeOfVariables));
+            insertIDToSymbolTable(createSymbolInfoForVariableID(variableName, typeOfVariables));
 
 
         }
@@ -107,14 +199,14 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
         int arrayLen = stoi(arrayLenString);
 
        // scratchfile << arrayName << arrayLen << endl << endl;
-        symbolTable.insert(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+        insertIDToSymbolTable(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
 
 
     } else {
         //is a variable
         string variableName = tempDeclarationList->getChildSymbols()[0]->getName();
        // scratchfile << variableName << endl << endl;
-        symbolTable.insert(createSymbolInfoForVariableID(variableName, typeOfVariables));
+        insertIDToSymbolTable(createSymbolInfoForVariableID(variableName, typeOfVariables));
 
     }
 
@@ -219,7 +311,7 @@ SymbolInfo*  createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInfo
 
 void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID) {
     SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID);
-    symbolTable.insert(functionSymbolInfo);
+    insertIDToSymbolTable(functionSymbolInfo);
     symbolTable.printAllScopeTable(scratchfile);
     functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
 }
@@ -228,7 +320,7 @@ void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo 
 
 void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID, SymbolInfo *parameterList) {
     SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID, parameterList);
-    symbolTable.insert(functionSymbolInfo);
+    insertIDToSymbolTable(functionSymbolInfo);
     symbolTable.printAllScopeTable(scratchfile);
     functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
 }
@@ -249,7 +341,7 @@ bool checkFunctionSymbolInfoEquality(SymbolInfo* functionDefinitionSymbolInfo, S
     
     
 
-    if(declarationFunctionInfo->getReturnType() != definitionFunctionInfo->getReturnType()) {
+    if(functionDefinitionSymbolInfo->getReturnType() != functionDeclarationSymbolInfo->getReturnType()) {
         return false;
     }
 

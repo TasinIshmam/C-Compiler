@@ -95,11 +95,10 @@ public:
 
 
 class FunctionInfo {
-    string  returnType;
     vector<ArgumentInfo> arguments;
 
 public:
-    FunctionInfo(const string &returnType) : returnType(returnType) {
+    FunctionInfo()  {
 
     }
 
@@ -124,16 +123,13 @@ public:
 
     }
 
-    const string &getReturnType() const {
-        return returnType;
-    }
+
 
     int getArgumentsNumber() {
         return arguments.size();
     }
 
     void print(ofstream& out) {
-        out << "Function Return Type: " << returnType << endl;
         out << "Arguments: \n";
         for (int i = 0; i < arguments.size() ; i++) {
             out << arguments[i].getArgumentType() << "  " << arguments[i].getArgumentName() << endl;
@@ -154,6 +150,7 @@ private:
     VariableInfo* variableDataPtr;
     ArrayInfo* arrayDataPtr;
     FunctionInfo* functionDataPtr;
+    string returnType;
 
 public:
 
@@ -209,7 +206,14 @@ public:
     }
 
     void initializeAsFunction(const string &returnType ) {
-        functionDataPtr = new FunctionInfo(returnType);
+        functionDataPtr = new FunctionInfo();
+        this->setReturnType(returnType);
+    }
+
+    bool isReturnTypeSet() {
+        if(returnType.size() == 0) {
+            return false;
+        } else return true;
     }
 
 
@@ -218,6 +222,15 @@ public:
         nextPtr = nullptr;
         variableDataPtr = nullptr;
         functionDataPtr = nullptr;
+        returnType = "";
+
+    }
+
+    SymbolInfo(const string &name, const string &type, const string&returnType) : name(name), type(type), returnType(returnType) {
+        nextPtr = nullptr;
+        variableDataPtr = nullptr;
+        functionDataPtr = nullptr;
+
     }
 
     virtual ~SymbolInfo() {
@@ -241,6 +254,14 @@ public:
 
     void setType(const string &type) {
         SymbolInfo::type = type;
+    }
+
+    const string &getReturnType() const {
+        return returnType;
+    }
+
+    void setReturnType(const string &retType) {
+        SymbolInfo::returnType = retType;
     }
 
     SymbolInfo *getNext() const {
@@ -384,7 +405,7 @@ public:
             SymbolInfo *iter = hashTable[hash];
 
             if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-                // cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+              //   cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                 return false;
             }
 
@@ -396,7 +417,7 @@ public:
             while (iter != nullptr) {
 
                 if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-                    //    cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+                //       cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                     return false;
                 }
 

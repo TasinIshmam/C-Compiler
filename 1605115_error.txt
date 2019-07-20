@@ -1,3 +1,15 @@
-At line No: 5 Function argument declared as type 'void' 
+At line No: 8 Function argument declared as type 'void' 
+
+At line No: 10 Multiple declarations of ID b in the same scope
+
+At line No: 16 Function declaration does not match function definition
+
+At line No: 18 Multiple declarations of ID c in the same scope
+
+At line No: 20 Variable hello used without declaration
+
+At line No: 23 Array a used without index
+
+At line No: 25 Function func called without brackets and arguments
 
 Total Errors: 0

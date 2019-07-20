@@ -138,7 +138,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 
 	SymbolInfo *tableEntry = symbolTable.lookup(functionName);
 	if (tableEntry == nullptr) { //function did not have a declaration. So do it now.
-	    symbolTable.insert(generateEntry);
+	   insertIDToSymbolTable(generateEntry);
 		symbolTable.printAllScopeTable(scratchfile);
 
 	} else {
@@ -155,7 +155,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		ArgumentInfo arg = generateEntry->getFunctionInfoDataPtr()->getArguments()[i];
 		SymbolInfo* argIDEntry = new SymbolInfo(arg.getArgumentName(), "ID");
 		argIDEntry->initializeVariable(arg.getArgumentName());
-		symbolTable.insert(argIDEntry);
+		insertIDToSymbolTable(argIDEntry);
 		
 	}
 
@@ -247,6 +247,7 @@ compound_statement : LCURL statements RCURL 	{
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
 		 symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
 	 	}
@@ -441,14 +442,19 @@ variable : ID	{
 				addLineNoLog();
 				 logfile << "variable : ID" << endl << endl;
 				 logfile << $1->getName() << endl << endl;
-				}
+
+				verifyVariableIDIsDeclared($1);
+
+		}
 	 | ID LTHIRD expression RTHIRD {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "variable");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 addLineNoLog();
 		 logfile << "variable : ID LTHIRD expression RTHIRD\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}
+
+		verifyArrayIDIsDeclared($1);
+	 }
 	 ;
 
 expression : logic_expression	{
@@ -557,6 +563,7 @@ unary_expression : ADDOP unary_expression  {
 factor	: variable  {
 						$$ = new SymbolInfo($1->getName(), "factor");
 						$$->addChildSymbol($1);
+						
 						addLineNoLog();
 						logfile << "factor : variable\n\n";
 						logfile << $$->getName() << endl << endl;
@@ -567,6 +574,8 @@ factor	: variable  {
 		 addLineNoLog();
 		 logfile << "factor : ID LPAREN argument_list RPAREN\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 
 	}
 	| LPAREN expression RPAREN	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "factor");
