@@ -20,7 +20,8 @@ int main(){
 	i = 2 % func(3,2,3);
 	j=2%3.7;
 	a=4;
+	asd = 213;
 	func(c,i,j);
-	func=8;
+	func= asd;
 	return 0;
 }

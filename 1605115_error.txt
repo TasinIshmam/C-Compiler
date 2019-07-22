@@ -12,6 +12,14 @@ At line No: 21 Both operand of modulus operator should be integer
 
 At line No: 22 Array a used without index
 
-At line No: 24 Function func called without brackets and arguments
+At line No: 23 Variable asd used without declaration
 
-Total Errors: 8
+At line No: 23 Expression return type not set/undefined 
+
+At line No: 25 Function func called without brackets and arguments
+
+At line No: 25 Variable asd used without declaration
+
+At line No: 25 Left Hand Term of an assignment operation cannot be a function
+
+Total Errors: 12

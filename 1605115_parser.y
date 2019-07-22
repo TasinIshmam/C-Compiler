@@ -467,6 +467,13 @@ expression : logic_expression	{
 		 addLineNoLog();
 		 logfile << "expression : logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType($1->getReturnType());
+
+		//  if($$->getReturnType() == "" || $$->getReturnType() == "void") {
+		// 	cerr<< ($$->getName() << "Expression with return type: " << $$->getReturnType() << " - in line " << line_no << endl << endl;
+		//  }
+
+		$$->setReturnType($1->getReturnType());
 	 	}
 	   | variable ASSIGNOP logic_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "expression");
@@ -474,6 +481,9 @@ expression : logic_expression	{
 		 addLineNoLog();
 		 logfile << "expression : variable ASSIGNOP logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		evaluateTypeConversionForASSIGNOP($1, $3);
+		 $$->setReturnType($1->getReturnType());
+
 	 	}
 	   ;
 
@@ -483,13 +493,16 @@ logic_expression : rel_expression 	{
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}
+		 $$->setReturnType($1->getReturnType());	
+		  	}
 		 | rel_expression LOGICOP rel_expression {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "logic_expression");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression LOGICOP rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType("int");
+
 	 	}
 		 ;
 
@@ -499,6 +512,7 @@ rel_expression	: simple_expression {
 		 addLineNoLog();
 		 logfile << "rel_expression : simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType($1->getReturnType());
 	 	}
 		| simple_expression RELOP simple_expression	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "rel_expression");
@@ -506,6 +520,7 @@ rel_expression	: simple_expression {
 		 addLineNoLog();
 		 logfile << "rel_expression : simple_expression RELOP simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType("int");
 	 	}
 		;
 
@@ -515,6 +530,7 @@ simple_expression : term {
 		 addLineNoLog();
 		 logfile << "simple_expression : term\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType($1->getReturnType());
 	 	}
 		  | simple_expression ADDOP term {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "simple_expression");
@@ -522,6 +538,7 @@ simple_expression : term {
 		 addLineNoLog();
 		 logfile << "simple_expression : simple_expression ADDOP term\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setReturnType(evaluateReturnTypeForADDOP($1,$3));
 	 	}
 		  ;
 
@@ -551,9 +568,13 @@ unary_expression : ADDOP unary_expression  {
 						addLineNoLog();
 						logfile << "unary_expression : ADDOP unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
-						checkIfValidFunctionReturnTypeInExpression($2);
+						if( checkIfValidFunctionReturnTypeInExpression($2) ) {
 						string retType = $2->getReturnType();
 						$$->setReturnType(retType);
+						} else {
+						$$->setReturnType("int");		
+						}
+					
 
 	}
 		 | NOT unary_expression		{

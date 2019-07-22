@@ -556,227 +556,275 @@ inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;
 
 At line no: 23 variable : ID
 
-c
+asd
 
-At line no: 23 factor : variable
+At line no: 23 factor : CONST_INT
 
-c
-
-At line no: 23 unary_expression : factor
-
-c
-
-At line no: 23 term : unary_expression
-
-c
-
-At line no: 23 simple_expression : term
-
-c
-
-At line no: 23 rel_expression : simple_expression
-
-c
-
-At line no: 23 logic_expression : rel_expression
-
-c
-
-At line no: 23 arguments : logic_expression
-
-c
-
-At line no: 23 variable : ID
-
-i
-
-At line no: 23 factor : variable
-
-i
+213
 
 At line no: 23 unary_expression : factor
 
-i
+213
 
 At line no: 23 term : unary_expression
 
-i
+213
 
 At line no: 23 simple_expression : term
 
-i
+213
 
 At line no: 23 rel_expression : simple_expression
 
-i
+213
 
 At line no: 23 logic_expression : rel_expression
 
-i
+213
 
-At line no: 23 arguments : arguments COMMA logic_expression
+At line no: 23 expression : variable ASSIGNOP logic_expression
 
-c,i
-
-At line no: 23 variable : ID
-
-j
-
-At line no: 23 factor : variable
-
-j
-
-At line no: 23 unary_expression : factor
-
-j
-
-At line no: 23 term : unary_expression
-
-j
-
-At line no: 23 simple_expression : term
-
-j
-
-At line no: 23 rel_expression : simple_expression
-
-j
-
-At line no: 23 logic_expression : rel_expression
-
-j
-
-At line no: 23 arguments : arguments COMMA logic_expression
-
-c,i,j
-
-At line no: 23 argument_list : arguments
-
-c,i,j
-
-At line no: 23 factor : ID LPAREN argument_list RPAREN
-
-func(c,i,j)
-
-At line no: 23 unary_expression : factor
-
-func(c,i,j)
-
-At line no: 23 term : unary_expression
-
-func(c,i,j)
-
-At line no: 23 simple_expression : term
-
-func(c,i,j)
-
-At line no: 23 rel_expression : simple_expression
-
-func(c,i,j)
-
-At line no: 23 logic_expression : rel_expression
-
-func(c,i,j)
-
-At line no: 23 expression : logic_expression
-
-func(c,i,j)
+asd=213
 
 At line no: 23 expression_statement : expression SEMICOLON
 
-func(c,i,j);
+asd=213;
 
 At line no: 23 statement : expression_statement
 
-func(c,i,j);
+asd=213;
 
 At line no: 23 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);
+inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;
 
 At line no: 24 variable : ID
 
-func
+c
 
-At line no: 24 factor : CONST_INT
+At line no: 24 factor : variable
 
-8
+c
 
 At line no: 24 unary_expression : factor
 
-8
+c
 
 At line no: 24 term : unary_expression
 
-8
+c
 
 At line no: 24 simple_expression : term
 
-8
+c
 
 At line no: 24 rel_expression : simple_expression
 
-8
+c
 
 At line no: 24 logic_expression : rel_expression
 
-8
+c
 
-At line no: 24 expression : variable ASSIGNOP logic_expression
+At line no: 24 arguments : logic_expression
 
-func=8
+c
+
+At line no: 24 variable : ID
+
+i
+
+At line no: 24 factor : variable
+
+i
+
+At line no: 24 unary_expression : factor
+
+i
+
+At line no: 24 term : unary_expression
+
+i
+
+At line no: 24 simple_expression : term
+
+i
+
+At line no: 24 rel_expression : simple_expression
+
+i
+
+At line no: 24 logic_expression : rel_expression
+
+i
+
+At line no: 24 arguments : arguments COMMA logic_expression
+
+c,i
+
+At line no: 24 variable : ID
+
+j
+
+At line no: 24 factor : variable
+
+j
+
+At line no: 24 unary_expression : factor
+
+j
+
+At line no: 24 term : unary_expression
+
+j
+
+At line no: 24 simple_expression : term
+
+j
+
+At line no: 24 rel_expression : simple_expression
+
+j
+
+At line no: 24 logic_expression : rel_expression
+
+j
+
+At line no: 24 arguments : arguments COMMA logic_expression
+
+c,i,j
+
+At line no: 24 argument_list : arguments
+
+c,i,j
+
+At line no: 24 factor : ID LPAREN argument_list RPAREN
+
+func(c,i,j)
+
+At line no: 24 unary_expression : factor
+
+func(c,i,j)
+
+At line no: 24 term : unary_expression
+
+func(c,i,j)
+
+At line no: 24 simple_expression : term
+
+func(c,i,j)
+
+At line no: 24 rel_expression : simple_expression
+
+func(c,i,j)
+
+At line no: 24 logic_expression : rel_expression
+
+func(c,i,j)
+
+At line no: 24 expression : logic_expression
+
+func(c,i,j)
 
 At line no: 24 expression_statement : expression SEMICOLON
 
-func=8;
+func(c,i,j);
 
 At line no: 24 statement : expression_statement
 
-func=8;
+func(c,i,j);
 
 At line no: 24 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;
+inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);
 
-At line no: 25 factor : CONST_INT
+At line no: 25 variable : ID
 
-0
+func
+
+At line no: 25 variable : ID
+
+asd
+
+At line no: 25 factor : variable
+
+asd
 
 At line no: 25 unary_expression : factor
 
-0
+asd
 
 At line no: 25 term : unary_expression
 
-0
+asd
 
 At line no: 25 simple_expression : term
 
-0
+asd
 
 At line no: 25 rel_expression : simple_expression
 
-0
+asd
 
 At line no: 25 logic_expression : rel_expression
 
-0
+asd
 
-At line no: 25 expression : logic_expression
+At line no: 25 expression : variable ASSIGNOP logic_expression
 
-0
+func=asd
 
-At line no: 25 statement : RETURN expression SEMICOLON
+At line no: 25 expression_statement : expression SEMICOLON
 
-return0;
+func=asd;
+
+At line no: 25 statement : expression_statement
+
+func=asd;
 
 At line no: 25 statements : statements statement
 
-inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;
+inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;
 
-At line no: 26 compound_statement : LCURL statements RCURL
+At line no: 26 factor : CONST_INT
 
-{inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;}
+0
+
+At line no: 26 unary_expression : factor
+
+0
+
+At line no: 26 term : unary_expression
+
+0
+
+At line no: 26 simple_expression : term
+
+0
+
+At line no: 26 rel_expression : simple_expression
+
+0
+
+At line no: 26 logic_expression : rel_expression
+
+0
+
+At line no: 26 expression : logic_expression
+
+0
+
+At line no: 26 statement : RETURN expression SEMICOLON
+
+return0;
+
+At line no: 26 statements : statements statement
+
+inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;
+
+At line no: 27 compound_statement : LCURL statements RCURL
+
+{inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;}
 
 
  ScopeTable # 2
@@ -802,21 +850,21 @@ At line no: 26 compound_statement : LCURL statements RCURL
  7--> 
  8-->  < a : ID> 
  9--> 
-At line no: 26 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 27 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
-int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;}
+int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;}
 
-At line no: 26 unit : func_definition
+At line no: 27 unit : func_definition
 
-int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;}
+int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;}
 
-At line no: 26 program : program unit
+At line no: 27 program : program unit
 
-void main();inta;intb[3];void func(inta,floatb,voidc) {intb[5];returna;}int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;}
+void main();inta;intb[3];void func(inta,floatb,voidc) {intb[5];returna;}int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;}
 
-At line no: 26 start : program
+At line no: 27 start : program
 
-void main();inta;intb[3];void func(inta,floatb,voidc) {intb[5];returna;}int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;func(c,i,j);func=8;return0;}
+void main();inta;intb[3];void func(inta,floatb,voidc) {intb[5];returna;}int main() {inta[2],c,i,j;floatc[3];a[2.5]=1;i=2%func(3,2,3);j=2%3.7;a=4;asd=213;func(c,i,j);func=asd;return0;}
 
 
  ScopeTable # 1
@@ -830,5 +878,5 @@ void main();inta;intb[3];void func(inta,floatb,voidc) {intb[5];returna;}int main
  7--> 
  8-->  < a : ID> 
  9--> 
-Total Lines: 26
-Total Errors: 8
+Total Lines: 27
+Total Errors: 12

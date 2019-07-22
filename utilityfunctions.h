@@ -87,6 +87,11 @@ bool checkIfValidFunctionReturnTypeInExpression(SymbolInfo* token) {
         errorfile << "Void function cannot be called as a part of an expression\n\n";
         return false;
 
+    } else if(  token->getReturnType() == "") {
+
+        addLineNoErr();
+        errorfile << "Expression return type not set/undefined\n\n";
+        return false;
     } else return true;
 }
 
@@ -97,7 +102,7 @@ string evaluateReturnTypeForMULOP(SymbolInfo* term, SymbolInfo* MULOP, SymbolInf
     string expressionRetType = unaryExpression->getReturnType();
     string mulOp = MULOP->getName();
 
-    string retType = "";  //defaults to int. Not sure how else to handle this.
+    string retType = "int";  //defaults to int. Not sure how else to handle this.
 
     if(termRetType == "int" && expressionRetType == "int") {
         return "int";
@@ -114,26 +119,94 @@ string evaluateReturnTypeForMULOP(SymbolInfo* term, SymbolInfo* MULOP, SymbolInf
             addLineNoErr();
             errorfile << "Expression return type not set/undefined \n\n";
 
-            return "";
+            return "int";
         }
 
         if(termRetType == "void" || expressionRetType == "void") {
             addLineNoErr();
             errorfile << "Void function cannot be called as a part of an expression \n\n";
 
-            return "void";
+            return "int";
         }
 
         return "float";
         //one or both are float
 
 
+}
 
 
+string evaluateReturnTypeForADDOP(SymbolInfo* simpleExpression, SymbolInfo* term) {
+
+    string termRetType = term->getReturnType();
+    string expressionRetType = simpleExpression->getReturnType();
+
+    string retType = "";  //defaults to int. Not sure how else to handle this.
+
+    if(termRetType == "int" && expressionRetType == "int") {
+        return "int";
+    }
+
+
+
+    if(termRetType == "" || expressionRetType == "") {
+        addLineNoErr();
+        errorfile << "Expression return type not set/undefined \n\n";
+
+        return "int";
+    }
+
+    if(termRetType == "void" || expressionRetType == "void") {
+        addLineNoErr();
+        errorfile << "Void function cannot be called as a part of an expression \n\n";
+
+        return "int";
+    }
+
+    return "float";
+    //one or both are float
 
 
 }
 
+void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rightHandTerm ) {
+    string leftType = leftHandTerm->getReturnType();
+    string rightType = rightHandTerm->getReturnType();
+
+    SymbolInfo* tableEntryLeftTerm = symbolTable.lookup(leftHandTerm->getName());
+
+
+    if(leftHandTerm->isFunction() || (tableEntryLeftTerm != nullptr && tableEntryLeftTerm->isFunction())) {
+        addLineNoErr();
+        errorfile << "Left Hand Term of an assignment operation cannot be a function\n\n";
+        return;
+    }
+
+    if(leftType == "int" && rightType == "float") {
+        addLineNoErr();
+        errorfile << "Type mismatch. Floating point expression assigned to integer type variable\n\n";
+        return;
+    }
+
+    if(leftType == "float" && rightType == "int") {
+        addLineNoErr();
+        errorfile << "Type mismatch. Integer expression assigned to Floating Point type variable\n\n";
+    }
+
+    if(leftType == "void" || rightType == "void") {
+        addLineNoErr();
+        errorfile << "Void function cannot be called as a part of an expression \n\n";
+        return;
+    }
+
+    if(leftType == "" || rightType == "") {
+        addLineNoErr();
+        errorfile << "Expression return type not set/undefined \n\n";
+        return;
+    }
+
+
+}
 
 
 
