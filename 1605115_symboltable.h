@@ -495,6 +495,7 @@ public:
 };
 
 
+
 class SymbolTable {
 private:
     ScopeTable *currentScope;
@@ -504,6 +505,17 @@ private:
 public:
     virtual ~SymbolTable() {
         delete currentScope;
+    }
+
+
+    bool containsWhiteSpace(const string &entry) {
+        for(int i = 0; i < entry.size(); i++) {
+            if(isspace(entry[i])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -537,6 +549,11 @@ public:
 
 
     SymbolInfo *lookup(const string &name) {
+        if(containsWhiteSpace(name)) {
+            scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            return nullptr;
+        }
         ScopeTable *temp = currentScope;
 
         while (temp != nullptr) {

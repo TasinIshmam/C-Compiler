@@ -119,14 +119,14 @@ string evaluateReturnTypeForMULOP(SymbolInfo* term, SymbolInfo* MULOP, SymbolInf
             addLineNoErr();
             errorfile << "Expression return type not set/undefined \n\n";
 
-            return "int";
+            return "invalid";
         }
 
         if(termRetType == "void" || expressionRetType == "void") {
             addLineNoErr();
             errorfile << "Void function cannot be called as a part of an expression \n\n";
 
-            return "int";
+            return "invalid";
         }
 
         return "float";
@@ -153,14 +153,14 @@ string evaluateReturnTypeForADDOP(SymbolInfo* simpleExpression, SymbolInfo* term
         addLineNoErr();
         errorfile << "Expression return type not set/undefined \n\n";
 
-        return "int";
+        return "invalid";
     }
 
     if(termRetType == "void" || expressionRetType == "void") {
         addLineNoErr();
         errorfile << "Void function cannot be called as a part of an expression \n\n";
 
-        return "int";
+        return "invalid";
     }
 
     return "float";
@@ -173,14 +173,9 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
     string leftType = leftHandTerm->getReturnType();
     string rightType = rightHandTerm->getReturnType();
 
-    SymbolInfo* tableEntryLeftTerm = symbolTable.lookup(leftHandTerm->getName());
+   
 
-
-    if(leftHandTerm->isFunction() || (tableEntryLeftTerm != nullptr && tableEntryLeftTerm->isFunction())) {
-        addLineNoErr();
-        errorfile << "Left Hand Term of an assignment operation cannot be a function\n\n";
-        return;
-    }
+  
 
     if(leftType == "int" && rightType == "float") {
         addLineNoErr();
@@ -200,6 +195,12 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
     }
 
     if(leftType == "" || rightType == "") {
+        addLineNoErr();
+        errorfile << "Expression return type not set/undefined \n\n";
+        return;
+    }
+
+    if(leftType == "invalid" || rightType == "invalid") {
         addLineNoErr();
         errorfile << "Expression return type not set/undefined \n\n";
         return;
