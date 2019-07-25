@@ -1,25 +1,31 @@
-At line No: 10 Multiple declarations of ID b in the same scope
+At line No: 11 Multiple declarations of ID b in the same scope
 
-At line No: 16 Function declaration does not match function definition
+At line No: 17 Function declaration does not match function definition
 
-At line No: 19 Void function cannot be called as a part of an expression 
+At line No: 20 Number of arguments in call do not match function definition
 
-At line No: 19 Array index must be of integer type
+At line No: 20 Void function cannot be called as a part of an expression 
 
-At line No: 20 Both operand of modulus operator should be integer
+At line No: 20 Array index must be of integer type
+
+At line No: 21 Return type of argument(s) in function call do not match function definition
 
 At line No: 21 Both operand of modulus operator should be integer
 
-At line No: 22 Array a used without index
+At line No: 22 Both operand of modulus operator should be integer
 
-At line No: 23 Variable asd used without declaration
+At line No: 23 Array a used without index
 
-At line No: 23 Expression return type not set/undefined 
+At line No: 24 Variable asd used without declaration
 
-At line No: 25 Function func called without brackets and arguments
+At line No: 24 Expression return type not set/undefined 
 
-At line No: 25 Variable asd used without declaration
+At line No: 26 Number of arguments in call do not match function definition
 
-At line No: 25 Void function cannot be called as a part of an expression 
+At line No: 27 Function func called without brackets and arguments
 
-Total Errors: 12
+At line No: 27 Variable asd used without declaration
+
+At line No: 27 Void function cannot be called as a part of an expression 
+
+Total Errors: 15

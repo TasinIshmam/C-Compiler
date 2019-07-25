@@ -22,17 +22,12 @@ ofstream scratchfile;
 SymbolTable symbolTable(10);
 
 
-
-
 void yyerror(char *s) 
 {
 	string syntaxerror(s);
 	errorfile << "Error at line " << line_no <<" :" << syntaxerror << endl << endl ;
 	errorCount++;
 }
-
-
-
 
 
 %}
@@ -44,7 +39,7 @@ void yyerror(char *s)
 %token ADDOP MULOP INCOP RELOP ASSIGNOP LOGICOP BITOP NOT DECOP
 %token LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token STRING ID PRINTLN
-//todo Ensure this stuff has right associativity. Or atleast that you can explain its associativity.
+
 %left RELOP LOGICOP BITOP
 %left ADDOP
 %left MULOP
@@ -623,7 +618,7 @@ factor	: variable  {
 		 logfile << $$->getName() <<endl << endl;
 
 		 //todo Evaluate function called with appropriate number of variables etc etc
-
+		functionCallValidationWithArgumentTypeCheck($1, $3);
 		 $$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
 
 		 
@@ -636,7 +631,6 @@ factor	: variable  {
 		 logfile << $$->getName() <<endl << endl;
 
 		 $$->setReturnType($2->getReturnType());
-		 //TODO EXPRESSION E RETURN TYPE RAKHAR PORE PUT IT HERE TO THE FACTOR
 	}
 	| CONST_INT  {
 			$$ = new SymbolInfo($1->getName(), "factor");
@@ -676,14 +670,20 @@ factor	: variable  {
 	}
 	;
 
-argument_list : arguments {
+argument_list : arguments { 
 		 $$ = new SymbolInfo($1->getName() , "argument_list");
 		 $$->addChildSymbol($1);
 		 addLineNoLog();
 		 logfile << "argument_list : arguments\n\n";
 		 logfile << $$->getName() <<endl << endl;
 	 	}
-			  |
+			  |  {
+				  $$ = new SymbolInfo("", "argument_list");
+		 		 
+				 addLineNoLog();
+		 		logfile << "argument_list : \n\n";
+		 		logfile << $$->getName() <<endl << endl;
+			  }
 			  ;
 
 arguments : arguments COMMA logic_expression {

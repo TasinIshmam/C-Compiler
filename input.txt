@@ -4,8 +4,9 @@ void main();
 int a;
 int b[3];
 
+void func2(int a);
 
-void func(int a, int b, int c){
+void func(int a, float b){
 
 	int b[5];
 	return a;
@@ -17,11 +18,12 @@ int main(){
 
 	int a[2],c,i,j ; float farr[3];
 	a[ func(c,i,j) + 34]=1;
-	i = 2 % func(3,2,3);
+	i = 2 % func(3,2);
 	j=2%3.7;
 	a=4;
 	asd = 213;
-	func(c,i,j);
+	
+	func2();
 	func= asd;
 	return 0;
 }

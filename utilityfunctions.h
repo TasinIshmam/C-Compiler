@@ -77,6 +77,63 @@ bool verifyVariableIDIsDeclared(SymbolInfo* ID) {
 
 }
 
+bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* argumentList) {
+
+    SymbolInfo* tableEntry = symbolTable.lookup(id->getName());
+
+    if(tableEntry == nullptr) {
+        addLineNoErr();
+        errorfile << "Function called without declaration\n\n";
+        return false;
+    }
+
+    if(!tableEntry->isFunction()) {
+        addLineNoErr();
+        errorfile << "Function call made with non-function type identifer " << tableEntry->getName() << "\n\n";
+    }
+
+    vector<SymbolInfo *> functionCallArgumentExpressionVect;
+
+
+    if(argumentList->getChildSymbols().size() > 0) {  //some arguments are present
+        SymbolInfo* tempArguments = argumentList->getChildSymbols()[0];
+
+        while(tempArguments->getChildSymbols()[0]->getType() == "arguments"){
+            functionCallArgumentExpressionVect.push_back(tempArguments->getChildSymbols()[2]);
+
+            tempArguments = tempArguments -> getChildSymbols()[0];
+        }
+
+        functionCallArgumentExpressionVect.push_back(tempArguments->getChildSymbols()[0]);
+
+
+
+    }
+
+    if(functionCallArgumentExpressionVect.size() != tableEntry->getFunctionInfoDataPtr()->getArguments().size()) {
+        addLineNoErr();
+        errorfile << "Number of arguments in call do not match function definition\n\n";
+        return false;
+    }
+
+    for(int i = 0; i < functionCallArgumentExpressionVect.size(); i++) {
+
+        if(functionCallArgumentExpressionVect[i]->getReturnType() != tableEntry->getFunctionInfoDataPtr()->getArguments()[i].getArgumentType()) {
+            addLineNoErr();
+            errorfile << "Return type of argument(s) in function call do not match function definition\n\n";
+            return false;
+        }
+    }
+
+    return true;
+
+
+    //  while(tempArguments->getChildSymbols()[0]->getType() == "declaration_list");
+
+
+
+}
+
 bool checkIfValidFunctionReturnTypeInExpression(SymbolInfo* token) {
 
     //todo cal in parser. Will basically just check if token has return type void or not. Will have to be called in every grammar rule which isn't
