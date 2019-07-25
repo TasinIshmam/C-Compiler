@@ -233,11 +233,11 @@ public:
         SymbolInfo::returnType = retType;
 
         if(!isFunction() && retType == "void") {
-            cout << name << " of type " << type << " return type set to void\n";
+            // cout << name << " of type " << type << " return type set to void\n";
         }
 
         if (retType == "") {
-            cout << name << " of type " << type << " return type set to empty\n";
+            // cout << name << " of type " << type << " return type set to empty\n";
 
         }
 
@@ -346,7 +346,7 @@ public:
         int counter = 0;
 
         if (hashTable[hash] == nullptr) {
-            cout << "\nSymbol Not found in Scopetable# " << tableId << endl;
+            // cout << "\nSymbol Not found in Scopetable# " << tableId << endl;
             return nullptr;
         } else {
 
@@ -356,8 +356,8 @@ public:
 
 
                 if (iter->getName() == itemName) {
-                    cout << "\nFound in ScopeTable# "
-                         << tableId << " at position " << hash << ", " << counter << "\n";
+                    // cout << "\nFound in ScopeTable# "
+                      //   << tableId << " at position " << hash << ", " << counter << "\n";
                     return iter;
 
                 }
@@ -365,7 +365,7 @@ public:
                 counter++;
             }
 
-            cout << "\nSymbol Not found in Scopetable# " << tableId << endl;
+            // cout << "\nSymbol Not found in Scopetable# " << tableId << endl;
             return nullptr;
         }
 
@@ -417,7 +417,7 @@ public:
         int counter = 0;
 
         if (hashTable[hash] == nullptr) {
-            cout << "\nCould not delete. Symbol Not found in Scopetable# " << tableId << endl;
+            // cout << "\nCould not delete. Symbol Not found in Scopetable# " << tableId << endl;
             return false;
         } else {
 
@@ -442,8 +442,8 @@ public:
                 if (iter->getName() == itemName) {
                     prev->setNext(iter->getNext());
                     delete iter;
-                    cout << "\nDeleted from ScopeTable# "
-                         << tableId << " at position " << hash << ", " << counter << "\n";
+                    // cout << "\nDeleted from ScopeTable# "
+                        // << tableId << " at position " << hash << ", " << counter << "\n";
                     return true;
 
                 }
@@ -453,25 +453,25 @@ public:
                 counter++;
             }
 
-            cout << "\nCould not delete. Symbol Not found in Scopetable# " << tableId << endl;
+            // cout << "\nCould not delete. Symbol Not found in Scopetable# " << tableId << endl;
             return false;
         }
 
     }
 
     void print() {
-        cout << "\n ScopeTable # " << tableId << endl;
+        // cout << "\n ScopeTable # " << tableId << endl;
 
         for (int i = 0; i < tableSize; i++) {
-            cout << " " << i << "--> ";
+            // cout << " " << i << "--> ";
 
             SymbolInfo *iter = hashTable[i];
 
             while (iter != nullptr) {
-                cout << " < " << iter->getName() << " : " << iter->getType() << "> ";
+                // cout << " < " << iter->getName() << " : " << iter->getType() << "> ";
                 iter = iter->getNext();
             }
-            cout << endl;
+            // cout << endl;
         }
     }
 
@@ -551,7 +551,7 @@ public:
     SymbolInfo *lookup(const string &name) {
         if(containsWhiteSpace(name)) {
             scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
-            cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            // cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
             return nullptr;
         }
         ScopeTable *temp = currentScope;
@@ -591,12 +591,12 @@ public:
         newScopeTable->setParentScopreTable(currentScope);
         currentScope = newScopeTable;
 
-        cout << "\n New ScopeTable with id " << currentScope->getTableId() << " created\n";
+        // cout << "\n New ScopeTable with id " << currentScope->getTableId() << " created\n";
     }
 
     void exitScope() {
         ScopeTable *temp = currentScope;
-        cout << "\nScopeTable with id " << currentScope->getTableId() << " removed\n";
+        // cout << "\nScopeTable with id " << currentScope->getTableId() << " removed\n";
 
         currentScope = currentScope->getParentScopreTable();
         delete temp;

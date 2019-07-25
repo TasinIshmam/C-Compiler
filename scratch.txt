@@ -1,46 +1,31 @@
-main of type ID return type set to void
+a of type ID return type set to int
+b of type ID return type set to int
+func3 of type ID return type set to void
 
  ScopeTable # 1
  0--> 
  1--> 
- 2-->  < main : ID> 
+ 2-->  < b : ID> 
  3--> 
  4--> 
  5--> 
  6--> 
  7--> 
- 8--> 
+ 8-->  < a : ID>  < func3 : ID> 
  9--> 
 Arguments: 
-a of type ID return type set to int
-b of type ID return type set to int
-func2 of type ID return type set to void
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2-->  < main : ID>  < b : ID> 
- 3--> 
- 4-->  < func2 : ID> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < a : ID> 
- 9--> 
-Arguments: 
-int  a
 func of type ID return type set to void
 
  ScopeTable # 1
  0--> 
  1--> 
- 2-->  < main : ID>  < b : ID> 
+ 2-->  < b : ID> 
  3--> 
- 4-->  < func2 : ID> 
+ 4--> 
  5--> 
  6-->  < func : ID> 
  7--> 
- 8-->  < a : ID> 
+ 8-->  < a : ID>  < func3 : ID> 
  9--> 
 b of type ID return type set to b
 a of type ID return type set to a
@@ -54,7 +39,48 @@ a of type rel_expression return type set to a
 a of type logic_expression return type set to a
 a of type expression return type set to a
 a of type expression return type set to a
+func3 of type ID return type set to int
+int2 of type ID return type set to int
+int1 of type ID return type set to int
+float2 of type ID return type set to float
+float1 of type ID return type set to float
+int1 of type ID return type set to float
+int1 of type variable return type set to float
+int1 of type factor return type set to float
+int1 of type unary_expression return type set to float
+int1 of type term return type set to float
+int1 of type simple_expression return type set to float
+int1 of type rel_expression return type set to float
+int1 of type logic_expression return type set to float
+float1 of type variable return type set to float
+float1 of type factor return type set to float
+float1 of type unary_expression return type set to float
+float1 of type term return type set to float
+float1 of type simple_expression return type set to float
+float1 of type rel_expression return type set to float
+float1 of type logic_expression return type set to float
+func(int1,float1) of type factor return type set to void
+func(int1,float1) of type unary_expression return type set to void
+func(int1,float1) of type term return type set to void
+func(int1,float1) of type simple_expression return type set to void
+func(int1,float1) of type rel_expression return type set to void
+func(int1,float1) of type logic_expression return type set to void
+func(int1,float1) of type expression return type set to void
+func(int1,float1) of type expression return type set to void
 main of type ID return type set to int
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2-->  < b : ID>  < main : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6-->  < func : ID> 
+ 7--> 
+ 8-->  < a : ID>  < func3 : ID> 
+ 9--> 
+Arguments: 
 j of type ID return type set to int
 i of type ID return type set to int
 c of type ID return type set to int
@@ -143,30 +169,30 @@ a of type variable return type set to int
 4 of type rel_expression return type set to int
 4 of type logic_expression return type set to int
 a = 4 of type expression return type set to int
-asd of type variable return type set to 
+asd of type variable return type set to invalid
 213 of type factor return type set to int
 213 of type unary_expression return type set to int
 213 of type term return type set to int
 213 of type simple_expression return type set to int
 213 of type rel_expression return type set to int
 213 of type logic_expression return type set to int
-asd = 213 of type expression return type set to 
-func2() of type factor return type set to void
-func2() of type unary_expression return type set to void
-func2() of type term return type set to void
-func2() of type simple_expression return type set to void
-func2() of type rel_expression return type set to void
-func2() of type logic_expression return type set to void
-func2() of type expression return type set to void
-func2() of type expression return type set to void
+asd = 213 of type expression return type set to invalid
+func2() of type factor return type set to invalid
+func2() of type unary_expression return type set to invalid
+func2() of type term return type set to invalid
+func2() of type simple_expression return type set to invalid
+func2() of type rel_expression return type set to invalid
+func2() of type logic_expression return type set to invalid
+func2() of type expression return type set to invalid
+func2() of type expression return type set to invalid
 func of type variable return type set to void
-asd of type variable return type set to 
-asd of type factor return type set to 
-asd of type unary_expression return type set to 
-asd of type term return type set to 
-asd of type simple_expression return type set to 
-asd of type rel_expression return type set to 
-asd of type logic_expression return type set to 
+asd of type variable return type set to invalid
+asd of type factor return type set to invalid
+asd of type unary_expression return type set to invalid
+asd of type term return type set to invalid
+asd of type simple_expression return type set to invalid
+asd of type rel_expression return type set to invalid
+asd of type logic_expression return type set to invalid
 func = asd of type expression return type set to void
 0 of type factor return type set to int
 0 of type unary_expression return type set to int

@@ -2,8 +2,6 @@
 
 
 
-ID LPAREN argument_list RPAREN -> Check if function call done appropriately
 
-Handle function calls and ensure proper arguments given to functions
 
 Suppress Symboltable logs to cin/cerr.

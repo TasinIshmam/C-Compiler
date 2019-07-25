@@ -13,6 +13,7 @@ extern FILE *yyin;
 
 int line_no = 1;
 int errorCount = 0;
+bool functionScopeBeginFlag = false;
 
 FILE *fp;
 ofstream logfile;
@@ -147,6 +148,10 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 
 	symbolTable.enterScope();
 
+	functionScopeBeginFlag = true;
+	
+	
+
 	for (int i = 0; i < generateEntry->getFunctionInfoDataPtr()->getArgumentsNumber(); i++) {
 		ArgumentInfo arg = generateEntry->getFunctionInfoDataPtr()->getArguments()[i];
 		SymbolInfo* argIDEntry = new SymbolInfo(arg.getArgumentName(), "ID");
@@ -183,6 +188,8 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 	}
 
 	symbolTable.enterScope();
+
+	functionScopeBeginFlag = true;
 	
   } compound_statement	{
 		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + $3->getName() + $4->getName() + "\n " + 
@@ -227,9 +234,15 @@ parameter_list  : parameter_list COMMA type_specifier ID	{
  		;
 
 
-compound_statement : LCURL statements RCURL 	{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName(), "compound_statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
+compound_statement : LCURL {
+	if(functionScopeBeginFlag) {
+		functionScopeBeginFlag = false;
+	} else {
+		symbolTable.enterScope();
+	}
+} statements RCURL 	{
+		 $$ = new SymbolInfo($1->getName() + $3->getName() + $4->getName(), "compound_statement");
+		 $$->addChildSymbol($1); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL statements RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -237,9 +250,15 @@ compound_statement : LCURL statements RCURL 	{
 		 symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
 	 	}
- 		| LCURL RCURL	{
-		 $$ = new SymbolInfo($1->getName() + $2->getName() , "compound_statement");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2);
+ 		| LCURL { 
+			if(functionScopeBeginFlag) {
+				functionScopeBeginFlag = false;
+			} else {
+				symbolTable.enterScope();
+			}		 	
+		 } RCURL	{
+		 $$ = new SymbolInfo($1->getName() + $3->getName() , "compound_statement");
+		 $$->addChildSymbol($1); $$->addChildSymbol($3);
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
@@ -454,7 +473,7 @@ variable : ID	{
 		verifyArrayIDIsDeclared($1);
 		if( $3->getReturnType() != "int"){
 			addLineNoErr();
-			errorfile << "Array index must be of integer type\n\n";
+			errorfile << "Non Integer Array index\n\n";
 		}
 		$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
 

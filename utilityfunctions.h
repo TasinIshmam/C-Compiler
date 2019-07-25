@@ -120,7 +120,7 @@ bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* arg
 
         if(functionCallArgumentExpressionVect[i]->getReturnType() != tableEntry->getFunctionInfoDataPtr()->getArguments()[i].getArgumentType()) {
             addLineNoErr();
-            errorfile << "Return type of argument(s) in function call do not match function definition\n\n";
+            errorfile << "Type of argument(s) in function call do not match function definition\n\n";
             return false;
         }
     }
@@ -257,11 +257,11 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
         return;
     }
 
-    if(leftType == "invalid" || rightType == "invalid") {
-        addLineNoErr();
-        errorfile << "Expression return type not set/undefined \n\n";
-        return;
-    }
+//    if(leftType == "invalid" || rightType == "invalid") {
+//        addLineNoErr();
+//        errorfile << "Expression return type not set/undefined \n\n";
+//        return;
+//    }
 
 
 }
@@ -299,7 +299,7 @@ string getReturnTypeOfSymbolTableEntry(string idName) {
     SymbolInfo* entry = symbolTable.lookup(idName);
 
     if(entry == nullptr) {
-        return "";
+        return "invalid";
     } else {
         return entry->getReturnType();
     }
