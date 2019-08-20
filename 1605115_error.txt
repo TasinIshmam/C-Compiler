@@ -14,18 +14,20 @@ At line No: 32 Type of argument(s) in function call do not match function defini
 
 At line No: 32 Both operand of modulus operator should be integer
 
-At line No: 35 Both operand of modulus operator should be integer
+At line No: 34 Type mismatch. Floating point expression assigned to integer type variable
 
-At line No: 36 Array a used without index
+At line No: 37 Both operand of modulus operator should be integer
 
-At line No: 37 Variable asd used without declaration
+At line No: 38 Array a used without index
 
-At line No: 39 Function called without declaration
+At line No: 39 Variable asd used without declaration
 
-At line No: 40 Function func called without brackets and arguments
+At line No: 41 Function called without declaration
 
-At line No: 40 Variable asd used without declaration
+At line No: 42 Function func called without brackets and arguments
 
-At line No: 40 Void function cannot be called as a part of an expression 
+At line No: 42 Variable asd used without declaration
 
-Total Errors: 15
+At line No: 42 Void function cannot be called as a part of an expression 
+
+Total Errors: 16

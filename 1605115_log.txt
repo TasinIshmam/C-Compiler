@@ -927,109 +927,125 @@ a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
 
 
-At line no: 35 variable : ID
+At line no: 34 variable : ID
 
-j
+i
 
-At line no: 35 factor : CONST_INT
+At line no: 34 factor : CONST_FLOAT
 
-2
+2.4
 
-At line no: 35 unary_expression : factor
+At line no: 34 unary_expression : factor
 
-2
+2.4
 
-At line no: 35 term : unary_expression
+At line no: 34 term : unary_expression
 
-2
+2.4
 
-At line no: 35 factor : CONST_FLOAT
+At line no: 34 simple_expression : term
 
-3.7
+2.4
 
-At line no: 35 unary_expression : factor
+At line no: 34 rel_expression : simple_expression
 
-3.7
+2.4
 
-At line no: 35 term : term MULOP unary_expression
+At line no: 34 logic_expression : rel_expression
 
-2 % 3.7
+2.4
 
-At line no: 35 simple_expression : term
+At line no: 34 expression : variable ASSIGNOP logic_expression
 
-2 % 3.7
+i = 2.4
 
-At line no: 35 rel_expression : simple_expression
+At line no: 34 expression_statement : expression SEMICOLON
 
-2 % 3.7
-
-At line no: 35 logic_expression : rel_expression
-
-2 % 3.7
-
-At line no: 35 expression : variable ASSIGNOP logic_expression
-
-j = 2 % 3.7
-
-At line no: 35 expression_statement : expression SEMICOLON
-
-j = 2 % 3.7;
+i = 2.4;
 
 
-At line no: 35 statement : expression_statement
+At line no: 34 statement : expression_statement
 
-j = 2 % 3.7;
+i = 2.4;
 
 
-At line no: 35 statements : statements statement
+At line no: 34 statements : statements statement
 
 int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
-j = 2 % 3.7;
+i = 2.4;
 
-
-At line no: 36 variable : ID
-
-a
 
 At line no: 36 factor : CONST_INT
 
-4
+2
 
 At line no: 36 unary_expression : factor
 
-4
+2
 
 At line no: 36 term : unary_expression
 
-4
+2
 
 At line no: 36 simple_expression : term
 
-4
+2
 
 At line no: 36 rel_expression : simple_expression
 
-4
+2
 
 At line no: 36 logic_expression : rel_expression
 
-4
+2
+
+At line no: 36 expression : logic_expression
+
+2
+
+At line no: 36 variable : ID LTHIRD expression RTHIRD
+
+farr[2]
+
+At line no: 36 factor : CONST_INT
+
+2
+
+At line no: 36 unary_expression : factor
+
+2
+
+At line no: 36 term : unary_expression
+
+2
+
+At line no: 36 simple_expression : term
+
+2
+
+At line no: 36 rel_expression : simple_expression
+
+2
+
+At line no: 36 logic_expression : rel_expression
+
+2
 
 At line no: 36 expression : variable ASSIGNOP logic_expression
 
-a = 4
+farr[2] = 2
 
 At line no: 36 expression_statement : expression SEMICOLON
 
-a = 4;
+farr[2] = 2;
 
 
 At line no: 36 statement : expression_statement
 
-a = 4;
+farr[2] = 2;
 
 
 At line no: 36 statements : statements statement
@@ -1038,50 +1054,62 @@ int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
-j = 2 % 3.7;
-a = 4;
+i = 2.4;
+farr[2] = 2;
 
 
 At line no: 37 variable : ID
 
-asd
+j
 
 At line no: 37 factor : CONST_INT
 
-213
+2
 
 At line no: 37 unary_expression : factor
 
-213
+2
 
 At line no: 37 term : unary_expression
 
-213
+2
+
+At line no: 37 factor : CONST_FLOAT
+
+3.7
+
+At line no: 37 unary_expression : factor
+
+3.7
+
+At line no: 37 term : term MULOP unary_expression
+
+2 % 3.7
 
 At line no: 37 simple_expression : term
 
-213
+2 % 3.7
 
 At line no: 37 rel_expression : simple_expression
 
-213
+2 % 3.7
 
 At line no: 37 logic_expression : rel_expression
 
-213
+2 % 3.7
 
 At line no: 37 expression : variable ASSIGNOP logic_expression
 
-asd = 213
+j = 2 % 3.7
 
 At line no: 37 expression_statement : expression SEMICOLON
 
-asd = 213;
+j = 2 % 3.7;
 
 
 At line no: 37 statement : expression_statement
 
-asd = 213;
+j = 2 % 3.7;
 
 
 At line no: 37 statements : statements statement
@@ -1090,51 +1118,105 @@ int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
+j = 2 % 3.7;
+
+
+At line no: 38 variable : ID
+
+a
+
+At line no: 38 factor : CONST_INT
+
+4
+
+At line no: 38 unary_expression : factor
+
+4
+
+At line no: 38 term : unary_expression
+
+4
+
+At line no: 38 simple_expression : term
+
+4
+
+At line no: 38 rel_expression : simple_expression
+
+4
+
+At line no: 38 logic_expression : rel_expression
+
+4
+
+At line no: 38 expression : variable ASSIGNOP logic_expression
+
+a = 4
+
+At line no: 38 expression_statement : expression SEMICOLON
+
+a = 4;
+
+
+At line no: 38 statement : expression_statement
+
+a = 4;
+
+
+At line no: 38 statements : statements statement
+
+int a[2], c, i, j;
+float farr[3];
+a[func(c,i,j) + 34] = 1;
+i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
-asd = 213;
 
 
-At line no: 39 argument_list : 
+At line no: 39 variable : ID
 
+asd
 
+At line no: 39 factor : CONST_INT
 
-At line no: 39 factor : ID LPAREN argument_list RPAREN
-
-func2()
+213
 
 At line no: 39 unary_expression : factor
 
-func2()
+213
 
 At line no: 39 term : unary_expression
 
-func2()
+213
 
 At line no: 39 simple_expression : term
 
-func2()
+213
 
 At line no: 39 rel_expression : simple_expression
 
-func2()
+213
 
 At line no: 39 logic_expression : rel_expression
 
-func2()
+213
 
-At line no: 39 expression : logic_expression
+At line no: 39 expression : variable ASSIGNOP logic_expression
 
-func2()
+asd = 213
 
 At line no: 39 expression_statement : expression SEMICOLON
 
-func2();
+asd = 213;
 
 
 At line no: 39 statement : expression_statement
 
-func2();
+asd = 213;
 
 
 At line no: 39 statements : statements statement
@@ -1143,102 +1225,54 @@ int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
-func2();
 
 
-At line no: 40 variable : ID
-
-func
-
-At line no: 40 variable : ID
-
-asd
-
-At line no: 40 factor : variable
-
-asd
-
-At line no: 40 unary_expression : factor
-
-asd
-
-At line no: 40 term : unary_expression
-
-asd
-
-At line no: 40 simple_expression : term
-
-asd
-
-At line no: 40 rel_expression : simple_expression
-
-asd
-
-At line no: 40 logic_expression : rel_expression
-
-asd
-
-At line no: 40 expression : variable ASSIGNOP logic_expression
-
-func = asd
-
-At line no: 40 expression_statement : expression SEMICOLON
-
-func = asd;
+At line no: 41 argument_list : 
 
 
-At line no: 40 statement : expression_statement
 
-func = asd;
+At line no: 41 factor : ID LPAREN argument_list RPAREN
 
-
-At line no: 40 statements : statements statement
-
-int a[2], c, i, j;
-float farr[3];
-a[func(c,i,j) + 34] = 1;
-i = 2 % func(3,2);
-j = 2 % 3.7;
-a = 4;
-asd = 213;
-func2();
-func = asd;
-
-
-At line no: 41 factor : CONST_INT
-
-0
+func2()
 
 At line no: 41 unary_expression : factor
 
-0
+func2()
 
 At line no: 41 term : unary_expression
 
-0
+func2()
 
 At line no: 41 simple_expression : term
 
-0
+func2()
 
 At line no: 41 rel_expression : simple_expression
 
-0
+func2()
 
 At line no: 41 logic_expression : rel_expression
 
-0
+func2()
 
 At line no: 41 expression : logic_expression
 
-0
+func2()
 
-At line no: 41 statement : RETURN expression SEMICOLON
+At line no: 41 expression_statement : expression SEMICOLON
 
-return 0;
+func2();
+
+
+At line no: 41 statement : expression_statement
+
+func2();
+
 
 At line no: 41 statements : statements statement
 
@@ -1246,6 +1280,115 @@ int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
+j = 2 % 3.7;
+a = 4;
+asd = 213;
+func2();
+
+
+At line no: 42 variable : ID
+
+func
+
+At line no: 42 variable : ID
+
+asd
+
+At line no: 42 factor : variable
+
+asd
+
+At line no: 42 unary_expression : factor
+
+asd
+
+At line no: 42 term : unary_expression
+
+asd
+
+At line no: 42 simple_expression : term
+
+asd
+
+At line no: 42 rel_expression : simple_expression
+
+asd
+
+At line no: 42 logic_expression : rel_expression
+
+asd
+
+At line no: 42 expression : variable ASSIGNOP logic_expression
+
+func = asd
+
+At line no: 42 expression_statement : expression SEMICOLON
+
+func = asd;
+
+
+At line no: 42 statement : expression_statement
+
+func = asd;
+
+
+At line no: 42 statements : statements statement
+
+int a[2], c, i, j;
+float farr[3];
+a[func(c,i,j) + 34] = 1;
+i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
+j = 2 % 3.7;
+a = 4;
+asd = 213;
+func2();
+func = asd;
+
+
+At line no: 44 factor : CONST_INT
+
+0
+
+At line no: 44 unary_expression : factor
+
+0
+
+At line no: 44 term : unary_expression
+
+0
+
+At line no: 44 simple_expression : term
+
+0
+
+At line no: 44 rel_expression : simple_expression
+
+0
+
+At line no: 44 logic_expression : rel_expression
+
+0
+
+At line no: 44 expression : logic_expression
+
+0
+
+At line no: 44 statement : RETURN expression SEMICOLON
+
+return 0;
+
+At line no: 44 statements : statements statement
+
+int a[2], c, i, j;
+float farr[3];
+a[func(c,i,j) + 34] = 1;
+i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1253,12 +1396,14 @@ func2();
 func = asd;
 return 0;
 
-At line no: 42 compound_statement : LCURL statements RCURL
+At line no: 45 compound_statement : LCURL statements RCURL
 
 {int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1290,13 +1435,15 @@ return 0;}
  7--> 
  8-->  < a : ID>  < func3 : ID> 
  9--> 
-At line no: 42 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 45 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main()
  {int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1304,13 +1451,15 @@ func2();
 func = asd;
 return 0;}
 
-At line no: 42 unit : func_definition
+At line no: 45 unit : func_definition
 
 int main()
  {int a[2], c, i, j;
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1319,7 +1468,7 @@ func = asd;
 return 0;}
 
 
-At line no: 42 program : program unit
+At line no: 45 program : program unit
 
 int a;
 
@@ -1346,6 +1495,8 @@ int main()
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1355,7 +1506,7 @@ return 0;}
 
 
 
-At line no: 42 start : program
+At line no: 45 start : program
 
 int a;
 
@@ -1382,6 +1533,8 @@ int main()
 float farr[3];
 a[func(c,i,j) + 34] = 1;
 i = 2 % func(3,2);
+i = 2.4;
+farr[2] = 2;
 j = 2 % 3.7;
 a = 4;
 asd = 213;
@@ -1404,5 +1557,5 @@ return 0;}
  7--> 
  8-->  < a : ID>  < func3 : ID> 
  9--> 
-Total Lines: 42
-Total Errors: 15
+Total Lines: 45
+Total Errors: 16

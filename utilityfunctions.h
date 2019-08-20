@@ -241,8 +241,7 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
     }
 
     if(leftType == "float" && rightType == "int") {
-        addLineNoErr();
-        errorfile << "Type mismatch. Integer expression assigned to Floating Point type variable\n\n";
+        return;
     }
 
     if(leftType == "void" || rightType == "void") {
