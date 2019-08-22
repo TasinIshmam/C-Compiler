@@ -11,14 +11,16 @@ using namespace std;
 
 extern int line_no;
 extern int errorCount;
-extern ofstream errorfile;
 extern ofstream logfile;
 extern ofstream scratchfile;
 extern SymbolTable symbolTable;
 
 
+
+
+
 void addLineNoErr() {
-    errorfile << "At line No: " << line_no << " ";
+    logfile << "Error At line No: " << line_no << " ";
     errorCount++;
 
 }
@@ -35,7 +37,7 @@ bool insertIDToSymbolTable(SymbolInfo* ID) {
         return true;
     } else {
         addLineNoErr();
-        errorfile << "Multiple declarations of ID " << ID->getName() << " in the same scope" << endl << endl;
+        logfile << "Multiple declarations of ID " << ID->getName() << " in the same scope" << endl << endl;
         return false;
     }
 }
@@ -45,7 +47,7 @@ bool verifyIDIsDeclared(SymbolInfo* ID) {
        return true;
    } else {
        addLineNoErr();
-       errorfile << "Variable " << ID->getName() << " used without declaration";
+       logfile << "Variable " << ID->getName() << " used without declaration";
        return false;
    }
 }
@@ -56,21 +58,21 @@ bool verifyVariableIDIsDeclared(SymbolInfo* ID) {
 
     if( tableEntry == nullptr )  {
         addLineNoErr();
-        errorfile << "Variable " << ID->getName() << " used without declaration\n\n";
+        logfile << "Variable " << ID->getName() << " used without declaration\n\n";
         return false;
     } else if( tableEntry->isArray() )  {
         addLineNoErr();
-        errorfile << "Array " << ID->getName() << " used without index\n\n";
+        logfile << "Array " << ID->getName() << " used without index\n\n";
         return false;
     } else if( tableEntry->isFunction()) {
         addLineNoErr();
-        errorfile << "Function " << ID->getName() << " called without brackets and arguments\n\n";
+        logfile << "Function " << ID->getName() << " called without brackets and arguments\n\n";
         return false;
     } else if ( tableEntry->isVariable()) {
         return true;
     } else {
         addLineNoErr();
-        errorfile << "ID " << ID->getName() << " is of unknown type\n\n";
+        logfile << "ID " << ID->getName() << " is of unknown type\n\n";
         return false;
     }
 
@@ -83,13 +85,13 @@ bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* arg
 
     if(tableEntry == nullptr) {
         addLineNoErr();
-        errorfile << "Function called without declaration\n\n";
+        logfile << "Function called without declaration\n\n";
         return false;
     }
 
     if(!tableEntry->isFunction()) {
         addLineNoErr();
-        errorfile << "Function call made with non-function type identifer " << tableEntry->getName() << "\n\n";
+        logfile << "Function call made with non-function type identifer " << tableEntry->getName() << "\n\n";
     }
 
     vector<SymbolInfo *> functionCallArgumentExpressionVect;
@@ -112,7 +114,7 @@ bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* arg
 
     if(functionCallArgumentExpressionVect.size() != tableEntry->getFunctionInfoDataPtr()->getArguments().size()) {
         addLineNoErr();
-        errorfile << "Number of arguments in call do not match function definition\n\n";
+        logfile << "Number of arguments in call do not match function definition\n\n";
         return false;
     }
 
@@ -120,7 +122,7 @@ bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* arg
 
         if(functionCallArgumentExpressionVect[i]->getReturnType() != tableEntry->getFunctionInfoDataPtr()->getArguments()[i].getArgumentType()) {
             addLineNoErr();
-            errorfile << "Type of argument(s) in function call do not match function definition\n\n";
+            logfile << "Type of argument(s) in function call do not match function definition\n\n";
             return false;
         }
     }
@@ -141,13 +143,13 @@ bool checkIfValidFunctionReturnTypeInExpression(SymbolInfo* token) {
 
     if(token->getReturnType() == "void") {
         addLineNoErr();
-        errorfile << "Void function cannot be called as a part of an expression\n\n";
+        logfile << "Void function cannot be called as a part of an expression\n\n";
         return false;
 
     } else if(  token->getReturnType() == "") {
 
         addLineNoErr();
-        errorfile << "Expression return type not set/undefined\n\n";
+        logfile << "Expression return type not set/undefined\n\n";
         return false;
     } else return true;
 }
@@ -167,21 +169,21 @@ string evaluateReturnTypeForMULOP(SymbolInfo* term, SymbolInfo* MULOP, SymbolInf
 
         if(mulOp == "%" ) {
             addLineNoErr();
-            errorfile << "Both operand of modulus operator should be integer\n\n";
+            logfile << "Both operand of modulus operator should be integer\n\n";
             return "int";
         }
 
 
         if(termRetType == "" || expressionRetType == "") {
             addLineNoErr();
-            errorfile << "Expression return type not set/undefined \n\n";
+            logfile << "Expression return type not set/undefined \n\n";
 
             return "invalid";
         }
 
         if(termRetType == "void" || expressionRetType == "void") {
             addLineNoErr();
-            errorfile << "Void function cannot be called as a part of an expression \n\n";
+            logfile << "Void function cannot be called as a part of an expression \n\n";
 
             return "invalid";
         }
@@ -208,14 +210,14 @@ string evaluateReturnTypeForADDOP(SymbolInfo* simpleExpression, SymbolInfo* term
 
     if(termRetType == "" || expressionRetType == "") {
         addLineNoErr();
-        errorfile << "Expression return type not set/undefined \n\n";
+        logfile << "Expression return type not set/undefined \n\n";
 
         return "invalid";
     }
 
     if(termRetType == "void" || expressionRetType == "void") {
         addLineNoErr();
-        errorfile << "Void function cannot be called as a part of an expression \n\n";
+        logfile << "Void function cannot be called as a part of an expression \n\n";
 
         return "invalid";
     }
@@ -236,7 +238,7 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
 
     if(leftType == "int" && rightType == "float") {
         addLineNoErr();
-        errorfile << "Type mismatch. Floating point expression assigned to integer type variable\n\n";
+        logfile << "Type mismatch. Floating point expression assigned to integer type variable\n\n";
         return;
     }
 
@@ -246,19 +248,19 @@ void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rig
 
     if(leftType == "void" || rightType == "void") {
         addLineNoErr();
-        errorfile << "Void function cannot be called as a part of an expression \n\n";
+        logfile << "Void function cannot be called as a part of an expression \n\n";
         return;
     }
 
     if(leftType == "" || rightType == "") {
         addLineNoErr();
-        errorfile << "Expression return type not set/undefined \n\n";
+        logfile << "Expression return type not set/undefined \n\n";
         return;
     }
 
 //    if(leftType == "invalid" || rightType == "invalid") {
 //        addLineNoErr();
-//        errorfile << "Expression return type not set/undefined \n\n";
+//        logfile << "Expression return type not set/undefined \n\n";
 //        return;
 //    }
 
@@ -273,21 +275,21 @@ bool verifyArrayIDIsDeclared(SymbolInfo* ID) {
 
     if( tableEntry == nullptr )  {
         addLineNoErr();
-        errorfile << "Array " << ID->getName() << " used without declaration\n\n";
+        logfile << "Array " << ID->getName() << " used without declaration\n\n";
         return false;
     } else if( tableEntry->isVariable() )  {
         addLineNoErr();
-        errorfile << "Variable " << ID->getName() << " used with index. It is not an array\n\n";
+        logfile << "Variable " << ID->getName() << " used with index. It is not an array\n\n";
         return false;
     } else if( tableEntry->isFunction()) {
         addLineNoErr();
-        errorfile << "Function " << ID->getName() << " called with array index\n\n";
+        logfile << "Function " << ID->getName() << " called with array index\n\n";
         return false;
     } else if ( tableEntry->isArray()) {
         return true;
     } else {
         addLineNoErr();
-        errorfile << "ID " << ID->getName() << " is of unknown type\n\n";
+        logfile << "ID " << ID->getName() << " is of unknown type\n\n";
         return false;
     }
 
@@ -343,7 +345,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
     string typeOfVariables = typeSpecifier->getName();
     if (typeOfVariables == "void") {
         addLineNoErr();
-        errorfile << "variable(s) declared as type 'void' " << endl << endl;
+        logfile << "variable(s) declared as type 'void' " << endl << endl;
 
     }
 
@@ -430,7 +432,7 @@ SymbolInfo*   createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInf
 
             if(argType == "void") {
                     addLineNoErr();
-                    errorfile << "Function argument declared as type 'void' " << endl << endl;
+                    logfile << "Function argument declared as type 'void' " << endl << endl;
 
             } else {
                 functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
@@ -443,7 +445,7 @@ SymbolInfo*   createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInf
 
             if(argType == "void") {
                 addLineNoErr();
-                errorfile << "Function argument declared as type 'void' " << endl << endl;
+                logfile << "Function argument declared as type 'void' " << endl << endl;
 
             } else {
                 functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);
@@ -462,7 +464,7 @@ SymbolInfo*   createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInf
 
         if(argType == "void") {
             addLineNoErr();
-            errorfile << "Function argument declared as type 'void' " << endl << endl;
+            logfile << "Function argument declared as type 'void' " << endl << endl;
 
         } else {
             functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType, argName);
@@ -475,7 +477,7 @@ SymbolInfo*   createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInf
 
         if(argType == "void") {
             addLineNoErr();
-            errorfile << "Function argument declared as type 'void' " << endl << endl;
+            logfile << "Function argument declared as type 'void' " << endl << endl;
 
         } else {
             functionSymbolInfo->getFunctionInfoDataPtr()->addArguments(argType);

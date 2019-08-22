@@ -14,7 +14,6 @@ int word_count=0;
 int err_count = 0;
 
 extern ofstream logfile;
-extern ofstream errorfile;
 extern int line_no;
 //log and error file defined in parser. 
 

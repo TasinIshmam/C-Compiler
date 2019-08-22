@@ -7,7 +7,6 @@ using namespace std;
 
 extern int line_no;
 extern int errorCount;
-extern ofstream errorfile;
 extern ofstream logfile;
 extern ofstream scratchfile;
 
@@ -113,11 +112,12 @@ public:
 
 };
 
-
+//"name" contains underlying C code, Code contains underlying assembly code, type is grammar er terminal type
+//"assemblyID" is assigned assembly variable ID, "Type" is grammar er terminal/non terminal name.
 
 class SymbolInfo {
 private:
-    string name, type;
+    string name, type, code, assemblyID;   
     SymbolInfo *nextPtr;
     vector<SymbolInfo*> childSymbols;
     bool isVariableType = false;

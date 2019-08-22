@@ -1,0 +1,139 @@
+f of type ID return type set to int
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2--> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8-->  < f : ID> 
+ 9--> 
+a of type ID return type set to a
+2 of type factor return type set to int
+2 of type unary_expression return type set to int
+2 of type term return type set to int
+a of type variable return type set to a
+a of type factor return type set to a
+a of type unary_expression return type set to a
+2 * a of type term return type set to float
+2 * a of type simple_expression return type set to float
+2 * a of type rel_expression return type set to float
+2 * a of type logic_expression return type set to float
+2 * a of type expression return type set to float
+2 * a of type expression return type set to float
+a of type variable return type set to a
+9 of type factor return type set to int
+9 of type unary_expression return type set to int
+9 of type term return type set to int
+9 of type simple_expression return type set to int
+9 of type rel_expression return type set to int
+9 of type logic_expression return type set to int
+a = 9 of type expression return type set to a
+g of type ID return type set to int
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2-->  < g : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8-->  < f : ID> 
+ 9--> 
+b of type ID return type set to b
+a of type ID return type set to a
+x of type ID return type set to int
+x of type variable return type set to int
+a of type variable return type set to a
+a of type factor return type set to a
+a of type unary_expression return type set to a
+a of type term return type set to a
+a of type simple_expression return type set to a
+a of type rel_expression return type set to a
+a of type logic_expression return type set to a
+f(a) of type factor return type set to int
+f(a) of type unary_expression return type set to int
+f(a) of type term return type set to int
+f(a) of type simple_expression return type set to int
+a of type variable return type set to a
+a of type factor return type set to a
+a of type unary_expression return type set to a
+a of type term return type set to a
+f(a) + a of type simple_expression return type set to float
+b of type variable return type set to b
+b of type factor return type set to b
+b of type unary_expression return type set to b
+b of type term return type set to b
+f(a) + a + b of type simple_expression return type set to float
+f(a) + a + b of type rel_expression return type set to float
+f(a) + a + b of type logic_expression return type set to float
+x = f(a) + a + b of type expression return type set to int
+x of type variable return type set to int
+x of type factor return type set to int
+x of type unary_expression return type set to int
+x of type term return type set to int
+x of type simple_expression return type set to int
+x of type rel_expression return type set to int
+x of type logic_expression return type set to int
+x of type expression return type set to int
+x of type expression return type set to int
+main of type ID return type set to int
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2-->  < g : ID>  < main : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8-->  < f : ID> 
+ 9--> 
+Arguments: 
+b of type ID return type set to int
+a of type ID return type set to int
+a of type variable return type set to int
+1 of type factor return type set to int
+1 of type unary_expression return type set to int
+1 of type term return type set to int
+1 of type simple_expression return type set to int
+1 of type rel_expression return type set to int
+1 of type logic_expression return type set to int
+a = 1 of type expression return type set to int
+b of type variable return type set to int
+2 of type factor return type set to int
+2 of type unary_expression return type set to int
+2 of type term return type set to int
+2 of type simple_expression return type set to int
+2 of type rel_expression return type set to int
+2 of type logic_expression return type set to int
+b = 2 of type expression return type set to int
+a of type variable return type set to int
+a of type variable return type set to int
+a of type factor return type set to int
+a of type unary_expression return type set to int
+a of type term return type set to int
+a of type simple_expression return type set to int
+a of type rel_expression return type set to int
+a of type logic_expression return type set to int
+f(a) of type factor return type set to int
+f(a) of type unary_expression return type set to int
+f(a) of type term return type set to int
+f(a) of type simple_expression return type set to int
+f(a) of type rel_expression return type set to int
+f(a) of type logic_expression return type set to int
+a = f(a) of type expression return type set to int
+0 of type factor return type set to int
+0 of type unary_expression return type set to int
+0 of type term return type set to int
+0 of type simple_expression return type set to int
+0 of type rel_expression return type set to int
+0 of type logic_expression return type set to int
+0 of type expression return type set to int
+0 of type expression return type set to int

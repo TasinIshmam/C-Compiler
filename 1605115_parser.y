@@ -13,20 +13,26 @@ extern FILE *yyin;
 
 int line_no = 1;
 int errorCount = 0;
+
+int labelCount=0;
+int tempVarCount=0;
 bool functionScopeBeginFlag = false;
 
 FILE *fp;
 ofstream logfile;
-ofstream errorfile;
 ofstream scratchfile;
-
 SymbolTable symbolTable(10);
+
+
+
+
+
 
 
 void yyerror(char *s) 
 {
 	string syntaxerror(s);
-	errorfile << "Error at line " << line_no <<" :" << syntaxerror << endl << endl ;
+	logfile << "Error at line " << line_no <<" :" << syntaxerror << endl << endl ;
 	errorCount++;
 }
 
@@ -141,7 +147,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 	} else {
 		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
 			addLineNoErr();
-			errorfile << "Function declaration does not match function definition\n\n";
+			logfile << "Function declaration does not match function definition\n\n";
 		};
 	}
 
@@ -183,7 +189,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		SymbolInfo* generateEntry = createSymbolInfoForFunctionID($1, $2);
 		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
 			addLineNoErr();
-			errorfile << "Function declaration does not match function definition\n\n";
+			logfile << "Function declaration does not match function definition\n\n";
 		};
 	}
 
@@ -473,7 +479,7 @@ variable : ID	{
 		verifyArrayIDIsDeclared($1);
 		if( $3->getReturnType() != "int"){
 			addLineNoErr();
-			errorfile << "Non Integer Array index\n\n";
+			logfile << "Non Integer Array index\n\n";
 		}
 		$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
 
@@ -732,7 +738,6 @@ int main(int argc,char *argv[])
 		exit(1);
 	}
 
- 	errorfile.open("1605115_error.txt");
 	   logfile.open("1605115_log.txt");
 	   scratchfile.open("scratch.txt");
 
@@ -748,10 +753,9 @@ int main(int argc,char *argv[])
 
 	logfile << "Total Lines: " << line_no << endl;
 	logfile << "Total Errors: " << errorCount << endl;
-	errorfile << "Total Errors: " << errorCount << endl;
+	logfile << "Total Errors: " << errorCount << endl;
 
 
-    errorfile.close();
 	logfile.close();
 	scratchfile.close();
 
