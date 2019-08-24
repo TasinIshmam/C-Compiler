@@ -12,7 +12,7 @@ extern ofstream scratchfile;
 
 class ArgumentInfo {
 
-    string argumentType, argumentName;
+    std::string argumentType, argumentName;
 
 public:
 
@@ -53,6 +53,9 @@ public:
     ArrayInfo( int arrSize)  {
         arraySize = arrSize;
     }
+
+ 
+
 
 
     int getArraySize() {
@@ -112,8 +115,9 @@ public:
 
 };
 
-//"name" contains underlying C code, Code contains underlying assembly code, type is grammar er terminal type
-//"assemblyID" is assigned assembly variable ID, "Type" is grammar er terminal/non terminal name.
+//"name" contains underlying C code, Code contains underlying assembly code
+
+//"assemblyID" is assigned assembly variable ID, "Type" is grammar er terminal/non terminal name. In case of scanner, type returns the token type. (ID, PRINTLN, ADDOP etc)
 
 class SymbolInfo {
 private:
@@ -124,12 +128,33 @@ private:
     ArrayInfo* arrayDataPtr;
     FunctionInfo* functionDataPtr;
     string returnType = "";
+    bool assemblyArrayMember = false;
+    int assemblyArrayIdx = -1;
 
 public:
 
     bool isVariable() {
        return isVariableType;
     }
+
+      int getAssemblyArrayIdx() {
+        return assemblyArrayIdx;
+    }
+
+    void setAssemblyARrayIdx(int idx) {
+        assemblyArrayIdx = idx;
+    }
+
+
+      bool isAssemblyArrayMember() {
+       return assemblyArrayMember;
+    }
+
+    bool setAssemblyArrayMember(bool cond) {
+        assemblyArrayMember = cond;
+    }
+
+
 
     bool isArray() {
         if(arrayDataPtr != nullptr) {
@@ -190,6 +215,7 @@ public:
         nextPtr = nullptr;
         functionDataPtr = nullptr;
         returnType = "";
+        code = "";
         isVariableType = false;
 
     }
@@ -198,6 +224,8 @@ public:
         nextPtr = nullptr;
         functionDataPtr = nullptr;
         isVariableType = false;
+                code = "";
+
 
 
 
@@ -215,6 +243,23 @@ public:
 
     void setName(const string &name) {
         SymbolInfo::name = name;
+        
+    }
+
+     const string &getCode() const {
+        return code;
+    }
+
+    void setCode(const string &code) {
+        SymbolInfo::code = code;
+    }
+
+     const string &getAssemblyID() const {
+        return assemblyID;
+    }
+
+    void setAssemblyID(const string &assemblyID) {
+        SymbolInfo::assemblyID = assemblyID;
     }
 
     const string &getType() const {
@@ -371,6 +416,11 @@ public:
 
     }
 
+
+    
+
+
+   
     bool insert(SymbolInfo *item) {
         int hash = getHash(item->getName());
         int counter = 0;
@@ -567,6 +617,29 @@ public:
         }
 
         return nullptr;
+    }
+
+    int lookupScopeId (const string &name) {
+
+        if(containsWhiteSpace(name)) {
+            scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            // cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            return -1;
+        }
+        ScopeTable *temp = currentScope;
+
+        while (temp != nullptr) {
+            SymbolInfo *res = temp->lookUp(name);
+
+            if (res != nullptr) {
+                return temp->getTableId();
+            }
+
+            temp = temp->getParentScopreTable();
+        }
+
+        return -1;
+
     }
 
     int getBucketSizeForTables() const {

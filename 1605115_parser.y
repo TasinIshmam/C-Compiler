@@ -24,7 +24,12 @@ ofstream scratchfile;
 SymbolTable symbolTable(10);
 
 
-
+vector<SymbolInfo*>para_list;
+vector<SymbolInfo*>arg_list;
+vector<SymbolInfo*>dec_list;
+vector<string> variable_declaration_list_code;
+vector<string> function_declaration_list_code;
+vector<pair<string,string> >array_declaration_list_code;
 
 
 
@@ -64,6 +69,82 @@ start : program	{
 		 addLineNoLog();
 		 logfile << "start : program\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+
+		 string finalCode = "";
+
+		 finalCode+=".MODEL SMALL\n\.STACK 100H\n\.DATA \n";
+	for(int i=0;i<variable_declaration_list_code.size();i++){
+		finalCode+=var_dec[i]+" dw ?\n";
+	}
+	for(int i=0;i<array_declaration_list_code.size();i++){
+		finalCode+=arr_dec[i].first+" dw "+arr_dec[i].second+" dup(?)\n";
+	}
+	
+
+	$<symbolinfo>1->setCode(finalCode+".CODE\n"+$<symbolinfo>1->getCode());
+
+	$<symbolinfo>1->setCode($<symbolinfo>1->getCode()+"OUTDEC PROC  \n\ 
+    PUSH AX \n\ 
+    PUSH BX \n\ 
+    PUSH CX \n\ 
+    PUSH DX  \n\ 
+    CMP AX,0 \n\ 
+    JGE BEGIN \n\ 
+    PUSH AX \n\ 
+    MOV DL,'-' \n\ 
+    MOV AH,2 \n\ 
+    INT 21H \n\ 
+    POP AX \n\ 
+    NEG AX \n\ 
+    \n\ 
+    BEGIN: \n\ 
+    XOR CX,CX \n\ 
+    MOV BX,10 \n\ 
+    \n\ 
+    REPEAT: \n\ 
+    XOR DX,DX \n\ 
+    DIV BX \n\ 
+    PUSH DX \n\ 
+    INC CX \n\ 
+    OR AX,AX \n\ 
+    JNE REPEAT \n\ 
+    MOV AH,2 \n\ 
+    \n\ 
+    PRINT_LOOP: \n\ 
+    POP DX \n\ 
+    ADD DL,30H \n\ 
+    INT 21H \n\ 
+    LOOP PRINT_LOOP \n\ 
+    \n\    
+    MOV AH,2\n\
+    MOV DL,10\n\
+    INT 21H\n\
+    \n\
+    MOV DL,13\n\
+    INT 21H\n\
+	\n\
+    POP DX \n\ 
+    POP CX \n\ 
+    POP BX \n\ 
+    POP AX \n\ 
+    ret \n\ 
+OUTDEC ENDP \n\
+END MAIN\n");
+
+
+	ofstream assemblyCodeFile;
+	assemblyCodeFile.open("code.asm");
+
+     
+	assemblyCodeFile << $1->getCode();
+
+	assemblyCodeFile.close();
+
+	//todo Optimization;
+	
+
+
 	 	}
 	;
 
@@ -465,7 +546,11 @@ variable : ID	{
 				 logfile << $1->getName() << endl << endl;
 
 				verifyVariableIDIsDeclared($1);
-				$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
+				$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));	
+
+				$$->setCode("");
+
+
 
 
 		}
@@ -481,7 +566,19 @@ variable : ID	{
 			addLineNoErr();
 			logfile << "Non Integer Array index\n\n";
 		}
-		$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
+		$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		
+
+		string codes = "";
+		codes += $3->getCode();
+		codes += "\tMOV BX," + $3->getAssemblyID() + "\n";
+		codes+="\tADD BX,BX\n";  //todo find out why tf we're doing this
+		$$->setAssemblyArrayMember(true);
+
+		string assemblyName = $1->getName() + intToString(symbolTable.lookupScopeId($1->getName());
+
+
+		$$->setCode(codes);
+		$$->setAssemblyID(assemblyName);
 
 	 }
 	 ;

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Offline_4_ICG_MINE.dir/func.cpp.o CMakeFiles/Offline_4_ICG_MINE.dir/input.c.o CMakeFiles/Offline_4_ICG_MINE.dir/lex.yy.c.o CMakeFiles/Offline_4_ICG_MINE.dir/y.tab.c.o  -o Offline_4_ICG_MINE 

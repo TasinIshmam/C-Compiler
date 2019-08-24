@@ -1,8 +1,28 @@
 {
+  
+  
+  
+
+   
     "files.associations": {
-        "*.y": "cpp",
-        "ostream": "cpp",
-        "string": "cpp",
-        "iosfwd": "cpp"
+      "*.y": "cpp",
+      "*.h": "cpp",
+      "ostream": "cpp",
+      "string": "cpp",
+      "iosfwd": "cpp",
+      "array": "cpp",
+      "chrono": "cpp",
+      "functional": "cpp",
+      "istream": "cpp",
+      "ratio": "cpp",
+      "scoped_allocator": "cpp",
+      "tuple": "cpp",
+      "type_traits": "cpp",
+      "utility": "cpp",
+      "future": "cpp",
+      "system_error": "cpp",
+      "regex": "cpp",
+      "bitset": "cpp",
+      "vector": "cpp"
     }
 }

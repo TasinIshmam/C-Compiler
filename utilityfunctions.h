@@ -4,6 +4,7 @@
 
 
 #include <bits/stdc++.h>
+#include <string>
 #include "1605115_symboltable.h"
 
 using namespace std;
@@ -14,6 +15,67 @@ extern int errorCount;
 extern ofstream logfile;
 extern ofstream scratchfile;
 extern SymbolTable symbolTable;
+
+extern int labelCount=0;
+extern int temp_count=0;
+
+
+
+extern vector<SymbolInfo*>para_list;
+extern vector<SymbolInfo*>arg_list;
+extern vector<SymbolInfo*>dec_list;
+extern vector<string> variable_declaration_list_code;
+extern vector<string> function_declaration_list_code;
+extern vector<pair<string,string> >array_declaration_list_code;
+
+
+
+//todo modify this function for checker
+string intToString (int a)
+{
+    stringstream temp;
+    temp<<a;
+    return temp.str();
+}
+
+string newLabel()
+{
+	string lb= "L" + to_string(labelCount);
+	labelCount++;
+	return lb;
+}
+
+string newTemp()
+{
+	string temp = "t" + to_string(temp_count);
+	//data_code = data_code + temp + " DW ?\n";
+	//todo investigate what you just commented out
+	temp_count++;
+	return temp;
+}
+
+
+
+string generateCodeForPrintLn(string varName)
+{		
+	
+	string code = "";
+	
+
+	
+		
+		code = code + "MOV AX, " + varName + "\n";
+		code = code + "CALL OUTDEC\n";
+		code = code + "MOV AH, 2\n";
+		code = code + "MOV DL, 0DH\n";
+		code = code + "INT 21H\n";
+		code = code + "MOV AH, 2\n";
+		code = code + "MOV DL, 0AH\n";
+		code = code + "INT 21H\n";
+	
+
+return code;
+}
 
 
 
