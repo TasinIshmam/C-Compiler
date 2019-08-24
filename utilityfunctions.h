@@ -20,13 +20,11 @@ int labelCount = 0;
 int tempCount = 0;
 
 
-// extern vector<SymbolInfo*>para_list;
-// extern vector<SymbolInfo*>arg_list;
-// extern vector<SymbolInfo*>dec_list;
-// extern vector<string> variable_declaration_list_code;
-// extern vector<string> function_declaration_list_code;
-// extern vector<pair<string,string> >array_declaration_list_code;
 
+
+extern vector<string> variableDeclarationList;
+extern vector<string> functionDelcarationList;
+extern vector<pair<string,string> >arrayDeclarationList;
 
 
 //todo modify this function for checker
@@ -39,14 +37,14 @@ string intToString (int a)
 
 string newLabel()
 {
-	string lb= "L" + to_string(labelCount);
+	string lb= "Label" + to_string(labelCount);
 	labelCount++;
 	return lb;
 }
 
 string newTemp()
 {
-	string temp = "t" + to_string(tempCount);
+	string temp = "temp" + to_string(tempCount);
 	//data_code = data_code + temp + " DW ?\n";
 	//todo investigate what you just commented out
 	tempCount++;
