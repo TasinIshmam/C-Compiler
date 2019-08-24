@@ -14,22 +14,23 @@ extern FILE *yyin;
 int line_no = 1;
 int errorCount = 0;
 
-int labelCount=0;
-int tempVarCount=0;
 bool functionScopeBeginFlag = false;
 
 FILE *fp;
 ofstream logfile;
 ofstream scratchfile;
+ofstream asmCodeFile;
 SymbolTable symbolTable(10);
 
 
-vector<SymbolInfo*>para_list;
-vector<SymbolInfo*>arg_list;
-vector<SymbolInfo*>dec_list;
-vector<string> variable_declaration_list_code;
-vector<string> function_declaration_list_code;
-vector<pair<string,string> >array_declaration_list_code;
+// vector<SymbolInfo*>para_list;
+// vector<SymbolInfo*>arg_list;
+// vector<SymbolInfo*>dec_list;
+
+
+vector<string> variableDeclarationList;
+vector<string> functionDelcarationList;
+vector<pair<string,string> >arrayDeclarationList;
 
 
 
@@ -71,75 +72,17 @@ start : program	{
 		 logfile << $$->getName() <<endl << endl;
 
 
-		 string finalCode = "";
+		 string finalCode = ".MODEL SMALL\n.STACK 100H\n";
 
-		 finalCode+=".MODEL SMALL\n\.STACK 100H\n\.DATA \n";
-	for(int i=0;i<variable_declaration_list_code.size();i++){
-		finalCode+=var_dec[i]+" dw ?\n";
-	}
-	for(int i=0;i<array_declaration_list_code.size();i++){
-		finalCode+=arr_dec[i].first+" dw "+arr_dec[i].second+" dup(?)\n";
-	}
+
 	
 
-	$<symbolinfo>1->setCode(finalCode+".CODE\n"+$<symbolinfo>1->getCode());
-
-	$<symbolinfo>1->setCode($<symbolinfo>1->getCode()+"OUTDEC PROC  \n\ 
-    PUSH AX \n\ 
-    PUSH BX \n\ 
-    PUSH CX \n\ 
-    PUSH DX  \n\ 
-    CMP AX,0 \n\ 
-    JGE BEGIN \n\ 
-    PUSH AX \n\ 
-    MOV DL,'-' \n\ 
-    MOV AH,2 \n\ 
-    INT 21H \n\ 
-    POP AX \n\ 
-    NEG AX \n\ 
-    \n\ 
-    BEGIN: \n\ 
-    XOR CX,CX \n\ 
-    MOV BX,10 \n\ 
-    \n\ 
-    REPEAT: \n\ 
-    XOR DX,DX \n\ 
-    DIV BX \n\ 
-    PUSH DX \n\ 
-    INC CX \n\ 
-    OR AX,AX \n\ 
-    JNE REPEAT \n\ 
-    MOV AH,2 \n\ 
-    \n\ 
-    PRINT_LOOP: \n\ 
-    POP DX \n\ 
-    ADD DL,30H \n\ 
-    INT 21H \n\ 
-    LOOP PRINT_LOOP \n\ 
-    \n\    
-    MOV AH,2\n\
-    MOV DL,10\n\
-    INT 21H\n\
-    \n\
-    MOV DL,13\n\
-    INT 21H\n\
-	\n\
-    POP DX \n\ 
-    POP CX \n\ 
-    POP BX \n\ 
-    POP AX \n\ 
-    ret \n\ 
-OUTDEC ENDP \n\
-END MAIN\n");
+	$1->setCode(finalCode+".CODE\n"+$1->getCode());
 
 
-	ofstream assemblyCodeFile;
-	assemblyCodeFile.open("code.asm");
 
-     
-	assemblyCodeFile << $1->getCode();
+     asmCodeFile << $1->getCode();
 
-	assemblyCodeFile.close();
 
 	//todo Optimization;
 	
@@ -574,7 +517,7 @@ variable : ID	{
 		codes+="\tADD BX,BX\n";  //todo find out why tf we're doing this
 		$$->setAssemblyArrayMember(true);
 
-		string assemblyName = $1->getName() + intToString(symbolTable.lookupScopeId($1->getName());
+		string assemblyName = $1->getName() + intToString(symbolTable.lookupScopeId($1->getName()) );
 
 
 		$$->setCode(codes);
@@ -837,6 +780,7 @@ int main(int argc,char *argv[])
 
 	   logfile.open("1605115_log.txt");
 	   scratchfile.open("scratch.txt");
+	   asmCodeFile.open("outputCode.asm");
 
 		
 
@@ -855,6 +799,7 @@ int main(int argc,char *argv[])
 
 	logfile.close();
 	scratchfile.close();
+	asmCodeFile.close();
 
 
 	return 0;

@@ -12,7 +12,7 @@ extern ofstream scratchfile;
 
 class ArgumentInfo {
 
-    std::string argumentType, argumentName;
+    string argumentType, argumentName;
 
 public:
 
