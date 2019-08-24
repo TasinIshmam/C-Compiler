@@ -1,6 +1,12 @@
 .MODEL SMALL
 .STACK 100H
-.Data 
+.DATA 
+x2 dw ?
+b2 dw ?
+a2 dw ?
+c2 dw 53 dup(?)
+d2 dw 100 dup(?)
+.CODE
  
 OUTDEC PROC  
     PUSH AX 

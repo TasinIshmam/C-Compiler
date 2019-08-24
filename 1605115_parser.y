@@ -15,6 +15,8 @@ int line_no = 1;
 int errorCount = 0;
 
 
+//todo consider modifying this function. Might hit copychecker.
+
 string outdecProcCode = " \nOUTDEC PROC  \n    PUSH AX \n    PUSH BX \n    PUSH CX \n    PUSH DX  \n    CMP AX,0 \n    JGE BEGIN \n    PUSH AX \n    MOV DL,'-' \n    MOV AH,2 \n    INT 21H \n    POP AX \n    NEG AX \n    \n    BEGIN: \n    XOR CX,CX \n    MOV BX,10 \n    \n    REPEAT: \n    XOR DX,DX \n    DIV BX \n    PUSH DX \n    INC CX \n    OR AX,AX \n    JNE REPEAT \n    MOV AH,2 \n    \n    PRINT_LOOP: \n    POP DX \n    ADD DL,30H \n    INT 21H \n    LOOP PRINT_LOOP \n    \n    MOV AH,2\n    MOV DL,10\n    INT 21H\n    \n    MOV DL,13\n    INT 21H\n	\n    POP DX \n    POP CX \n    POP BX \n    POP AX \n    ret \nOUTDEC ENDP\nEND MAIN\n";
 
 
@@ -76,7 +78,7 @@ start : program	{
 		 logfile << $$->getName() <<endl << endl;
 
 
-		 string finalCode = ".MODEL SMALL\n.STACK 100H\n.Data \n";
+		 string finalCode = ".MODEL SMALL\n.STACK 100H\n.DATA \n";
 
 		 for(int i = 0 ; i < variableDeclarationList.size() ; i++) {
 			 finalCode += variableDeclarationList[i] + " dw ?\n";
@@ -85,13 +87,17 @@ start : program	{
 		 	for(int i=0;i<arrayDeclarationList.size();i++){
 		finalCode+=arrayDeclarationList[i].first+" dw "+arrayDeclarationList[i].second+" dup(?)\n";
 	}
+
+		
+		finalCode += ".CODE\n";
 		
 
 		finalCode += $1->getCode();
-		finalCode += outdecProcCode
+		finalCode += outdecProcCode;
 
-		$1->setCode(finalCode);
-  	   asmCodeFile << $1->getCode();
+		//$1->setCode(finalCode);
+
+  	   asmCodeFile << finalCode;
 
 
 	//todo Optimization;
@@ -532,6 +538,8 @@ variable : ID	{
 
 		$$->setCode(codes);
 		$$->setAssemblyID(assemblyName);
+
+		scratchfile << "variable with code created. CODE: \n" << codes;
 
 	 }
 	 ;

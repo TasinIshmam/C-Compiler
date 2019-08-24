@@ -286,7 +286,7 @@ public:
 
         }
 
-        scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
+       // scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
     }
 
     SymbolInfo *getNext() const {

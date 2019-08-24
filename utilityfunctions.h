@@ -42,13 +42,18 @@ string newLabel()
 	return lb;
 }
 
-string newTemp()
+string generateNewTempVariable()
 {
 	string temp = "temp" + to_string(tempCount);
-	//data_code = data_code + temp + " DW ?\n";
-	//todo investigate what you just commented out
+    variableDeclarationList.push_back(temp);
+    	//todo investigate what you just commented out
 	tempCount++;
 	return temp;
+}
+
+
+string generateAssemblyIdVariable(string name, int tableId ) {
+return name + intToString(tableId);
 }
 
 
@@ -427,8 +432,14 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 
 
            // scratchfile << arrayName << arrayLen << endl << endl;
-            insertIDToSymbolTable(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+            SymbolInfo* arr = createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen);
+         insertIDToSymbolTable(arr);
 
+        
+            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getTableId());
+
+            arr->setAssemblyID(assemblyID);
+            arrayDeclarationList.push_back(make_pair(assemblyID,  arrayLenString) );
 
         } else {
             //is a variable
@@ -439,7 +450,18 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 
             string variableName = tempDeclarationList->getChildSymbols()[2]->getName();
             //scratchfile << variableName << endl << endl;
-            insertIDToSymbolTable(createSymbolInfoForVariableID(variableName, typeOfVariables));
+
+            SymbolInfo* var = createSymbolInfoForVariableID(variableName, typeOfVariables);
+            insertIDToSymbolTable(var);
+
+            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getTableId());
+
+            var->setAssemblyID(assemblyID);
+            variableDeclarationList.push_back(assemblyID);
+
+
+
+
 
 
         }
@@ -456,16 +478,30 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
         string arrayLenString = tempDeclarationList->getChildSymbols()[2]->getName();
         int arrayLen = stoi(arrayLenString);
 
-       // scratchfile << arrayName << arrayLen << endl << endl;
-        insertIDToSymbolTable(createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen));
+
+       scratchfile << arrayName << arrayLen << endl << endl;
+       SymbolInfo* arr = createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen);
+
+                insertIDToSymbolTable(arr);
+
+            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getTableId());
+
+           arr->setAssemblyID(assemblyID);
+           arrayDeclarationList.push_back(make_pair(assemblyID,  arrayLenString) );
+
 
 
     } else {
         //is a variable
         string variableName = tempDeclarationList->getChildSymbols()[0]->getName();
        // scratchfile << variableName << endl << endl;
-        insertIDToSymbolTable(createSymbolInfoForVariableID(variableName, typeOfVariables));
+         SymbolInfo* var = createSymbolInfoForVariableID(variableName, typeOfVariables);
+            insertIDToSymbolTable(var);
 
+            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getTableId());
+
+            var->setAssemblyID(assemblyID);
+            variableDeclarationList.push_back(assemblyID);
     }
 
     //scratchfile << "Ending" << endl;
@@ -570,8 +606,8 @@ SymbolInfo*  createSymbolInfoForFunctionID(SymbolInfo *typeSpecifier, SymbolInfo
 void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID) {
     SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID);
     insertIDToSymbolTable(functionSymbolInfo);
-    symbolTable.printAllScopeTable(scratchfile);
-    functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
+   // symbolTable.printAllScopeTable(scratchfile);
+    //functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
 }
 
 
@@ -579,8 +615,8 @@ void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo 
 void createSymbolTableEntryForFunctionID (SymbolInfo *typeSpecifier, SymbolInfo *functionID, SymbolInfo *parameterList) {
     SymbolInfo* functionSymbolInfo = createSymbolInfoForFunctionID(typeSpecifier,functionID, parameterList);
     insertIDToSymbolTable(functionSymbolInfo);
-    symbolTable.printAllScopeTable(scratchfile);
-    functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
+    //symbolTable.printAllScopeTable(scratchfile);
+    //functionSymbolInfo->getFunctionInfoDataPtr()->print(scratchfile);
 }
 
 

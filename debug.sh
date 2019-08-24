@@ -10,6 +10,6 @@ echo '4'
 g++ -o a.out y.o l.o -lfl -ly -g
 echo '5'
  gdb ./a.out
-run input.txt
+run input.c
 
  #commands - backtrace, bt full, where, list

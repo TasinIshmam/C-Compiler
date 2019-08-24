@@ -11,6 +11,8 @@ int g(int a, int b){
 
 int main(){
     int a,b;
+    int c[53];
+    int d[100];
     a=1;
     b=2;
     a=f(a);
