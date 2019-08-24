@@ -10,7 +10,9 @@
 #include "1505069_SymbolTable.h"
 //#define YYSTYPE SymbolInfo*
 
-
+//IDVALUE -> AssemblyID
+//setType -> isArray
+//asm_code -> Code
 using namespace std;
 
 int yyparse(void);
@@ -335,7 +337,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$<symbolinfo
 				var_dec.push_back(curfunction+"_return");
 
 				} compound_statement 
-				{fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
+				{ewfprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
 				fprintf(parsertext,"%s %s(%s) %s \n\n",$<symbolinfo>1->get_name().c_str(),$<symbolinfo>2->get_name().c_str(),$<symbolinfo>4->get_name().c_str(),$<symbolinfo>7->get_name().c_str());
 											$<symbolinfo>$->set_ASMcode($<symbolinfo>2->get_name()+" PROC\n");
 											

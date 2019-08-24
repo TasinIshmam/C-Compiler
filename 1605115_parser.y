@@ -533,7 +533,10 @@ variable : ID	{
 		codes+="\tADD BX,BX\n";  //todo find out why tf we're doing this
 		$$->setAssemblyArrayMember(true);
 
-		string assemblyName = $1->getName() + intToString(symbolTable.lookupScopeId($1->getName()) );
+
+		//instead of generating it manually based on symbol table data like bhaia did, we just fetch the assemblyName assigned to ID in symboltable.
+		//ID was given a assemblyName during declaration.
+		string assemblyName = symbolTable.lookup($1->getName())->getAssemblyID();
 
 
 		$$->setCode(codes);

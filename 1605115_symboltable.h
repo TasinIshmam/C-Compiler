@@ -128,8 +128,16 @@ private:
     ArrayInfo* arrayDataPtr;
     FunctionInfo* functionDataPtr;
     string returnType = "";
+
+
     bool assemblyArrayMember = false;
     int assemblyArrayIdx = -1;
+
+    //note not ID type Symbolinfos can be AssemblyArraymember. While only ID's (stuff that is passed from lexer and goes into symbol table) can have ArrayDataPTr and all that type of stuff. 
+
+    //so when checking complex types like expression and logical expression to see if they internally represent a array, we should be using assemblyArrayMember not the isArray() functionality which is reserved for ID.
+
+    //turns out assemblyArrayIdx will probably be useless. Amra implicitly ei psuedo array gular index rekhe dichi in BX register. Appropriate BX register theke code read kore nei inside the "code". So the array Idx dosen't need to be explicitly generated.
 
 public:
 
@@ -141,7 +149,7 @@ public:
         return assemblyArrayIdx;
     }
 
-    void setAssemblyARrayIdx(int idx) {
+    void setAssemblyArrayIdx(int idx) {
         assemblyArrayIdx = idx;
     }
 

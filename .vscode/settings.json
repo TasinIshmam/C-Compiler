@@ -23,6 +23,7 @@
       "system_error": "cpp",
       "regex": "cpp",
       "bitset": "cpp",
-      "vector": "cpp"
+      "vector": "cpp",
+      "*.txt": "cpp"
     }
 }
