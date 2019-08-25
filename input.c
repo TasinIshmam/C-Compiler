@@ -14,7 +14,8 @@ int main(){
     int c[53];
     int d[100];
     a=1;
-    b=2;
+    b=2 * a;
+    a = b / a;
     a=f(a);
     println(a);
     return 0;

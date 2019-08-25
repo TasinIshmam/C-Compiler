@@ -635,6 +635,8 @@ term :	unary_expression {
 						logfile << "term : unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
+						$$->setCode($1->getCode());
+						$$->setAssemblyID($1->getAssemblyID());
 	}
      |  term MULOP unary_expression {
 		 $$ = new SymbolInfo($1->getName() + " " +   $2->getName() + " " + $3->getName(), "term");
@@ -644,6 +646,44 @@ term :	unary_expression {
 		 logfile << $$->getName() <<endl << endl;
 
 		 $$->setReturnType(evaluateReturnTypeForMULOP($1, $2, $3));
+
+		 if($2->getName()=="%") {
+			 string code = $1->getCode() + $3->getCode();
+			 string temp = generateNewTempVariable();
+
+			 code+="MOV AX,"+$1->getAssemblyID()+"\n";
+				code+="MOV BX,"+$3->getAssemblyID()+"\n";
+				code+="MOV DX,0\n";
+				code+="DIV BX\n";
+				code+="MOV "+temp +", DX\n";
+				$$->setCode(code);
+				$$->setAssemblyID(temp);
+		 } else if ($2->getName()=="/") {
+			 
+			 string code=$1->getCode()+$3->getCode();
+				string temp =generateNewTempVariable();
+				code+="MOV AX,"+$1->getAssemblyID()+"\n";
+				code+="MOV BX,"+$3->getAssemblyID()+"\n";
+				code+="DIV BX\n";
+				code+="MOV "+temp+", AX\n";
+				$$->setCode(code);
+				$$->setAssemblyID(temp);
+
+
+		 } else if ($2->getName() =="*") {
+
+			 string code=$1->getCode()+$3->getCode();
+					string temp=generateNewTempVariable();
+					code+="MOV AX,"+$1->getAssemblyID()+"\n";
+					code+="MOV BX,"+$3->getAssemblyID()+"\n";
+					code+="MUL BX\n";
+					code+="MOV "+ temp +", AX\n";
+					$$->setCode(code);
+					$$->setAssemblyID(temp);
+
+		 }
+
+
 
 	}
      ;

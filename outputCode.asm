@@ -3,12 +3,15 @@
 .DATA 
 temp0 dw ?
 temp1 dw ?
+temp2 dw ?
 x2 dw ?
 b2 dw ?
 a2 dw ?
-temp2 dw ?
 temp3 dw ?
 temp4 dw ?
+temp5 dw ?
+temp6 dw ?
+temp7 dw ?
 c2 dw 53 dup(?)
 d2 dw 100 dup(?)
 .CODE

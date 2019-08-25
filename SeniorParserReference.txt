@@ -63,7 +63,7 @@ strcat(lb,b);
 return lb;
 }
 
-char *newTemp()
+char *generateNewTempVariable()
 {
 char *t= new char[4];
 strcpy(t,"t");
@@ -181,51 +181,51 @@ END MAIN\n");
 	;
 
 program : program unit {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : program->program unit\n\n",line_count);
-					fprintf(parsertext,"%s %s\n\n",$1->get_name().c_str(),$2->get_name().c_str()); 
-					$$->setName($1->get_name()+$2->get_name());
+					fprintf(parsertext,"%s %s\n\n",$1->getName().c_str(),$2->getName().c_str()); 
+					$$->setName($1->getName()+$2->getName());
 					$$->setCode($1->getCode()+$2->getCode());
 					}
 
 | unit {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : program->unit\n\n",line_count);
-fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-$$->setName($1->get_name());
+fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+$$->setName($1->getName());
 $$->setCode($1->getCode());
 }
 ;
 
 unit : var_declaration {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->var_declaration\n\n",line_count);
-					fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-					$$->setName($1->get_name()+"\n");
+					fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+					$$->setName($1->getName()+"\n");
 					func_var_dec.clear();
 					$$->setCode($1->getCode());
 
 					}
 	| func_declaration {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->func_declaration\n\n",line_count);
-					fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-						$$->setName($1->get_name()+"\n");
+					fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+						$$->setName($1->getName()+"\n");
 						$$->setCode($1->getCode());
 
 					}
 	| func_definition { $$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unit->func_definition\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-						$$->setName($1->get_name()+"\n");
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+						$$->setName($1->getName()+"\n");
 					$$->setCode($1->getCode());
 
 						}
 	;
 
 func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n\n",line_count);
-	fprintf(parsertext,"%s %s(%s);\n\n",$1->get_name().c_str(),$2->get_name().c_str(),$4->get_name().c_str());
-	SymbolInfo *s=table->lookup($2->get_name());
+	fprintf(parsertext,"%s %s(%s);\n\n",$1->getName().c_str(),$2->getName().c_str(),$4->getName().c_str());
+	SymbolInfo *s=table->lookup($2->getName());
 			if(s==0){
-				table->Insert($2->get_name(),"ID","Function");
-				s=table->lookup($2->get_name());
+				table->Insert($2->getName(),"ID","Function");
+				s=table->lookup($2->getName());
 				s->set_isFunction();
 				for(int i=0;i<para_list.size();i++){
-					s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name(),para_list[i]->getReturnType());
+					s->get_isFunction()->add_number_of_parameter(para_list[i]->getName(),para_list[i]->getReturnType());
 				//cout<<para_list[i]->getReturnType()<<endl;
 				}
-				para_list.clear();s->get_isFunction()->set_return_type($1->get_name());
+				para_list.clear();s->get_isFunction()->set_return_type($1->getName());
 			} 
 			else{
 				int num=s->get_isFunction()->get_number_of_parameter();
@@ -245,7 +245,7 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 							break;
 						}
 					}
-					if(s->get_isFunction()->get_return_type()!=$1->get_name()){
+					if(s->get_isFunction()->get_return_type()!=$1->getName()){
 							error_count++;
 							fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 					}
@@ -254,34 +254,34 @@ func_declaration : type_specifier ID  LPAREN  parameter_list RPAREN SEMICOLON {$
 				
 			}
 			
-	$$->setName($1->get_name()+" "+$2->get_name()+"("+$4->get_name()+");");
+	$$->setName($1->getName()+" "+$2->getName()+"("+$4->getName()+");");
 	}
 	|type_specifier ID LPAREN RPAREN SEMICOLON {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : func_declaration->type_specifier ID LPAREN RPAREN SEMICOLON\n\n",line_count);
-			fprintf(parsertext,"%s %s();\n\n",$1->get_name().c_str(),$2->get_name().c_str());
-			SymbolInfo *s=table->lookup($2->get_name());
+			fprintf(parsertext,"%s %s();\n\n",$1->getName().c_str(),$2->getName().c_str());
+			SymbolInfo *s=table->lookup($2->getName());
 			if(s==0){
-				table->Insert($2->get_name(),"ID","Function");
-				s=table->lookup($2->get_name());
-				s->set_isFunction();s->get_isFunction()->set_return_type($1->get_name());
+				table->Insert($2->getName(),"ID","Function");
+				s=table->lookup($2->getName());
+				s->set_isFunction();s->get_isFunction()->set_return_type($1->getName());
 			}
 			else{
 				if(s->get_isFunction()->get_number_of_parameter()!=0){
 					error_count++;
 					fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
 				}
-				if(s->get_isFunction()->get_return_type()!=$1->get_name()){
+				if(s->get_isFunction()->get_return_type()!=$1->getName()){
 					error_count++;
 					fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 				}
 
 			}
-			$$->setName($1->get_name()+" "+$2->get_name()+"();");
+			$$->setName($1->getName()+" "+$2->getName()+"();");
 	}
 	;
 
 func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new SymbolInfo(); 
 
-			SymbolInfo *s=table->lookup($2->get_name()); 
+			SymbolInfo *s=table->lookup($2->getName()); 
 			if(s!=0){ 
 				if(s->get_isFunction()->get_isdefined()==0){
 				int num=s->get_isFunction()->get_number_of_parameter();
@@ -301,7 +301,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 							break;
 						}
 					}
-					if(s->get_isFunction()->get_return_type()!=$1->get_name()){
+					if(s->get_isFunction()->get_return_type()!=$1->getName()){
 							error_count++;
 							fprintf(error,"Error at Line No.%d: Return Type Mismatch1 \n\n",line_count);
 					}
@@ -309,44 +309,44 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 				}
 				s->get_isFunction()->getclear();
 				for(int i=0;i<para_list.size();i++){
-						s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name()+IntToString(table->getNextId()),para_list[i]->getReturnType());
-				//	cout<<para_list[i]->getReturnType()<<para_list[i]->get_name()<<endl;
+						s->get_isFunction()->add_number_of_parameter(para_list[i]->getName()+IntToString(table->getNextId()),para_list[i]->getReturnType());
+				//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
 				}
 				s->get_isFunction()->set_isdefined();}
 				else{
 					error_count++;
-					fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$2->get_name().c_str());
+					fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$2->getName().c_str());
 										
 				}
 			}
 			else{ //cout<<para_list.size()<<" "<<line_count<<endl;
-					table->Insert($2->get_name(),"ID","Function");
-					s=table->lookup($2->get_name());
+					table->Insert($2->getName(),"ID","Function");
+					s=table->lookup($2->getName());
 					s->set_isFunction();
 					//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 					s->get_isFunction()->set_isdefined();
 					for(int i=0;i<para_list.size();i++){
-						s->get_isFunction()->add_number_of_parameter(para_list[i]->get_name()+IntToString(table->getNextId()),para_list[i]->getReturnType());
-				//	cout<<para_list[i]->getReturnType()<<para_list[i]->get_name()<<endl;
+						s->get_isFunction()->add_number_of_parameter(para_list[i]->getName()+IntToString(table->getNextId()),para_list[i]->getReturnType());
+				//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
 				}
 				//	para_list.clear();
-				s->get_isFunction()->set_return_type($1->get_name());
+				s->get_isFunction()->set_return_type($1->getName());
 				//cout<<table->getNextId()<<endl;
 				//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 			}
-			curfunction=$2->get_name();
+			curfunction=$2->getName();
 			var_dec.push_back(curfunction+"_return");
 
 			} compound_statement 
 			{ewfprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN parameter_list RPAREN compound_statement \n\n",line_count);
-			fprintf(parsertext,"%s %s(%s) %s \n\n",$1->get_name().c_str(),$2->get_name().c_str(),$4->get_name().c_str(),$7->get_name().c_str());
-										$$->setCode($2->get_name()+" PROC\n");
+			fprintf(parsertext,"%s %s(%s) %s \n\n",$1->getName().c_str(),$2->getName().c_str(),$4->getName().c_str(),$7->getName().c_str());
+										$$->setCode($2->getName()+" PROC\n");
 										
-										if($2->get_name()=="main"){
+										if($2->getName()=="main"){
 											$$->setCode($$->getCode()+"    MOV AX,@DATA\nMOV DS,AX \n"+$7->getCode()+"LReturn"+curfunction+":\nMOV AH,4CH\nINT 21H\n");
 										}
 										else {
-												SymbolInfo *s=table->lookup($2->get_name()); 
+												SymbolInfo *s=table->lookup($2->getName()); 
 
 										for(int i=0;i<func_var_dec.size();i++){
 											s->get_isFunction()->add_var(func_var_dec[i]);
@@ -377,21 +377,21 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 											
 										code+="POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n";
 												
-										$$->setCode(code+$2->get_name()+" ENDP\n");
+										$$->setCode(code+$2->getName()+" ENDP\n");
 										
 										}
 									
 										
 		
-			$$->setName($1->get_name()+" "+$2->get_name()+"("+$4->get_name()+")"+$7->get_name());
+			$$->setName($1->getName()+" "+$2->getName()+"("+$4->getName()+")"+$7->getName());
 			}
-	| type_specifier ID LPAREN RPAREN { $$=new SymbolInfo(); SymbolInfo *s=table->lookup($2->get_name());
+	| type_specifier ID LPAREN RPAREN { $$=new SymbolInfo(); SymbolInfo *s=table->lookup($2->getName());
 										if(s==0){
-											table->Insert($2->get_name(),"ID","Function");
-											s=table->lookup($2->get_name());
+											table->Insert($2->getName(),"ID","Function");
+											s=table->lookup($2->getName());
 											s->set_isFunction();
 											s->get_isFunction()->set_isdefined();
-											s->get_isFunction()->set_return_type($1->get_name());
+											s->get_isFunction()->set_return_type($1->getName());
 									//	cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 										}
 										else if(s->get_isFunction()->get_isdefined()==0){
@@ -399,7 +399,7 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Invalid number of parameters \n\n",line_count);
 											}
-											if(s->get_isFunction()->get_return_type()!=$1->get_name()){
+											if(s->get_isFunction()->get_return_type()!=$1->getName()){
 												error_count++;
 												fprintf(error,"Error at Line No.%d: Return Type Mismatch \n\n",line_count);
 											}
@@ -408,22 +408,22 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 										}
 										else{
 											error_count++;
-											fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$2->get_name().c_str());
+											fprintf(error,"Error at Line No.%d:  Multiple defination of function %s\n\n",line_count,$2->getName().c_str());
 										}
 										//cout<<table->getNextId()<<endl;
-										curfunction=$2->get_name();
+										curfunction=$2->getName();
 										var_dec.push_back(curfunction+"_return");
-										$1->setName($1->get_name()+" "+$2->get_name()+"()");
+										$1->setName($1->getName()+" "+$2->getName()+"()");
 										} compound_statement {
 										fprintf(parsertext,"Line at %d : func_definition->type_specifier ID LPAREN RPAREN compound_statement\n\n",line_count);
-										fprintf(parsertext,"%s %s\n\n",$1->get_name().c_str(),$6->get_name().c_str());
-										$$->setCode($2->get_name()+" PROC\n");
+										fprintf(parsertext,"%s %s\n\n",$1->getName().c_str(),$6->getName().c_str());
+										$$->setCode($2->getName()+" PROC\n");
 										
-										if($2->get_name()=="main"){
+										if($2->getName()=="main"){
 											$$->setCode($$->getCode()+"    MOV AX,@DATA\nMOV DS,AX \n"+$6->getCode()+"LReturn"+curfunction+":\nMOV AH,4CH\nINT 21H\n");
 										}
 										else {
-											SymbolInfo *s=table->lookup($2->get_name()); 
+											SymbolInfo *s=table->lookup($2->getName()); 
 
 										for(int i=0;i<func_var_dec.size();i++){
 											s->get_isFunction()->add_var(func_var_dec[i]);
@@ -454,35 +454,35 @@ func_definition : type_specifier ID  LPAREN  parameter_list RPAREN {$$=new Symbo
 											
 										code+="POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n";
 												
-										$$->setCode(code+$2->get_name()+" ENDP\n");
+										$$->setCode(code+$2->getName()+" ENDP\n");
 										}
 										
-										$$->setName($1->get_name()+$6->get_name());
+										$$->setName($1->getName()+$6->getName());
 		
 				}
 	;
 
 
 parameter_list  : parameter_list COMMA type_specifier ID {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n",line_count);
-														fprintf(parsertext,"%s,%s %s\n\n",$1->get_name().c_str(),$3->get_name().c_str(),$4->get_name().c_str());
-															para_list.push_back(new SymbolInfo($4->get_name(),"ID",$3->get_name()));
-														$$->setName($1->get_name()+","+$3->get_name()+" "+$4->get_name());
+														fprintf(parsertext,"%s,%s %s\n\n",$1->getName().c_str(),$3->getName().c_str(),$4->getName().c_str());
+															para_list.push_back(new SymbolInfo($4->getName(),"ID",$3->getName()));
+														$$->setName($1->getName()+","+$3->getName()+" "+$4->getName());
 														}
 	| parameter_list COMMA type_specifier {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n",line_count);
-										fprintf(parsertext,"%s,%s\n\n",$1->get_name().c_str(),$3->get_name().c_str());
-										para_list.push_back(new SymbolInfo("","ID",$3->get_name()));
-										$$->setName($1->get_name()+","+$3->get_name());
+										fprintf(parsertext,"%s,%s\n\n",$1->getName().c_str(),$3->getName().c_str());
+										para_list.push_back(new SymbolInfo("","ID",$3->getName()));
+										$$->setName($1->getName()+","+$3->getName());
 
 										}
 	| type_specifier ID {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier ID\n\n",line_count);
-						fprintf(parsertext,"%s %s\n\n",$1->get_name().c_str(),$2->get_name().c_str());
-						para_list.push_back(new SymbolInfo($2->get_name(),"ID",$1->get_name()));
-						$$->setName($1->get_name()+" "+$2->get_name());
+						fprintf(parsertext,"%s %s\n\n",$1->getName().c_str(),$2->getName().c_str());
+						para_list.push_back(new SymbolInfo($2->getName(),"ID",$1->getName()));
+						$$->setName($1->getName()+" "+$2->getName());
 						}
 	| type_specifier {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : parameter_list->type_specifier\n\n",line_count);
-		fprintf(parsertext,"%s \n\n",$1->get_name().c_str());
-		para_list.push_back(new SymbolInfo("","ID",$1->get_name()));
-		$$->setName($1->get_name()+" ");
+		fprintf(parsertext,"%s \n\n",$1->getName().c_str());
+		para_list.push_back(new SymbolInfo("","ID",$1->getName()));
+		$$->setName($1->getName()+" ");
 	}
 	;
 
@@ -490,22 +490,22 @@ parameter_list  : parameter_list COMMA type_specifier ID {$$=new SymbolInfo(); f
 compound_statement : LCURL {table->Enter_Scope();
 	//	cout<<line_count<<" "<<para_list.size()<<endl;
 		for(int i=0;i<para_list.size();i++){
-			table->Insert(para_list[i]->get_name(),"ID",para_list[i]->getReturnType());
+			table->Insert(para_list[i]->getName(),"ID",para_list[i]->getReturnType());
 			//table->printcurrent();
-			var_dec.push_back(para_list[i]->get_name()+IntToString(table->getCurrentId()));}
+			var_dec.push_back(para_list[i]->getName()+IntToString(table->getCurrentId()));}
 			para_list.clear();
 		} statements RCURL {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL statements RCURL\n\n",line_count);
-										fprintf(parsertext,"{%s}\n\n",$3->get_name().c_str());
-										$$->setName("{\n"+$3->get_name()+"\n}");
+										fprintf(parsertext,"{%s}\n\n",$3->getName().c_str());
+										$$->setName("{\n"+$3->getName()+"\n}");
 										$$->setCode($3->getCode());
 										table->printall();
 										table->Exit_Scope();
 										}
 		| LCURL RCURL {table->Enter_Scope();
 				for(int i=0;i<para_list.size();i++){
-			table->Insert(para_list[i]->get_name(),"ID",para_list[i]->getReturnType());
+			table->Insert(para_list[i]->getName(),"ID",para_list[i]->getReturnType());
 			//table->printcurrent();
-			var_dec.push_back(para_list[i]->get_name()+IntToString(table->getCurrentId()));
+			var_dec.push_back(para_list[i]->getName()+IntToString(table->getCurrentId()));
 			}
 			para_list.clear();
 			$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : compound_statement->LCURL RCURL\n\n",line_count);
@@ -517,8 +517,8 @@ compound_statement : LCURL {table->Enter_Scope();
 		;
 
 var_declaration : type_specifier declaration_list SEMICOLON {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n",line_count);
-														fprintf(parsertext,"%s %s;\n\n",$1->get_name().c_str(),$2->get_name().c_str());
-														if($1->get_name()=="void "){
+														fprintf(parsertext,"%s %s;\n\n",$1->getName().c_str(),$2->getName().c_str());
+														if($1->getName()=="void "){
 															error_count++;
 															fprintf(error,"Error at Line No.%d: Type specifier can not be void \n\n",line_count);
 																
@@ -527,30 +527,30 @@ var_declaration : type_specifier declaration_list SEMICOLON {$$=new SymbolInfo()
 														//	func_var_dec.clear();
 														for(int i=0;i<dec_list.size();i++){
 
-															if(table->lookupcurrent(dec_list[i]->get_name())){
+															if(table->lookupcurrent(dec_list[i]->getName())){
 																error_count++;
-																fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->get_name().c_str());
+																fprintf(error,"Error at Line No.%d:  Multiple Declaration of %s \n\n",line_count,dec_list[i]->getName().c_str());
 																continue;
 															}
 															if(dec_list[i]->get_type().size()>2){
-																arr_dec.push_back(make_pair(dec_list[i]->get_name()+IntToString(table->getCurrentId()),
+																arr_dec.push_back(make_pair(dec_list[i]->getName()+IntToString(table->getCurrentId()),
 																
 																dec_list[i]->get_type().substr(2,dec_list[i]->get_type().size () - 1)));
 
 																dec_list[i]->set_type(dec_list[i]->get_type().substr(0,dec_list[i]->get_type().size () - 1));
 
-																table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$1->get_name()+"array");
+																table->Insert(dec_list[i]->getName(),dec_list[i]->get_type(),$1->getName()+"array");
 
 															}else{
-															func_var_dec.push_back(dec_list[i]->get_name()+IntToString(table->getCurrentId()));
-															table->Insert(dec_list[i]->get_name(),dec_list[i]->get_type(),$1->get_name());
-															var_dec.push_back(dec_list[i]->get_name()+IntToString(table->getCurrentId()));
+															func_var_dec.push_back(dec_list[i]->getName()+IntToString(table->getCurrentId()));
+															table->Insert(dec_list[i]->getName(),dec_list[i]->get_type(),$1->getName());
+															var_dec.push_back(dec_list[i]->getName()+IntToString(table->getCurrentId()));
 															}
 														}
 														}
 														
 														dec_list.clear();
-														$$->setName($1->get_name()+" "+$2->get_name()+";");
+														$$->setName($1->getName()+" "+$2->getName()+";");
 														}
 		;
 
@@ -566,61 +566,61 @@ type_specifier	: INT  {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : typ
 	;
 
 declaration_list : declaration_list COMMA ID {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID\n\n",line_count);
-										fprintf(parsertext,"%s,%s\n\n",$1->get_name().c_str(),$3->get_name().c_str());
-											dec_list.push_back(new SymbolInfo($3->get_name(),"ID"));
-										$$->setName($1->get_name()+","+$3->get_name());
+										fprintf(parsertext,"%s,%s\n\n",$1->getName().c_str(),$3->getName().c_str());
+											dec_list.push_back(new SymbolInfo($3->getName(),"ID"));
+										$$->setName($1->getName()+","+$3->getName());
 										}
 		| declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
-															fprintf(parsertext,"%s,%s[%s]\n\n",$1->get_name().c_str(),$3->get_name().c_str(),$5->get_name().c_str());
-															dec_list.push_back(new SymbolInfo($3->get_name(),"ID"+$5->get_name()));
-															$$->setName($1->get_name()+","+$3->get_name()+"["+$5->get_name()+"]");
+															fprintf(parsertext,"%s,%s[%s]\n\n",$1->getName().c_str(),$3->getName().c_str(),$5->getName().c_str());
+															dec_list.push_back(new SymbolInfo($3->getName(),"ID"+$5->getName()));
+															$$->setName($1->getName()+","+$3->getName()+"["+$5->getName()+"]");
 																}
 		| ID {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID\n\n",line_count);
-		fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-		dec_list.push_back(new SymbolInfo($1->get_name(),"ID"));
-		$$->setName($1->get_name());
+		fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+		dec_list.push_back(new SymbolInfo($1->getName(),"ID"));
+		$$->setName($1->getName());
 	
 		}
 		| ID LTHIRD CONST_INT RTHIRD {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n",line_count);
-		fprintf(parsertext,"%s[%s]\n\n",$1->get_name().c_str(),$3->get_name().c_str());
-		dec_list.push_back(new SymbolInfo($1->get_name(),"ID"+$3->get_name()));
-		$$->setName($1->get_name()+"["+$3->get_name()+"]");
+		fprintf(parsertext,"%s[%s]\n\n",$1->getName().c_str(),$3->getName().c_str());
+		dec_list.push_back(new SymbolInfo($1->getName(),"ID"+$3->getName()));
+		$$->setName($1->getName()+"["+$3->getName()+"]");
 
 		}
 		;
 
 statements : statement {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statement\n\n",line_count);
-					fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-					$$->setName($1->get_name());
+					fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+					$$->setName($1->getName());
 					$$->setCode($1->getCode());
 					}
 	| statements statement {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : statements->statements statement\n\n",line_count);
-						fprintf(parsertext,"%s %s\n\n",$1->get_name().c_str(),$2->get_name().c_str()); 
-						$$->setName($1->get_name()+"\n"+$2->get_name()); 
+						fprintf(parsertext,"%s %s\n\n",$1->getName().c_str(),$2->getName().c_str()); 
+						$$->setName($1->getName()+"\n"+$2->getName()); 
 						$$->setCode($1->getCode()+$2->getCode());
 							}
 	;
 
 statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> var_declaration\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-						$$->setName($1->get_name()); 
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+						$$->setName($1->getName()); 
 
 						}
 	| expression_statement {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement -> expression_statement\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-						$$->setName($1->get_name()); 
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+						$$->setName($1->getName()); 
 						$$->setCode($1->getCode());
 
 
 							}
 	| compound_statement {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->compound_statement\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-						$$->setName($1->get_name()); 
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+						$$->setName($1->getName()); 
 						$$->setCode($1->getCode());
 
 							}
 	| FOR LPAREN expression_statement expression_statement expression RPAREN statement {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement ->FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n",line_count);
-																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$3->get_name().c_str(),$4->get_name().c_str(),$5->get_name().c_str(),$7->get_name().c_str());
+																					fprintf(parsertext,"for(%s %s %s)\n%s \n\n",$3->getName().c_str(),$4->getName().c_str(),$5->getName().c_str(),$7->getName().c_str());
 																					if($3->getReturnType()=="void "){
 																						error_count++;
 																						fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -643,11 +643,11 @@ statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d
 																						$$->setCode(code);
 																					}
 																					
-																					$$->setName("for("+$3->get_name()+$4->get_name()+$5->get_name()+")\n"+$5->get_name()); 
+																					$$->setName("for("+$3->getName()+$4->getName()+$5->getName()+")\n"+$5->getName()); 
 
 																						}
 	| IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement\n\n",line_count);
-																fprintf(parsertext,"if(%s)\n%s\n\n",$3->get_name().c_str(),$5->get_name().c_str());
+																fprintf(parsertext,"if(%s)\n%s\n\n",$3->getName().c_str(),$5->getName().c_str());
 																if($3->getReturnType()=="void "){
 																	error_count++;
 																	fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -666,11 +666,11 @@ statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d
 
 																}
 																
-																$$->setName("if("+$3->get_name()+")\n"+$5->get_name()); 
+																$$->setName("if("+$3->getName()+")\n"+$5->getName()); 
 
 																	}
 	| IF LPAREN expression RPAREN statement ELSE statement {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->IF LPAREN expression RPAREN statement ELSE statement\n\n",line_count);
-														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$3->get_name().c_str(),$5->get_name().c_str(),$7->get_name().c_str());
+														fprintf(parsertext,"if(%s)\n%s\n else \n %s\n\n",$3->getName().c_str(),$5->getName().c_str(),$7->getName().c_str());
 														if($3->getReturnType()=="void "){
 															error_count++;
 															fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -691,11 +691,11 @@ statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d
 															$$->setCode(code);
 														}
 														
-														$$->setName("if("+$3->get_name()+")\n"+$5->get_name()+" else \n"+$7->get_name()); 
+														$$->setName("if("+$3->getName()+")\n"+$5->getName()+" else \n"+$7->getName()); 
 														}
 
 	| WHILE LPAREN expression RPAREN statement {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->WHILE LPAREN expression RPAREN statement\n\n",line_count);
-											fprintf(parsertext,"while(%s)\n%s\n\n",$3->get_name().c_str(),$5->get_name().c_str());
+											fprintf(parsertext,"while(%s)\n%s\n\n",$3->getName().c_str(),$5->getName().c_str());
 												if($3->getReturnType()=="void "){
 												error_count++;
 												fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -714,26 +714,26 @@ statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d
 												code+=string(label2)+":\n";
 												$$->setCode(code);
 											}
-												$$->setName("while("+$3->get_name()+")\n"+$5->get_name()); 
+												$$->setName("while("+$3->getName()+")\n"+$5->getName()); 
 												}
 	| PRINTLN LPAREN ID RPAREN SEMICOLON {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->PRINTLN LPAREN ID RPAREN SEMICOLON\n\n",line_count);
-										fprintf(parsertext,"\n (%s);\n\n",$3->get_name().c_str());
+										fprintf(parsertext,"\n (%s);\n\n",$3->getName().c_str());
 										string code="";
-										if(table->lookupscopeid($3->get_name())==-1){
+										if(table->lookupscopeid($3->getName())==-1){
 											error_count++;
-											fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$3->get_name().c_str());
+											fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$3->getName().c_str());
 										}
 										else{
 										
-											code+="MOV AX,"+$3->get_name()+IntToString(table->lookupscopeid($3->get_name()));
+											code+="MOV AX,"+$3->getName()+IntToString(table->lookupscopeid($3->getName()));
 											code+="\nCALL OUTDEC\n";
 										}
-										$$->setName("println("+$3->get_name()+");");
+										$$->setName("println("+$3->getName()+");");
 											
 										$$->setCode(code); 
 											}
 	| RETURN expression SEMICOLON {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : statement->RETURN expression SEMICOLON\n\n",line_count);
-								fprintf(parsertext,"return %s;\n\n",$2->get_name().c_str());
+								fprintf(parsertext,"return %s;\n\n",$2->getName().c_str());
 								if($2->getReturnType()=="void "){
 											error_count++;
 											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -745,7 +745,7 @@ statement : var_declaration { $$=new SymbolInfo();fprintf(parsertext,"Line at %d
 									code+="JMP LReturn"+curfunction+"\n";
 									$$->setCode(code);
 								}
-								$$->setName("return "+$2->get_name()+";"); 
+								$$->setName("return "+$2->getName()+";"); 
 								}
 	;
 
@@ -754,8 +754,8 @@ expression_statement 	: SEMICOLON	{$$=new SymbolInfo();fprintf(parsertext,"Line 
 								$$->setName(";"); 
 								}
 		| expression SEMICOLON {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression_statement->expression SEMICOLON\n\n",line_count);
-								fprintf(parsertext,"%s;\n\n",$1->get_name().c_str());
-								$$->setName($1->get_name()+";"); 
+								fprintf(parsertext,"%s;\n\n",$1->getName().c_str());
+								$$->setName($1->getName()+";"); 
 								$$->setCode($1->getCode());
 								$$->setAssemblyID($1->getAssemblyID());
 
@@ -764,42 +764,42 @@ expression_statement 	: SEMICOLON	{$$=new SymbolInfo();fprintf(parsertext,"Line 
 
 variable : ID 		{$$=new SymbolInfo();
 				fprintf(parsertext,"Line at %d : variable->ID\n\n",line_count);
-				fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-				if(table->lookup($1->get_name())==0){
+				fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+				if(table->lookup($1->getName())==0){
 						error_count++;
-					fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$1->get_name().c_str());
+					fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$1->getName().c_str());
 				
 				}
-				else if(table->lookup($1->get_name())->getReturnType()=="int array" || table->lookup($1->get_name())->getReturnType()=="float array"){
+				else if(table->lookup($1->getName())->getReturnType()=="int array" || table->lookup($1->getName())->getReturnType()=="float array"){
 					error_count++;
-					fprintf(error,"Error at Line No.%d:  Not an array: %s \n\n",line_count,$1->get_name().c_str());
+					fprintf(error,"Error at Line No.%d:  Not an array: %s \n\n",line_count,$1->getName().c_str());
 				}
-				if(table->lookup($1->get_name())!=0){
-					//cout<<line_count<<" "<<$1->get_name()<<" "<<table->lookup($1->get_name())->getReturnType()<<endl;
-					$$->setReturnType(table->lookup($1->get_name())->getReturnType()); 
-					$$->setAssemblyID($1->get_name()+IntToString(table->lookupscopeid($1->get_name())));
+				if(table->lookup($1->getName())!=0){
+					//cout<<line_count<<" "<<$1->getName()<<" "<<table->lookup($1->getName())->getReturnType()<<endl;
+					$$->setReturnType(table->lookup($1->getName())->getReturnType()); 
+					$$->setAssemblyID($1->getName()+IntToString(table->lookupscopeid($1->getName())));
 				}
-				$$->setName($1->get_name()); 
+				$$->setName($1->getName()); 
 				$$->set_type("notarray");
 					
 					
 				}
 	| ID LTHIRD expression RTHIRD  {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : variable->ID LTHIRD expression RTHIRD\n\n",line_count);
-								fprintf(parsertext,"%s[%s]\n\n",$1->get_name().c_str(),$3->get_name().c_str());
-								if(table->lookup($1->get_name())==0){
+								fprintf(parsertext,"%s[%s]\n\n",$1->getName().c_str(),$3->getName().c_str());
+								if(table->lookup($1->getName())==0){
 									error_count++;
-									fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$1->get_name().c_str());
+									fprintf(error,"Error at Line No.%d:  Undeclared Variable: %s \n\n",line_count,$1->getName().c_str());
 								}
 								//cout<<line_count<<" "<<$3->getReturnType()<<endl;
 								else if($3->getReturnType()=="float "||$3->getReturnType()=="void "){
 									error_count++;
 									fprintf(error,"Error at Line No.%d:  Non-integer Array Index  \n\n",line_count);
-									$$->setAssemblyID($1->get_name()+IntToString(table->lookupscopeid($1->get_name())));
+									$$->setAssemblyID($1->getName()+IntToString(table->lookupscopeid($1->getName())));
 
 								}
-								else if(table->lookup($1->get_name())!=0){
-									//cout<<line_count<<" "<<table->lookup($1->get_name())->getReturnType()<<endl;
-									if(table->lookup($1->get_name())->getReturnType()!="int array" && table->lookup($1->get_name())->getReturnType()!="float array")
+								else if(table->lookup($1->getName())!=0){
+									//cout<<line_count<<" "<<table->lookup($1->getName())->getReturnType()<<endl;
+									if(table->lookup($1->getName())->getReturnType()!="int array" && table->lookup($1->getName())->getReturnType()!="float array")
 									{
 								
 										error_count++;
@@ -807,11 +807,11 @@ variable : ID 		{$$=new SymbolInfo();
 									}
 									else{
 									
-									if(table->lookup($1->get_name())->getReturnType()=="int array"){
+									if(table->lookup($1->getName())->getReturnType()=="int array"){
 
 										$1->setReturnType("int ");
 									}
-									if(table->lookup($1->get_name())->getReturnType()=="float array"){
+									if(table->lookup($1->getName())->getReturnType()=="float array"){
 										$1->setReturnType("float ");
 									}
 									$$->setReturnType($1->getReturnType());
@@ -819,32 +819,32 @@ variable : ID 		{$$=new SymbolInfo();
 									code+=$3->getCode();
 									code+="MOV BX,"+$3->getAssemblyID()+"\n";
 									code+="ADD BX,BX\n";
-									$$->setAssemblyID($1->get_name()+IntToString(table->lookupscopeid($1->get_name())));
+									$$->setAssemblyID($1->getName()+IntToString(table->lookupscopeid($1->getName())));
 									//cout<<line_count<<" "<<$$->getAssemblyID()<<endl;
 									$$->setCode(code);
 
 									
 								}}
-								$$->setName($1->get_name()+"["+$3->get_name()+"]");  
+								$$->setName($1->getName()+"["+$3->getName()+"]");  
 								$$->set_type("array");
 								}
 	;
 expression : logic_expression	{$$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->logic_expression\n\n",line_count);
-							fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-								$$->setName($1->get_name()); 
+							fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+								$$->setName($1->getName()); 
 								$$->setReturnType($1->getReturnType()); 
 								$$->setCode($1->getCode());
 								$$->setAssemblyID($1->getAssemblyID());
 			
 								}
 	| variable ASSIGNOP logic_expression {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : expression->variable ASSIGNOP logic_expression\n\n",line_count);
-										fprintf(parsertext,"%s=%s\n\n",$1->get_name().c_str(),$3->get_name().c_str());
+										fprintf(parsertext,"%s=%s\n\n",$1->getName().c_str(),$3->getName().c_str());
 											if($3->getReturnType()=="void "){
 											error_count++;
 											fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 											$$->setReturnType("int "); 
 										}else {
-											//cout<<line_count<<" "<<table->lookup($1->get_name())->getReturnType()<<""<<$3->getReturnType()<<endl;
+											//cout<<line_count<<" "<<table->lookup($1->getName())->getReturnType()<<""<<$3->getReturnType()<<endl;
 											if($1->getReturnType()!=$3->getReturnType()){
 													error_count++;
 												fprintf(error,"Error at Line No.%d: Type Mismatch \n\n",line_count);
@@ -867,20 +867,20 @@ expression : logic_expression	{$$=new SymbolInfo();fprintf(parsertext,"Line at %
 											}
 										}
 										$$->setReturnType($1->getReturnType()); 
-										$$->setName($1->get_name()+"="+$3->get_name());  
+										$$->setName($1->getName()+"="+$3->getName());  
 
 										}
 	;
 logic_expression : rel_expression 	{$$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression\n\n",line_count);
-									fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-									$$->setName($1->get_name()); 
+									fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+									$$->setName($1->getName()); 
 									$$->setReturnType($1->getReturnType()); 
 									$$->setCode($1->getCode());
 									$$->setAssemblyID($1->getAssemblyID());
 
 									}
 		| rel_expression LOGICOP rel_expression {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : logic_expression->rel_expression LOGICOP rel_expression\n\n",line_count);
-												fprintf(parsertext,"%s%s%s\n\n",$1->get_name().c_str(),$2->get_name().c_str(),$3->get_name().c_str());
+												fprintf(parsertext,"%s%s%s\n\n",$1->getName().c_str(),$2->getName().c_str(),$3->getName().c_str());
 													if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
 													error_count++;
 													fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -891,9 +891,9 @@ logic_expression : rel_expression 	{$$=new SymbolInfo();fprintf(parsertext,"Line
 													char *label1=newLabel();
 													char *label2=newLabel();
 													char *label3=newLabel();
-													char *temp=newTemp();
+													char *temp=generateNewTempVariable();
 
-													if($2->get_name()=="||"){
+													if($2->getName()=="||"){
 														code+="MOV AX,"+$1->getAssemblyID()+"\n";
 														code+="CMP AX,0\n";
 														code+="JNE "+string(label2)+"\n";
@@ -929,21 +929,21 @@ logic_expression : rel_expression 	{$$=new SymbolInfo();fprintf(parsertext,"Line
 
 												}
 												$$->setReturnType("int "); 
-												$$->setName($1->get_name()+$2->get_name()+$3->get_name());  
+												$$->setName($1->getName()+$2->getName()+$3->getName());  
 
 											}
 		;
 
 rel_expression	: simple_expression {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression\n\n",line_count);
-								fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-								$$->setName($1->get_name()); 
+								fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+								$$->setName($1->getName()); 
 								$$->setReturnType($1->getReturnType()); 
 								$$->setCode($1->getCode());
 								$$->setAssemblyID($1->getAssemblyID());
 
 								}
 	| simple_expression RELOP simple_expression	 {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : rel_expression->simple_expression RELOP simple_expression\n\n",line_count);
-												fprintf(parsertext,"%s%s%s\n\n",$1->get_name().c_str(),$2->get_name().c_str(),$3->get_name().c_str());
+												fprintf(parsertext,"%s%s%s\n\n",$1->getName().c_str(),$2->getName().c_str(),$3->getName().c_str());
 												if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
 													error_count++;
 													fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
@@ -951,32 +951,32 @@ rel_expression	: simple_expression {$$=new SymbolInfo();fprintf(parsertext,"Line
 												}else{
 													string code=$1->getCode();
 													code+=$3->getCode();
-													char *temp=newTemp();
+													char *temp=generateNewTempVariable();
 													char *label1=newLabel();
 													char *label2=newLabel();
 													code+="MOV AX,"+$1->getAssemblyID()+"\n";
 													code+="CMP AX,"+$3->getAssemblyID()+"\n";
-													if($2->get_name()=="<"){
+													if($2->getName()=="<"){
 														code+="JL "+string(label1)+"\n";
 
 													}
-													else if($2->get_name()==">"){
+													else if($2->getName()==">"){
 														code+="JG "+string(label1)+"\n";
 
 													}
-													else if($2->get_name()=="<="){
+													else if($2->getName()=="<="){
 														code+="JLE "+string(label1)+"\n";
 
 													}
-													else if($2->get_name()==">="){
+													else if($2->getName()==">="){
 														code+="JGE "+string(label1)+"\n";
 
 													}
-													else if($2->get_name()=="=="){
+													else if($2->getName()=="=="){
 														code+="JE "+string(label1)+"\n";
 
 													}
-													else if($2->get_name()=="!="){
+													else if($2->getName()=="!="){
 														code+="JNE "+string(label1)+"\n";
 
 													}
@@ -993,15 +993,15 @@ rel_expression	: simple_expression {$$=new SymbolInfo();fprintf(parsertext,"Line
 												}
 												$$->setReturnType("int "); 
 												
-												$$->setName($1->get_name()+$2->get_name()+$3->get_name());  
+												$$->setName($1->getName()+$2->getName()+$3->getName());  
 
 												}
 	;
 
 simple_expression : term {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : simple_expression->term\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str());
 						$$->setReturnType($1->getReturnType());
-						$$->setName($1->get_name());  
+						$$->setName($1->getName());  
 						$$->setCode($1->getCode());
 						$$->setAssemblyID($1->getAssemblyID());
 
@@ -1009,7 +1009,7 @@ simple_expression : term {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : s
 						}
 		| simple_expression ADDOP term {$$=new SymbolInfo(); 
 									fprintf(parsertext,"Line at %d : simple_expression->simple_expression ADDOP term\n\n",line_count);
-									fprintf(parsertext,"%s%s%s\n\n",$1->get_name().c_str(),$2->get_name().c_str(),$3->get_name().c_str());
+									fprintf(parsertext,"%s%s%s\n\n",$1->getName().c_str(),$2->getName().c_str(),$3->getName().c_str());
 									//cout<<$3->getReturnType()<<endl;
 									if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
 											error_count++;
@@ -1022,8 +1022,8 @@ simple_expression : term {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : s
 										string code=$1->getCode()+$3->getCode();
 
 										code+="MOV AX,"+$1->getAssemblyID()+"\n";
-										char *temp=newTemp();
-										if($2->get_name()=="+"){
+										char *temp=generateNewTempVariable();
+										if($2->getName()=="+"){
 											code+="ADD AX,"+$3->getAssemblyID()+"\n";
 										}
 										else{
@@ -1035,162 +1035,167 @@ simple_expression : term {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : s
 										$$->setAssemblyID(temp);
 										var_dec.push_back(temp);
 										}
-										$$->setName($1->get_name()+$2->get_name()+$3->get_name());  
+										$$->setName($1->getName()+$2->getName()+$3->getName());  
 										}
 		;
 
 term :	unary_expression  {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->unary_expression\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-						$$->setReturnType($1->getReturnType()); 
-						
-						$$->setName($1->get_name()); 
-						$$->setCode($1->getCode());
-						$$->setAssemblyID($1->getAssemblyID());
+				fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+				
+				$$->setReturnType($1->getReturnType()); 
+				
+				$$->setName($1->getName()); 
+				$$->setCode($1->getCode());
+				$$->setAssemblyID($1->getAssemblyID());
 
 
-						}
-	|  term MULOP unary_expression {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
-								fprintf(parsertext,"%s%s%s\n\n",$1->get_name().c_str(),$2->get_name().c_str(),$3->get_name().c_str());
-									if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
-										error_count++;
-										fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-										$$->setReturnType("int "); 
-								}else if($2->get_name()=="%"){
-										if($1->getReturnType()!="int " ||$3->getReturnType()!="int "){
-											error_count++;
-										fprintf(error,"Error at Line No.%d:  Integer operand on modulus operator  \n\n",line_count);
+				}
+|  term MULOP unary_expression {
+	
+	$$=new SymbolInfo();fprintf(parsertext,"Line at %d : term->term MULOP unary_expression\n\n",line_count);
+		fprintf(parsertext,"%s%s%s\n\n",$1->getName().c_str(),$2->getName().c_str(),$3->getName().c_str());
+			if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
 
-										}else{
-											$$->setReturnType("int "); 
-
-										}
-										string code=$1->getCode()+$3->getCode();
-										char *temp=newTemp();
-										code+="MOV AX,"+$1->getAssemblyID()+"\n";
-										code+="MOV BX,"+$3->getAssemblyID()+"\n";
-										code+="MOV DX,0\n";
-										code+="DIV BX\n";
-										code+="MOV "+string(temp)+", DX\n";
-										$$->setCode(code);
-										$$->setAssemblyID(temp);
-										var_dec.push_back(temp);
-									}
-								else if($2->get_name()=="/"){
-								if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
-										error_count++;
-										fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-										$$->setReturnType("int "); 
-								}
-									else { 
-										if($1->getReturnType()=="int " && $3->getReturnType()=="int ")
-											$$->setReturnType("int "); 
-										else $$->setReturnType("float "); 
-										string code=$1->getCode()+$3->getCode();
-										char *temp=newTemp();
-										code+="MOV AX,"+$1->getAssemblyID()+"\n";
-										code+="MOV BX,"+$3->getAssemblyID()+"\n";
-										code+="DIV BX\n";
-										code+="MOV "+string(temp)+", AX\n";
-										$$->setCode(code);
-										$$->setAssemblyID(temp);
-										var_dec.push_back(temp);
-
-											
-									}
-									}
-									else{
-										if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
-										error_count++;
-										fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-										$$->setReturnType("int "); 
-									}
-									else { 
-										if($1->getReturnType()=="float " || $3->getReturnType()=="float ")
-											$$->setReturnType("float "); 
-										else $$->setReturnType("int "); 
-										string code=$1->getCode()+$3->getCode();
-										char *temp=newTemp();
-										code+="MOV AX,"+$1->getAssemblyID()+"\n";
-										code+="MOV BX,"+$3->getAssemblyID()+"\n";
-										code+="MUL BX\n";
-										code+="MOV "+string(temp)+", AX\n";
-										$$->setCode(code);
-										$$->setAssemblyID(temp);
-										var_dec.push_back(temp);
-										
-										}
-									}
-								$$->setName($1->get_name()+$2->get_name()+$3->get_name()); 
-							
-									}
-	;
-
-unary_expression : ADDOP unary_expression  {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
-								fprintf(parsertext,"%s%s\n\n",$1->get_name().c_str(),$2->get_name().c_str());
-								if($2->getReturnType()=="void "){
-									error_count++;
-									fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
-									$$->setReturnType("int "); 
-								}else {
-									string code=$2->getCode();
-									if($1->get_name()=="-"){
-										code+="MOV AX,"+$2->getAssemblyID()+"\n";
-										code+="NEG AX\n";
-										code+="MOV "+$2->getAssemblyID()+",AX\n";
-
-									}
-								$$->setCode(code);
-								$$->setAssemblyID($2->getAssemblyID());
-								
-								$$->setReturnType($2->getReturnType()); 	
-								
-								}
-								$$->setName($1->get_name()+$2->get_name()); 
-							
-									}
-		| NOT unary_expression {
-			$$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
-			fprintf(parsertext,"!%s\n\n",$2->get_name().c_str()); 
-			if($2->getReturnType()=="void "){
 				error_count++;
 				fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
 				$$->setReturnType("int "); 
-			}else {
-				$$->setReturnType($2->getReturnType());  
-				string code=$2->getCode();
-				code+="MOV AX,"+$2->getAssemblyID()+"\n";
-				code+="NOT AX\n";
-				code+="MOV "+$2->getAssemblyID()+",AX\n";
+			}else if($2->getName()=="%"){
+				if($1->getReturnType()!="int " ||$3->getReturnType()!="int "){
+					error_count++;
+				fprintf(error,"Error at Line No.%d:  Integer operand on modulus operator  \n\n",line_count);
 
+				}else{
+					$$->setReturnType("int "); 
+
+				}
+				string code=$1->getCode()+$3->getCode();
+				char *temp=generateNewTempVariable();
+				code+="MOV AX,"+$1->getAssemblyID()+"\n";
+				code+="MOV BX,"+$3->getAssemblyID()+"\n";
+				code+="MOV DX,0\n";
+				code+="DIV BX\n";
+				code+="MOV "+string(temp)+", DX\n";
 				$$->setCode(code);
-				$$->setAssemblyID($2->getAssemblyID());
-			
-			
+				$$->setAssemblyID(temp);
+				var_dec.push_back(temp);
 			}
-			
-			$$->setName("!"+$2->get_name()); 
-		
+			else if($2->getName()=="/"){
+				if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
+					error_count++;
+					fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+					$$->setReturnType("int "); 
+				}
+				else { 
+					if($1->getReturnType()=="int " && $3->getReturnType()=="int ")
+						$$->setReturnType("int "); 
+					else $$->setReturnType("float "); 
+					string code=$1->getCode()+$3->getCode();
+					char *temp=generateNewTempVariable();
+					code+="MOV AX,"+$1->getAssemblyID()+"\n";
+					code+="MOV BX,"+$3->getAssemblyID()+"\n";
+					code+="DIV BX\n";
+					code+="MOV "+string(temp)+", AX\n";
+					$$->setCode(code);
+					$$->setAssemblyID(temp);
+					var_dec.push_back(temp);
+
+						
+				}
+			}
+			else{
+				if($1->getReturnType()=="void "||$3->getReturnType()=="void "){
+					error_count++;
+					fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+					$$->setReturnType("int "); 
+				}
+				else { 
+					if($1->getReturnType()=="float " || $3->getReturnType()=="float ")
+						$$->setReturnType("float "); 
+					else $$->setReturnType("int "); 
+					
+					string code=$1->getCode()+$3->getCode();
+					char *temp=generateNewTempVariable();
+					code+="MOV AX,"+$1->getAssemblyID()+"\n";
+					code+="MOV BX,"+$3->getAssemblyID()+"\n";
+					code+="MUL BX\n";
+					code+="MOV "+string(temp)+", AX\n";
+					$$->setCode(code);
+					$$->setAssemblyID(temp);
+					var_dec.push_back(temp);
+				
+				}
+			}
+		$$->setName($1->getName()+$2->getName()+$3->getName()); 
+	
 		}
-		| factor {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
-			fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
-			// cout<<$1->getReturnType()<<endl;
-			$$->setReturnType($1->getReturnType()); 
-			$$->setName($1->get_name()); 
-			$$->setCode($1->getCode());
-			$$->setAssemblyID($1->getAssemblyID());
-			
-			
-		}
-		;
+;
+
+unary_expression : ADDOP unary_expression  {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : unary_expression->ADDOP unary_expression\n\n",line_count);
+						fprintf(parsertext,"%s%s\n\n",$1->getName().c_str(),$2->getName().c_str());
+						if($2->getReturnType()=="void "){
+							error_count++;
+							fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+							$$->setReturnType("int "); 
+						}else {
+							string code=$2->getCode();
+							if($1->getName()=="-"){
+								code+="MOV AX,"+$2->getAssemblyID()+"\n";
+								code+="NEG AX\n";
+								code+="MOV "+$2->getAssemblyID()+",AX\n";
+
+							}
+						$$->setCode(code);
+						$$->setAssemblyID($2->getAssemblyID());
+						
+						$$->setReturnType($2->getReturnType()); 	
+						
+						}
+						$$->setName($1->getName()+$2->getName()); 
+					
+							}
+| NOT unary_expression {
+	$$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->NOT unary_expression\n\n",line_count);
+	fprintf(parsertext,"!%s\n\n",$2->getName().c_str()); 
+	if($2->getReturnType()=="void "){
+		error_count++;
+		fprintf(error,"Error at Line No.%d:  Type Mismatch \n\n",line_count);
+		$$->setReturnType("int "); 
+	}else {
+		$$->setReturnType($2->getReturnType());  
+		string code=$2->getCode();
+		code+="MOV AX,"+$2->getAssemblyID()+"\n";
+		code+="NOT AX\n";
+		code+="MOV "+$2->getAssemblyID()+",AX\n";
+
+		$$->setCode(code);
+		$$->setAssemblyID($2->getAssemblyID());
+	
+	
+	}
+	
+	$$->setName("!"+$2->getName()); 
+
+}
+| factor {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : unary_expression->factor\n\n",line_count);
+	fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
+	// cout<<$1->getReturnType()<<endl;
+	$$->setReturnType($1->getReturnType()); 
+	$$->setName($1->getName()); 
+	$$->setCode($1->getCode());
+	$$->setAssemblyID($1->getAssemblyID());
+	
+	
+}
+;
 
 factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable\n\n",line_count);
-				fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
+				fprintf(parsertext,"%s\n\n",$1->getName().c_str());
 				$$->setReturnType($1->getReturnType()); 
-				$$->setName($1->get_name()); 
+				$$->setName($1->getName()); 
 
 				string code=$1->getCode();
 				if($1->get_type()=="array"){
-					char *temp=newTemp();
+					char *temp=generateNewTempVariable();
 					code+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";
 					code+="MOV "+string(temp)+",AX\n";
 					var_dec.push_back(temp);
@@ -1206,8 +1211,8 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 				
 				}
 | ID LPAREN argument_list RPAREN {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : factor->ID LPAREN argument_list RPAREN\n\n",line_count);
-								fprintf(parsertext,"%s(%s)\n\n",$1->get_name().c_str(),$3->get_name().c_str());
-								SymbolInfo* s=table->lookup($1->get_name());
+								fprintf(parsertext,"%s(%s)\n\n",$1->getName().c_str(),$3->getName().c_str());
+								SymbolInfo* s=table->lookup($1->getName());
 								if(s==0){
 									error_count++;
 									fprintf(error,"Error at Line No.%d:  Undefined Function \n\n",line_count);
@@ -1229,7 +1234,7 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 									$$->setReturnType(s->get_isFunction()->get_return_type());
 									if(num!=arg_list.size()){
 										error_count++;
-										fprintf(error,"Error at Line No.%d:  Invalid number of arguments %s\n\n",line_count,$1->get_name().c_str());
+										fprintf(error,"Error at Line No.%d:  Invalid number of arguments %s\n\n",line_count,$1->getName().c_str());
 
 									}
 									else{
@@ -1243,7 +1248,7 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 										for(int i=0;i<arg_list.size();i++){
 											code+="MOV AX,"+arg_list[i]->getAssemblyID()+"\n";
 											code+="MOV "+para_list[i]+",AX\n";
-											//cout<<para_list[i]<<" "<<arg_list[i]->get_name()<<" "<<arg_list[i]->getAssemblyID()<<endl;
+											//cout<<para_list[i]<<" "<<arg_list[i]->getName()<<" "<<arg_list[i]->getAssemblyID()<<endl;
 											if(arg_list[i]->getReturnType()!=para_type[i]){
 												
 												error_count++;
@@ -1252,10 +1257,10 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 											}
 										}
 										
-										code+="CALL "+$1->get_name()+"\n";
+										code+="CALL "+$1->getName()+"\n";
 									
-										code+="MOV AX,"+$1->get_name()+"_return\n";
-										char *temp=newTemp();
+										code+="MOV AX,"+$1->getName()+"_return\n";
+										char *temp=generateNewTempVariable();
 										code+="MOV "+string(temp)+",AX\n";
 										$$->setCode(code);
 										$$->setAssemblyID(temp);
@@ -1265,40 +1270,40 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 								}
 								arg_list.clear();
 								//cout<<line_count<<" "<<$$->getReturnType()<<endl;
-								$$->setName($1->get_name()+"("+$3->get_name()+")"); 
+								$$->setName($1->getName()+"("+$3->getName()+")"); 
 								}
 | LPAREN expression RPAREN {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->LPAREN expression RPAREN\n\n",line_count);
-							fprintf(parsertext,"(%s)\n\n",$2->get_name().c_str()); 
+							fprintf(parsertext,"(%s)\n\n",$2->getName().c_str()); 
 							$$->setReturnType($2->getReturnType()); 
-							$$->setName("("+$2->get_name()+")"); 
+							$$->setName("("+$2->getName()+")"); 
 							$$->setCode($2->getCode());
 							$$->setAssemblyID($2->getAssemblyID());
 							}
 | CONST_INT { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_INT\n\n",line_count);
-			fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
+			fprintf(parsertext,"%s\n\n",$1->getName().c_str());
 			$$->setReturnType("int "); 	
-			$$->setName($1->get_name()); 
-			char *temp=newTemp();
-			string code="MOV "+string(temp)+","+$1->get_name()+"\n";
+			$$->setName($1->getName()); 
+			char *temp=generateNewTempVariable();
+			string code="MOV "+string(temp)+","+$1->getName()+"\n";
 			$$->setCode(code);
 			$$->setAssemblyID(string(temp));
 			//cout<<code<<endl;
 			var_dec.push_back(temp);
 			}
 | CONST_FLOAT {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->CONST_FLOAT\n\n",line_count);
-				fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
+				fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
 				$$->setReturnType("float "); 	
-				$$->setName($1->get_name()); 
-				char *temp=newTemp();
-				string code="MOV "+string(temp)+","+$1->get_name()+"\n";
+				$$->setName($1->getName()); 
+				char *temp=generateNewTempVariable();
+				string code="MOV "+string(temp)+","+$1->getName()+"\n";
 				$$->setCode(code);
 				$$->setAssemblyID(string(temp));
 				var_dec.push_back(temp);
 				}
 | variable INCOP {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable INCOP\n\n",line_count);
-				fprintf(parsertext,"%s++\n\n",$1->get_name().c_str()); 
+				fprintf(parsertext,"%s++\n\n",$1->getName().c_str()); 
 				$$->setReturnType($1->getReturnType());
-				char *temp=newTemp();
+				char *temp=generateNewTempVariable();
 				string code="";
 				//todo find if this actually works.
 				if($1->get_type()=="array"){
@@ -1318,16 +1323,16 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 				var_dec.push_back(temp);
 				
 				
-				$$->setName($1->get_name()+"++");
+				$$->setName($1->getName()+"++");
 				$$->setCode(code); 
 				$$->setAssemblyID(temp);
 					
 					
 					}
 | variable DECOP {$$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor->variable DECOP\n\n",line_count);
-				fprintf(parsertext,"%s--\n\n",$1->get_name().c_str());
+				fprintf(parsertext,"%s--\n\n",$1->getName().c_str());
 				$$->setReturnType($1->getReturnType()); 
-				char *temp=newTemp();
+				char *temp=generateNewTempVariable();
 				string code="";
 				if($1->get_type()=="array"){
 					code+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";
@@ -1343,7 +1348,7 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 				else
 				code+="DEC "+$1->getAssemblyID()+"\n";
 				var_dec.push_back(temp);
-				$$->setName($1->get_name()+"--");
+				$$->setName($1->getName()+"--");
 				$$->setCode(code); 
 				$$->setAssemblyID(temp);
 					
@@ -1351,25 +1356,25 @@ factor	: variable { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : factor-
 ;
 
 argument_list : arguments  {$$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list->arguments\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str());
-							$$->setName($1->get_name());
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str());
+							$$->setName($1->getName());
 							$$->setCode($1->getCode());
 						}
 			| 		%empty	{ $$=new SymbolInfo(); fprintf(parsertext,"Line at %d : argument_list-> \n\n",line_count);$$->setName("");}
 			;
 
 arguments : arguments COMMA logic_expression { $$=new SymbolInfo();fprintf(parsertext,"Line at %d : arguments->arguments COMMA logic_expression \n\n",line_count);
-										fprintf(parsertext,"%s,%s\n\n",$1->get_name().c_str(),$3->get_name().c_str());
+										fprintf(parsertext,"%s,%s\n\n",$1->getName().c_str(),$3->getName().c_str());
 										arg_list.push_back($3);
-										$$->setName($1->get_name()+","+$3->get_name());
+										$$->setName($1->getName()+","+$3->getName());
 										$$->setCode($1->getCode()+$3->getCode());
 										}
 		| logic_expression {$$=new SymbolInfo();
 						fprintf(parsertext,"Line at %d : arguments->logic_expression\n\n",line_count);
-						fprintf(parsertext,"%s\n\n",$1->get_name().c_str()); 
+						fprintf(parsertext,"%s\n\n",$1->getName().c_str()); 
 						arg_list.push_back($1);
 						// cout<<$1->getReturnType()<<endl;
-						$$->setName($1->get_name());
+						$$->setName($1->getName());
 						$$->setCode($1->getCode());
 						
 		}
