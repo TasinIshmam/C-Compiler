@@ -119,6 +119,13 @@ public:
 
 //"assemblyID" is assigned assembly variable ID, "Type" is grammar er terminal/non terminal name. In case of scanner, type returns the token type. (ID, PRINTLN, ADDOP etc)
 
+
+//IDVALUE -> AssemblyID
+//setType -> isArray
+//asm_code -> Code
+//decTyoe -> Return type
+//todo remove above correspondance
+//name -> name  (Both are basically underlying c code segment)
 class SymbolInfo {
 private:
     string name, type, code, assemblyID;   

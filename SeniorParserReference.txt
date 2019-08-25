@@ -13,6 +13,7 @@
 //IDVALUE -> AssemblyID
 //setType -> isArray
 //asm_code -> Code
+//decTyoe -> Return type
 using namespace std;
 
 int yyparse(void);
@@ -1298,11 +1299,13 @@ factor	: variable { $<symbolinfo>$=new SymbolInfo();fprintf(parsertext,"Line at 
 					$<symbolinfo>$->set_dectype($<symbolinfo>1->get_dectype());
 					char *temp=newTemp();
 					string codes="";
+					//todo find if this actually works.
 					if($<symbolinfo>1->get_type()=="array"){
 						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";
 					}
 					else
 					codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"\n";
+	
 					codes+="\tMOV "+string(temp)+",AX\n";
 					if($<symbolinfo>1->get_type()=="array"){
 						codes+="\tMOV AX,"+$<symbolinfo>1->get_idvalue()+"[BX]\n";

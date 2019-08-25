@@ -694,9 +694,21 @@ factor	: variable  {
 						logfile << "factor : variable\n\n";
 						logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
+						string currentCode = $1->getCode();
+						if($1->isAssemblyArrayMember()) {
+							string tempVar = generateNewTempVariable();
+							currentCode += "MOV AX, " + $1->getAssemblyID() + "[BX]\n";
+							currentCode += "MOV " + tempVar + ",AX\n";
+							$$->setAssemblyID(tempVar);
+						} else {
+							$$->setAssemblyID($1->getAssemblyID());
+						}
+
+						$$->setCode(currentCode);
 						
 	}
 	| ID LPAREN argument_list RPAREN	{
+		//todo Function call. Handle Later.
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "factor");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 addLineNoLog();
@@ -717,6 +729,8 @@ factor	: variable  {
 		 logfile << $$->getName() <<endl << endl;
 
 		 $$->setReturnType($2->getReturnType());
+		 $$->setCode($2->getCode());
+		 $$->setAssemblyID($2->getAssemblyID());
 	}
 	| CONST_INT  {
 			$$ = new SymbolInfo($1->getName(), "factor");
@@ -725,6 +739,12 @@ factor	: variable  {
 			logfile << "factor : CONST_INT\n\n";
 			logfile << $$->getName() << endl << endl;
 			$$->setReturnType("int");
+
+			string temp = generateNewTempVariable();
+			string code = "\tMOV " + temp + "," + $1->getName() + "\n";
+			$$->setAssemblyID(temp);
+			$$->setCode(code);
+
 	 }
 	| CONST_FLOAT	{
 			$$ = new SymbolInfo($1->getName(), "factor");
@@ -733,6 +753,11 @@ factor	: variable  {
 			logfile << "factor : CONST_FLOAT\n\n";
 			logfile << $$->getName() << endl << endl;
 			$$->setReturnType("float");
+
+			string temp = generateNewTempVariable();
+			string code = "\tMOV " + temp + "," + $1->getName() + "\n";
+			$$->setAssemblyID(temp);
+			$$->setCode(code);
 	 }
 	| variable INCOP {
 			$$ = new SymbolInfo($1->getName() + $2->getName(), "factor");
@@ -742,6 +767,31 @@ factor	: variable  {
 			logfile << $$->getName() << endl << endl;
 
 			$$->setReturnType($1->getReturnType());
+
+			string tempVar = generateNewTempVariable();
+			string codes = "";
+
+
+			if($$->isAssemblyArrayMember()) {
+				codes+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";	
+				codes+="MOV "+ tempVar +",AX\n";
+				codes+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";
+				codes+="INC AX\n";
+				codes+="MOV "+$1->getAssemblyID()+"[BX],AX\n";
+
+
+			} else {
+			codes+="MOV AX,"+$1->getAssemblyID()+"\n";	
+			codes+="MOV "+ tempVar +",AX\n";
+			codes+="INC "+$1->getAssemblyID()+"\n";
+
+			}
+
+
+			$$->setCode(codes);
+			$$->setAssemblyID(tempVar);
+
+
 
 			
 	}
@@ -753,6 +803,29 @@ factor	: variable  {
 			logfile << $$->getName() << endl << endl;
 
 			$$->setReturnType($1->getReturnType());
+
+			string tempVar = generateNewTempVariable();
+			string codes = "";
+
+
+			if($$->isAssemblyArrayMember()) {
+				codes+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";	
+				codes+="MOV "+ tempVar +",AX\n";
+				codes+="MOV AX,"+$1->getAssemblyID()+"[BX]\n";
+				codes+="DEC AX\n";
+				codes+="MOV "+$1->getAssemblyID()+"[BX],AX\n";
+
+
+			} else {
+			codes+="MOV AX,"+$1->getAssemblyID()+"\n";	
+			codes+="MOV "+ tempVar +",AX\n";
+			codes+="DEC "+$1->getAssemblyID()+"\n";
+
+			}
+
+
+			$$->setCode(codes);
+			$$->setAssemblyID(tempVar);
 	}
 	;
 
