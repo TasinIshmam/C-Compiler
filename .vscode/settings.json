@@ -24,6 +24,7 @@
       "regex": "cpp",
       "bitset": "cpp",
       "vector": "cpp",
-      "*.txt": "cpp"
+      "*.txt": "cpp",
+      "random": "cpp"
     }
 }

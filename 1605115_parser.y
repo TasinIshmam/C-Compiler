@@ -655,10 +655,25 @@ unary_expression : ADDOP unary_expression  {
 						logfile << "unary_expression : ADDOP unary_expression\n\n";
 						logfile << $$->getName() << endl << endl;
 						if( checkIfValidFunctionReturnTypeInExpression($2) ) {
-						string retType = $2->getReturnType();
-						$$->setReturnType(retType);
+							string retType = $2->getReturnType();
+							$$->setReturnType(retType);
+
+							string code = $2->getCode();
+
+							if($1->getName() == "-") {
+								code+="MOV AX,"+$2->getAssemblyID()+"\n";
+								code+="NEG AX\n";
+								code+="MOV "+$2->getAssemblyID()+",AX\n";
+							} 
+
+							$$->setCode(code);
+							$$->setAssemblyID($2->getAssemblyID());
+
 						} else {
 						$$->setReturnType("invalid");		
+						//todo verify if setting this to invalid is the right thing.
+						//we've already given an error if the return type is invalid. 
+						//so this is going to propogate the error further up the gramar.
 						}
 					
 
@@ -671,7 +686,14 @@ unary_expression : ADDOP unary_expression  {
 						logfile << $$->getName() << endl << endl;
 						checkIfValidFunctionReturnTypeInExpression($2);
 						$$->setReturnType("int");
+						
+						string code = $2->getCode();
+						code+="MOV AX,"+$2->getAssemblyID()+"\n";
+						code+="NOT AX\n";
+						code+="MOV "+$2->getAssemblyID()+",AX\n";
 
+						$$->setCode(code);
+						$$->setAssemblyID($2->getAssemblyID());
 						
 
 	}
@@ -682,6 +704,8 @@ unary_expression : ADDOP unary_expression  {
 						logfile << "unary_expression : factor\n\n";
 						logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
+						$$->setCode($1->getCode());
+						$$->setAssemblyID($1->getAssemblyID());
 
 	}
 		 ;
@@ -709,6 +733,7 @@ factor	: variable  {
 	}
 	| ID LPAREN argument_list RPAREN	{
 		//todo Function call. Handle Later.
+
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "factor");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 addLineNoLog();
