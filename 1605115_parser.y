@@ -41,7 +41,7 @@ vector<pair<string,string> >arrayDeclarationList;
 
 
 
-void yyerror(char *s) 
+void yyerror(string s) 
 {
 	string syntaxerror(s);
 	logfile << "Error at line " << line_no <<" :" << syntaxerror << endl << endl ;
@@ -599,6 +599,9 @@ rel_expression	: simple_expression {
 		 logfile << "rel_expression : simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType($1->getReturnType());
+
+		 $$->setCode($1->getCode());
+		$$->setAssemblyID($1->getAssemblyID());
 	 	}
 		| simple_expression RELOP simple_expression	{
 		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() + " " +  $3->getName(), "rel_expression");
@@ -607,26 +610,60 @@ rel_expression	: simple_expression {
 		 logfile << "rel_expression : simple_expression RELOP simple_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType("int");
+
+		 evaluateTypeConsistencyForRelop($1,$3);
+
+
+		 string tempVar = generateNewTempVariable();
+		 $$->setAssemblyID(tempVar);
+
+		 string code = $1->getCode() + $3->getCode();
+
+		 code += generateCodeForRelop($1->getAssemblyID(), $2->getName(), $3->getAssemblyID(), $$->getAssemblyID());
+
+		 $$->setCode(code);
+
+		 scratchfile << "\n\nCODE TEST" << code << "\n";
 	 	}
 		;
 
 simple_expression : term {
-		 $$ = new SymbolInfo($1->getName() , "simple_expression");
-		 $$->addChildSymbol($1);
-		 addLineNoLog();
-		 logfile << "simple_expression : term\n\n";
-		 logfile << $$->getName() <<endl << endl;
-		 $$->setReturnType($1->getReturnType());
-	 	}
-		  | simple_expression ADDOP term {
-		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + " " +  $3->getName(), "simple_expression");
-		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
-		 addLineNoLog();
-		 logfile << "simple_expression : simple_expression ADDOP term\n\n";
-		 logfile << $$->getName() <<endl << endl;
-		 $$->setReturnType(evaluateReturnTypeForADDOP($1,$3));
-	 	}
-		  ;
+		$$ = new SymbolInfo($1->getName() , "simple_expression");
+		$$->addChildSymbol($1);
+		addLineNoLog();
+		logfile << "simple_expression : term\n\n";
+		logfile << $$->getName() <<endl << endl;
+		$$->setReturnType($1->getReturnType());
+		$$->setCode($1->getCode());
+		$$->setAssemblyID($1->getAssemblyID());
+
+
+	}
+		| simple_expression ADDOP term {
+		$$ = new SymbolInfo($1->getName() + " " +  $2->getName() + " " +  $3->getName(), "simple_expression");
+		$$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
+		addLineNoLog();
+		logfile << "simple_expression : simple_expression ADDOP term\n\n";
+		logfile << $$->getName() <<endl << endl;
+		$$->setReturnType(evaluateReturnTypeForADDOP($1,$3));
+
+		string code = $1->getCode() + $3->getCode();
+
+		code += "MOV AX," + $1->getAssemblyID() + "\n";
+		string tempVariable = generateNewTempVariable();
+		if ($2->getName() == "+")
+		{
+			code += "ADD AX," + $3->getAssemblyID() + "\n";
+		}
+		else
+		{
+			code += "SUB AX," + $3->getAssemblyID() + "\n";
+		}
+		code += "MOV " + tempVariable + ",AX\n";
+		$$->setCode(code);
+		$$->setAssemblyID(tempVariable);
+	}
+		;
 
 term :	unary_expression {
 						$$ = new SymbolInfo($1->getName(), "term");

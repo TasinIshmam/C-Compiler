@@ -1,28 +1,13 @@
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2--> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < f : ID> 
- 9--> 
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2-->  < g : ID> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < f : ID> 
- 9--> 
 c53
 
-d100
+
+
+CODE TESTMOV AX,
+CMP AX,
+JG Label0
+MOV temp9,0
+JMP Label0
+Label0:
+MOV temp9,1
+Label1:
 

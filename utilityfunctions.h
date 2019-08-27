@@ -37,7 +37,7 @@ string intToString (int a)
 
 string newLabel()
 {
-	string lb= "Label" + to_string(labelCount);
+	string lb= "Label" + to_string( labelCount);
 	labelCount++;
 	return lb;
 }
@@ -80,7 +80,48 @@ return code;
 }
 
 
+string generateCodeForRelop(string expressionAssemblyId1 ,string relOperator ,string expressionAssemblyId2, string tempVariableForParentExpression) {
+    
+        string code = "";
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += "MOV AX," + expressionAssemblyId1 + "\n";
+		code += "CMP AX," + expressionAssemblyId2 + "\n";
+		
+        if (relOperator == "<")
+		{
+			code += "JL " + label1 + "\n";
+		}
+		else if (relOperator == ">")
+		{
+			code += "JG " + label1 + "\n";
+		}
+		else if (relOperator == "<=")
+		{
+			code += "JLE " + label1 + "\n";
+		}
+		else if (relOperator == ">=")
+		{
+			code += "JGE " + label1 + "\n";
+		}
+		else if (relOperator == "==")
+		{
+			code += "JE " + label1 + "\n";
+		}
+		else if (relOperator == "!=")
+		{
+			code += "JNE " + label1 + "\n";
+		}
+		code += "MOV " + tempVariableForParentExpression + ",0\n";
+		code += "JMP " + label1 + "\n";
+		code += label1 + ":\n";
+		code += "MOV " + tempVariableForParentExpression + ",1\n";
+		code += label2 + ":\n";
+		
+        return code;
 
+
+}
 
 
 void addLineNoErr() {
@@ -290,6 +331,23 @@ string evaluateReturnTypeForADDOP(SymbolInfo* simpleExpression, SymbolInfo* term
     //one or both are float
 
 
+}
+
+bool evaluateTypeConsistencyForRelop(SymbolInfo* simpleExpression1, SymbolInfo* simpleExpression2) {
+
+    if(simpleExpression1->getReturnType() != "int" && simpleExpression1->getReturnType() != "float" ) {
+        addLineNoErr();
+        logfile << "Expression return type not set/undefined \n\n";
+        return false;
+    }
+
+    if(simpleExpression2->getReturnType() != "int" && simpleExpression2->getReturnType() != "float" ) {
+        addLineNoErr();
+        logfile << "Expression return type not set/undefined \n\n";
+        return false;
+    }
+
+    return true;
 }
 
 void evaluateTypeConversionForASSIGNOP(SymbolInfo* leftHandTerm, SymbolInfo* rightHandTerm ) {

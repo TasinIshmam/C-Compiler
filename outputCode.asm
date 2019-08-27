@@ -1,19 +1,24 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
+b2 dw ?
+a2 dw ?
 temp0 dw ?
 temp1 dw ?
 temp2 dw ?
-x2 dw ?
-b2 dw ?
-a2 dw ?
 temp3 dw ?
+asd2 dw ?
+j2 dw ?
 temp4 dw ?
 temp5 dw ?
 temp6 dw ?
 temp7 dw ?
+temp8 dw ?
+d2 dw ?
+temp9 dw ?
+temp10 dw ?
+temp11 dw ?
 c2 dw 53 dup(?)
-d2 dw 100 dup(?)
 .CODE
  
 OUTDEC PROC  

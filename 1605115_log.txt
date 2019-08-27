@@ -1,651 +1,122 @@
-At line no: 1 type_specifier : INT
-
-int
-
-At line no: 1 type_specifier : INT
-
-int
-
-At line no: 1 parameter_list : type_specifier ID
-
-int a
-
-At line no: 2 factor : CONST_INT
-
-2
-
-At line no: 2 unary_expression : factor
-
-2
-
-At line no: 2 term : unary_expression
-
-2
-
-At line no: 2 variable : ID
-
-a
-
-At line no: 2 factor : variable
-
-a
-
-At line no: 2 unary_expression : factor
-
-a
-
-At line no: 2 term : term MULOP unary_expression
-
-2 * a
-
-At line no: 2 simple_expression : term
-
-2 * a
-
-At line no: 2 rel_expression : simple_expression
-
-2 * a
-
-At line no: 2 logic_expression : rel_expression
-
-2 * a
-
-At line no: 2 expression : logic_expression
-
-2 * a
-
-At line no: 2 statement : RETURN expression SEMICOLON
-
-return 2 * a;
-
-At line no: 2 statements : statement
-
-return 2 * a;
-
-At line no: 3 variable : ID
-
-a
-
-At line no: 3 factor : CONST_INT
-
-9
-
-At line no: 3 unary_expression : factor
-
-9
-
-At line no: 3 term : unary_expression
-
-9
-
-At line no: 3 simple_expression : term
-
-9
-
-At line no: 3 rel_expression : simple_expression
-
-9
-
-At line no: 3 logic_expression : rel_expression
-
-9
-
-At line no: 3 expression : variable ASSIGNOP logic_expression
-
-a = 9
-
-At line no: 3 expression_statement : expression SEMICOLON
-
-a = 9;
-
-
-At line no: 3 statement : expression_statement
-
-a = 9;
-
-
-At line no: 3 statements : statements statement
-
-return 2 * a;a = 9;
-
-
-At line no: 4 compound_statement : LCURL statements RCURL
-
-{return 2 * a;a = 9;
-}
-
-
- ScopeTable # 2
- 0--> 
- 1--> 
- 2--> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < a : ID> 
- 9--> 
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2--> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < f : ID> 
- 9--> 
-At line no: 4 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-At line no: 4 unit : func_definition
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-
-At line no: 4 program : unit
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-
-
-At line no: 6 type_specifier : INT
-
-int
-
-At line no: 6 type_specifier : INT
-
-int
-
-At line no: 6 parameter_list : type_specifier ID
-
-int a
-
-At line no: 6 type_specifier : INT
-
-int
-
-At line no: 6 parameter_list : parameter_list COMMA type_specifier ID
-
-int a, int b
-
-At line no: 7 type_specifier : INT
-
-int
-
-At line no: 7 declaration_list : ID
-
-x
-
-At line no: 7 var_declaration : type_specifier declaration_list SEMICOLON
-
-int x;
-
-
-At line no: 7 statement : var_declaration
-
-int x;
-
-
-At line no: 7 statements : statement
-
-int x;
-
-
-At line no: 8 variable : ID
-
-x
-
-At line no: 8 variable : ID
-
-a
-
-At line no: 8 factor : variable
-
-a
-
-At line no: 8 unary_expression : factor
-
-a
-
-At line no: 8 term : unary_expression
-
-a
-
-At line no: 8 simple_expression : term
-
-a
-
-At line no: 8 rel_expression : simple_expression
-
-a
-
-At line no: 8 logic_expression : rel_expression
-
-a
-
-At line no: 8 arguments : logic_expression
-
-a
-
-At line no: 8 argument_list : arguments
-
-a
-
-At line no: 8 factor : ID LPAREN argument_list RPAREN
-
-f(a)
-
-Error At line No: 8 Type of argument(s) in function call do not match function definition
-
-At line no: 8 unary_expression : factor
-
-f(a)
-
-At line no: 8 term : unary_expression
-
-f(a)
-
-At line no: 8 simple_expression : term
-
-f(a)
-
-At line no: 8 variable : ID
-
-a
-
-At line no: 8 factor : variable
-
-a
-
-At line no: 8 unary_expression : factor
-
-a
-
-At line no: 8 term : unary_expression
-
-a
-
-At line no: 8 simple_expression : simple_expression ADDOP term
-
-f(a) + a
-
-At line no: 8 variable : ID
-
-b
-
-At line no: 8 factor : variable
-
-b
-
-At line no: 8 unary_expression : factor
-
-b
-
-At line no: 8 term : unary_expression
-
-b
-
-At line no: 8 simple_expression : simple_expression ADDOP term
-
-f(a) + a + b
-
-At line no: 8 rel_expression : simple_expression
-
-f(a) + a + b
-
-At line no: 8 logic_expression : rel_expression
-
-f(a) + a + b
-
-At line no: 8 expression : variable ASSIGNOP logic_expression
-
-x = f(a) + a + b
-
-Error At line No: 8 Type mismatch. Floating point expression assigned to integer type variable
-
-At line no: 8 expression_statement : expression SEMICOLON
-
-x = f(a) + a + b;
-
-
-At line no: 8 statement : expression_statement
-
-x = f(a) + a + b;
-
-
-At line no: 8 statements : statements statement
-
-int x;
-x = f(a) + a + b;
-
-
-At line no: 9 variable : ID
-
-x
-
-At line no: 9 factor : variable
-
-x
-
-At line no: 9 unary_expression : factor
-
-x
-
-At line no: 9 term : unary_expression
-
-x
-
-At line no: 9 simple_expression : term
-
-x
-
-At line no: 9 rel_expression : simple_expression
-
-x
-
-At line no: 9 logic_expression : rel_expression
-
-x
-
-At line no: 9 expression : logic_expression
-
-x
-
-At line no: 9 statement : RETURN expression SEMICOLON
-
-return x;
-
-At line no: 9 statements : statements statement
-
-int x;
-x = f(a) + a + b;
-return x;
-
-At line no: 10 compound_statement : LCURL statements RCURL
-
-{int x;
-x = f(a) + a + b;
-return x;}
-
-
- ScopeTable # 2
- 0-->  < x : ID> 
- 1--> 
- 2-->  < b : ID> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < a : ID> 
- 9--> 
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2-->  < g : ID> 
- 3--> 
- 4--> 
- 5--> 
- 6--> 
- 7--> 
- 8-->  < f : ID> 
- 9--> 
-At line no: 10 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
-
-int g(int a, int b)
-{int x;
-x = f(a) + a + b;
-return x;}
-
-At line no: 10 unit : func_definition
-
-int g(int a, int b)
-{int x;
-x = f(a) + a + b;
-return x;}
-
-
-At line no: 10 program : program unit
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-int g(int a, int b)
-{int x;
-x = f(a) + a + b;
-return x;}
-
-
-
 At line no: 12 type_specifier : INT
 
 int
-
-At line no: 13 type_specifier : INT
-
-int
-
-At line no: 13 declaration_list : ID
-
-a
-
-At line no: 13 declaration_list : declaration_list COMMA ID
-
-a, b
-
-At line no: 13 var_declaration : type_specifier declaration_list SEMICOLON
-
-int a, b;
-
-
-At line no: 13 statement : var_declaration
-
-int a, b;
-
-
-At line no: 13 statements : statement
-
-int a, b;
-
-
-At line no: 14 type_specifier : INT
-
-int
-
-At line no: 14 declaration_list : ID LTHIRD CONST_INT RTHIRD
-
-c[53]
-
-At line no: 14 var_declaration : type_specifier declaration_list SEMICOLON
-
-int c[53];
-
-
-At line no: 14 statement : var_declaration
-
-int c[53];
-
-
-At line no: 14 statements : statements statement
-
-int a, b;
-int c[53];
-
 
 At line no: 15 type_specifier : INT
 
 int
 
-At line no: 15 declaration_list : ID LTHIRD CONST_INT RTHIRD
+At line no: 15 declaration_list : ID
 
-d[100]
+a
+
+At line no: 15 declaration_list : declaration_list COMMA ID
+
+a, b
 
 At line no: 15 var_declaration : type_specifier declaration_list SEMICOLON
 
-int d[100];
+int a, b;
 
 
 At line no: 15 statement : var_declaration
 
-int d[100];
+int a, b;
 
 
-At line no: 15 statements : statements statement
+At line no: 15 statements : statement
 
 int a, b;
+
+
+At line no: 16 type_specifier : INT
+
+int
+
+At line no: 16 declaration_list : ID LTHIRD CONST_INT RTHIRD
+
+c[53]
+
+At line no: 16 var_declaration : type_specifier declaration_list SEMICOLON
+
 int c[53];
-int d[100];
 
 
-At line no: 16 variable : ID
+At line no: 16 statement : var_declaration
 
-a
-
-At line no: 16 factor : CONST_INT
-
-1
-
-At line no: 16 unary_expression : factor
-
-1
-
-At line no: 16 term : unary_expression
-
-1
-
-At line no: 16 simple_expression : term
-
-1
-
-At line no: 16 rel_expression : simple_expression
-
-1
-
-At line no: 16 logic_expression : rel_expression
-
-1
-
-At line no: 16 expression : variable ASSIGNOP logic_expression
-
-a = 1
-
-At line no: 16 expression_statement : expression SEMICOLON
-
-a = 1;
-
-
-At line no: 16 statement : expression_statement
-
-a = 1;
+int c[53];
 
 
 At line no: 16 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
-a = 1;
 
 
 At line no: 17 variable : ID
 
-b
+a
 
 At line no: 17 factor : CONST_INT
 
-2
+1
 
 At line no: 17 unary_expression : factor
 
-2
+1
 
 At line no: 17 term : unary_expression
 
-2
-
-At line no: 17 variable : ID
-
-a
-
-At line no: 17 factor : variable
-
-a
-
-At line no: 17 unary_expression : factor
-
-a
-
-At line no: 17 term : term MULOP unary_expression
-
-2 * a
+1
 
 At line no: 17 simple_expression : term
 
-2 * a
+1
 
 At line no: 17 rel_expression : simple_expression
 
-2 * a
+1
 
 At line no: 17 logic_expression : rel_expression
 
-2 * a
+1
 
 At line no: 17 expression : variable ASSIGNOP logic_expression
 
-b = 2 * a
+a = 1
 
 At line no: 17 expression_statement : expression SEMICOLON
 
-b = 2 * a;
+a = 1;
 
 
 At line no: 17 statement : expression_statement
 
-b = 2 * a;
+a = 1;
 
 
 At line no: 17 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
 a = 1;
-b = 2 * a;
 
-
-At line no: 18 variable : ID
-
-a
 
 At line no: 18 variable : ID
 
 b
 
-At line no: 18 factor : variable
+At line no: 18 factor : CONST_INT
 
-b
+2
 
 At line no: 18 unary_expression : factor
 
-b
+2
 
 At line no: 18 term : unary_expression
 
-b
+2
 
 At line no: 18 variable : ID
 
@@ -661,47 +132,61 @@ a
 
 At line no: 18 term : term MULOP unary_expression
 
-b / a
+2 * a
 
 At line no: 18 simple_expression : term
 
-b / a
+2 * a
 
 At line no: 18 rel_expression : simple_expression
 
-b / a
+2 * a
 
 At line no: 18 logic_expression : rel_expression
 
-b / a
+2 * a
 
 At line no: 18 expression : variable ASSIGNOP logic_expression
 
-a = b / a
+b = 2 * a
 
 At line no: 18 expression_statement : expression SEMICOLON
 
-a = b / a;
+b = 2 * a;
 
 
 At line no: 18 statement : expression_statement
 
-a = b / a;
+b = 2 * a;
 
 
 At line no: 18 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
-a = b / a;
 
 
 At line no: 19 variable : ID
 
 a
+
+At line no: 19 variable : ID
+
+b
+
+At line no: 19 factor : variable
+
+b
+
+At line no: 19 unary_expression : factor
+
+b
+
+At line no: 19 term : unary_expression
+
+b
 
 At line no: 19 variable : ID
 
@@ -715,146 +200,552 @@ At line no: 19 unary_expression : factor
 
 a
 
-At line no: 19 term : unary_expression
+At line no: 19 term : term MULOP unary_expression
 
-a
-
-At line no: 19 simple_expression : term
-
-a
-
-At line no: 19 rel_expression : simple_expression
-
-a
-
-At line no: 19 logic_expression : rel_expression
-
-a
-
-At line no: 19 arguments : logic_expression
-
-a
-
-At line no: 19 argument_list : arguments
-
-a
-
-At line no: 19 factor : ID LPAREN argument_list RPAREN
-
-f(a)
-
-At line no: 19 unary_expression : factor
-
-f(a)
-
-At line no: 19 term : unary_expression
-
-f(a)
+b / a
 
 At line no: 19 simple_expression : term
 
-f(a)
+b / a
 
 At line no: 19 rel_expression : simple_expression
 
-f(a)
+b / a
 
 At line no: 19 logic_expression : rel_expression
 
-f(a)
+b / a
 
 At line no: 19 expression : variable ASSIGNOP logic_expression
 
-a = f(a)
+a = b / a
 
 At line no: 19 expression_statement : expression SEMICOLON
 
-a = f(a);
+a = b / a;
 
 
 At line no: 19 statement : expression_statement
 
-a = f(a);
+a = b / a;
 
 
 At line no: 19 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
 
 
-At line no: 20 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+At line no: 22 type_specifier : INT
 
-println(a);
+int
 
-At line no: 20 statements : statements statement
+At line no: 22 declaration_list : ID
+
+j
+
+At line no: 22 declaration_list : declaration_list COMMA ID
+
+j, asd
+
+At line no: 22 var_declaration : type_specifier declaration_list SEMICOLON
+
+int j, asd;
+
+
+At line no: 22 statement : var_declaration
+
+int j, asd;
+
+
+At line no: 22 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
+int j, asd;
+
+
+At line no: 24 variable : ID
+
+j
+
+At line no: 24 factor : CONST_INT
+
+5
+
+At line no: 24 unary_expression : factor
+
+5
+
+At line no: 24 term : unary_expression
+
+5
+
+At line no: 24 factor : CONST_INT
+
+3
+
+At line no: 24 unary_expression : factor
+
+3
+
+At line no: 24 term : term MULOP unary_expression
+
+5 % 3
+
+At line no: 24 simple_expression : term
+
+5 % 3
+
+At line no: 24 rel_expression : simple_expression
+
+5 % 3
+
+At line no: 24 logic_expression : rel_expression
+
+5 % 3
+
+At line no: 24 expression : variable ASSIGNOP logic_expression
+
+j = 5 % 3
+
+At line no: 24 expression_statement : expression SEMICOLON
+
+j = 5 % 3;
+
+
+At line no: 24 statement : expression_statement
+
+j = 5 % 3;
+
+
+At line no: 24 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+
+
+At line no: 25 variable : ID
+
+j
+
+At line no: 25 variable : ID
+
+j
+
+At line no: 25 factor : variable
+
+j
+
+At line no: 25 unary_expression : factor
+
+j
+
+At line no: 25 term : unary_expression
+
+j
+
+At line no: 25 simple_expression : term
+
+j
+
+At line no: 25 variable : ID
+
+b
+
+At line no: 25 factor : variable
+
+b
+
+At line no: 25 unary_expression : factor
+
+b
+
+At line no: 25 term : unary_expression
+
+b
+
+At line no: 25 simple_expression : simple_expression ADDOP term
+
+j + b
+
+At line no: 25 rel_expression : simple_expression
+
+j + b
+
+At line no: 25 logic_expression : rel_expression
+
+j + b
+
+At line no: 25 expression : variable ASSIGNOP logic_expression
+
+j = j + b
+
+At line no: 25 expression_statement : expression SEMICOLON
+
+j = j + b;
+
+
+At line no: 25 statement : expression_statement
+
+j = j + b;
+
+
+At line no: 25 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+
+
+At line no: 26 variable : ID
+
+j
+
+At line no: 26 variable : ID
+
+j
+
+At line no: 26 factor : variable
+
+j
+
+At line no: 26 unary_expression : factor
+
+j
+
+At line no: 26 term : unary_expression
+
+j
+
+At line no: 26 simple_expression : term
+
+j
+
+At line no: 26 variable : ID
+
+b
+
+At line no: 26 factor : variable
+
+b
+
+At line no: 26 unary_expression : factor
+
+b
+
+At line no: 26 term : unary_expression
+
+b
+
+At line no: 26 simple_expression : simple_expression ADDOP term
+
+j - b
+
+At line no: 26 rel_expression : simple_expression
+
+j - b
+
+At line no: 26 logic_expression : rel_expression
+
+j - b
+
+At line no: 26 expression : variable ASSIGNOP logic_expression
+
+j = j - b
+
+At line no: 26 expression_statement : expression SEMICOLON
+
+j = j - b;
+
+
+At line no: 26 statement : expression_statement
+
+j = j - b;
+
+
+At line no: 26 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+
+
+At line no: 28 type_specifier : INT
+
+int
+
+At line no: 28 declaration_list : ID
+
+d
+
+At line no: 28 var_declaration : type_specifier declaration_list SEMICOLON
+
+int d;
+
+
+At line no: 28 statement : var_declaration
+
+int d;
+
+
+At line no: 28 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+
+
+At line no: 30 variable : ID
+
+d
+
+At line no: 30 variable : ID
+
+j
+
+At line no: 30 factor : variable
+
+j
+
+At line no: 30 unary_expression : factor
+
+j
+
+At line no: 30 term : unary_expression
+
+j
+
+At line no: 30 simple_expression : term
+
+j
+
+At line no: 30 variable : ID
+
+a
+
+At line no: 30 factor : variable
+
+a
+
+At line no: 30 unary_expression : factor
+
+a
+
+At line no: 30 term : unary_expression
+
+a
+
+At line no: 30 simple_expression : term
+
+a
+
+At line no: 30 rel_expression : simple_expression RELOP simple_expression
+
+j > a
+
+At line no: 30 logic_expression : rel_expression
+
+j > a
+
+At line no: 30 expression : variable ASSIGNOP logic_expression
+
+d = j > a
+
+At line no: 30 expression_statement : expression SEMICOLON
+
+d = j > a;
+
+
+At line no: 30 statement : expression_statement
+
+d = j > a;
+
+
+At line no: 30 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+
+
+At line no: 32 variable : ID
+
+asd
+
+At line no: 32 factor : CONST_INT
+
+213
+
+At line no: 32 unary_expression : factor
+
+213
+
+At line no: 32 term : unary_expression
+
+213
+
+At line no: 32 simple_expression : term
+
+213
+
+At line no: 32 rel_expression : simple_expression
+
+213
+
+At line no: 32 logic_expression : rel_expression
+
+213
+
+At line no: 32 expression : variable ASSIGNOP logic_expression
+
+asd = 213
+
+At line no: 32 expression_statement : expression SEMICOLON
+
+asd = 213;
+
+
+At line no: 32 statement : expression_statement
+
+asd = 213;
+
+
+At line no: 32 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
+
+
+At line no: 34 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
 println(a);
 
-At line no: 21 factor : CONST_INT
+At line no: 34 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
+println(a);
+
+At line no: 35 factor : CONST_INT
 
 0
 
-At line no: 21 unary_expression : factor
+At line no: 35 unary_expression : factor
 
 0
 
-At line no: 21 term : unary_expression
+At line no: 35 term : unary_expression
 
 0
 
-At line no: 21 simple_expression : term
+At line no: 35 simple_expression : term
 
 0
 
-At line no: 21 rel_expression : simple_expression
+At line no: 35 rel_expression : simple_expression
 
 0
 
-At line no: 21 logic_expression : rel_expression
+At line no: 35 logic_expression : rel_expression
 
 0
 
-At line no: 21 expression : logic_expression
+At line no: 35 expression : logic_expression
 
 0
 
-At line no: 21 statement : RETURN expression SEMICOLON
+At line no: 35 statement : RETURN expression SEMICOLON
 
 return 0;
 
-At line no: 21 statements : statements statement
+At line no: 35 statements : statements statement
 
 int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
 println(a);return 0;
 
-At line no: 22 compound_statement : LCURL statements RCURL
+At line no: 36 compound_statement : LCURL statements RCURL
 
 {int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
 println(a);return 0;}
 
 
@@ -863,91 +754,93 @@ println(a);return 0;}
  1--> 
  2-->  < b : ID> 
  3--> 
- 4--> 
+ 4-->  < j : ID> 
  5--> 
  6-->  < c : ID> 
  7--> 
- 8-->  < a : ID> 
+ 8-->  < a : ID>  < asd : ID> 
  9--> 
 
  ScopeTable # 1
  0--> 
  1--> 
- 2-->  < g : ID>  < main : ID> 
+ 2-->  < main : ID> 
  3--> 
  4--> 
  5--> 
  6--> 
  7--> 
- 8-->  < f : ID> 
+ 8--> 
  9--> 
-At line no: 22 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 36 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main()
  {int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
 println(a);return 0;}
 
-At line no: 22 unit : func_definition
+At line no: 36 unit : func_definition
 
 int main()
  {int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
-println(a);return 0;}
-
-
-At line no: 22 program : program unit
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-int g(int a, int b)
-{int x;
-x = f(a) + a + b;
-return x;}
-
-int main()
- {int a, b;
-int c[53];
-int d[100];
-a = 1;
-b = 2 * a;
-a = b / a;
-a = f(a);
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
 println(a);return 0;}
 
 
-
-At line no: 22 start : program
-
-int f(int a)
-{return 2 * a;a = 9;
-}
-
-int g(int a, int b)
-{int x;
-x = f(a) + a + b;
-return x;}
+At line no: 36 program : unit
 
 int main()
  {int a, b;
 int c[53];
-int d[100];
 a = 1;
 b = 2 * a;
 a = b / a;
-a = f(a);
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
+println(a);return 0;}
+
+
+
+At line no: 36 start : program
+
+int main()
+ {int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+int j, asd;
+j = 5 % 3;
+j = j + b;
+j = j - b;
+int d;
+d = j > a;
+asd = 213;
 println(a);return 0;}
 
 
@@ -957,14 +850,14 @@ println(a);return 0;}
  ScopeTable # 1
  0--> 
  1--> 
- 2-->  < g : ID>  < main : ID> 
+ 2-->  < main : ID> 
  3--> 
  4--> 
  5--> 
  6--> 
  7--> 
- 8-->  < f : ID> 
+ 8--> 
  9--> 
-Total Lines: 22
-Total Errors: 2
-Total Errors: 2
+Total Lines: 36
+Total Errors: 0
+Total Errors: 0
