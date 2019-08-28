@@ -14,10 +14,7 @@ temp5 dw ?
 temp6 dw ?
 temp7 dw ?
 temp8 dw ?
-d2 dw ?
 temp9 dw ?
-temp10 dw ?
-temp11 dw ?
 c2 dw 53 dup(?)
 .CODE
  

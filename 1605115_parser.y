@@ -414,6 +414,8 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : expression_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		$$->setName($1->getName());
+		$$->setCode($1->getCode());
 	 	}
 	  | compound_statement {
 		 $$ = new SymbolInfo($1->getName() , "statement");
@@ -421,6 +423,8 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 $$->setName($1->getName());
+		$$->setCode($1->getCode());
 	 	}
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement  {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -432,6 +436,23 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		string code = $3->getCode();
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
+		code += $4->getCode();
+		code += "MOV AX," + $4->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label2 + "\n";
+		code += $7->getCode();
+		code += $5->getCode();
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
+		$$->setCode(code);
+
+		//todo change arouond logic for copychecker mara prevention
+
 	 	}
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -441,6 +462,16 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : IF LPAREN expression RPAREN statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		string code = $3->getCode();
+		string label1 = newLabel();
+		code += "MOV AX," + $3->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label1 + "\n";
+		code += $5->getCode();
+		code += label1 + ":\n";
+		$$->setCode(code);
+
 	 	}
 	  | IF LPAREN expression RPAREN statement ELSE statement {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -452,6 +483,20 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : IF LPAREN expression RPAREN statement ELSE statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 string code = $3->getCode();
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += "MOV AX," + $3->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " +label1 + "\n";
+		code += $5->getCode();
+		code += "JMP " + label2 + "\n";
+		code += label1 + ":\n";
+		code += $7->getCode();
+		code += label2 + ":\n";
+		 $$-> setCode(code);
+
 	 	}
 	  | WHILE LPAREN expression RPAREN statement	 {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -461,6 +506,20 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : WHILE LPAREN expression RPAREN statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		string code = "";
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
+		code += $3->getCode();
+		code += "MOV AX," + $3->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label2 + "\n";
+		code += $5->getCode();
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
+		$$->setCode(code);
+
 	 	}
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON	 {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName() +
@@ -470,6 +529,19 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : PRINTLN LPAREN ID RPAREN SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 SymbolInfo* symbolTableEntry = symbolTable.lookup($3->getName());
+
+		 if (symbolTableEntry == nullptr) {
+			 addLineNoErr();
+			 logfile << "Undeclared variable";
+		 }
+
+		 string code = "MOV AX," + symbolTableEntry->getAssemblyID();
+		 code += "\nCALL OUTDEC\n";
+		 $$->setCode(code);
+
+
 	 	}
 	  | RETURN expression SEMICOLON {
 		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() + $3->getName(), "statement");
@@ -477,7 +549,17 @@ statement : var_declaration	{
 		 addLineNoLog();
 		 logfile << "statement : RETURN expression SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		//  string code = $2->getCode();
+		// code += "MOV AX," + $2->getAssemblyID() + "\n";
+		// code += "MOV " + currentFunctionGlobalString + "_return,AX\n";
+		// code += "JMP LReturn" + currentFunctionGlobalString + "\n";
+		// $$->setCode(code);
+
+		//todo understand/uncomment function code. (USED FOR FUNCTIONS. SO NA USE KORTE PARLE BAAD DIO.)
 	 	}
+
+
 	  ;
 
 expression_statement : SEMICOLON	{
@@ -493,6 +575,9 @@ expression_statement : SEMICOLON	{
 		 addLineNoLog();
 		 logfile << "expression_statement : expression SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 $$->setCode($1->getCode());
+		$$->setAssemblyID($1->getAssemblyID());
 	 	}
 			;
 
@@ -530,12 +615,11 @@ variable : ID	{
 		string codes = "";
 		codes += $3->getCode();
 		codes += "\tMOV BX," + $3->getAssemblyID() + "\n";
-		codes+="\tADD BX,BX\n";  //todo find out why tf we're doing this
+		codes+="\tADD BX,BX\n"; 
 		$$->setAssemblyArrayMember(true);
 
 
-		//instead of generating it manually based on symbol table data like bhaia did, we just fetch the assemblyName assigned to ID in symboltable.
-		//ID was given a assemblyName during declaration.
+	
 		string assemblyName = symbolTable.lookup($1->getName())->getAssemblyID();
 
 
@@ -555,11 +639,13 @@ expression : logic_expression	{
 		 logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType($1->getReturnType());
 
+		 	$$->setCode($1->getCode());
+			$$->setAssemblyID($1->getAssemblyID());
+
 		//  if($$->getReturnType() == "" || $$->getReturnType() == "void") {
 		// 	cerr<< ($$->getName() << "Expression with return type: " << $$->getReturnType() << " - in line " << line_no << endl << endl;
 		//  }
 
-		$$->setReturnType($1->getReturnType());
 	 	}
 	   | variable ASSIGNOP logic_expression {
 		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + " " + $3->getName(), "expression");
@@ -570,6 +656,18 @@ expression : logic_expression	{
 		evaluateTypeConversionForASSIGNOP($1, $3);
 		 $$->setReturnType($1->getReturnType());
 
+		string code = $1->getCode() + $3->getCode();
+		code += "MOV AX," + $3->getAssemblyID() + "\n";
+
+		if($1->isAssemblyArrayMember()) {
+			code += "MOV " + $1->getAssemblyID() + "[BX],AX\n";
+		} else {
+			code += "MOV " + $1->getAssemblyID() + ",AX\n";
+		}
+		
+		$$->setCode(code);
+		$$->setAssemblyID($1->getAssemblyID());
+
 	 	}
 	   ;
 
@@ -579,7 +677,10 @@ logic_expression : rel_expression 	{
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
-		 $$->setReturnType($1->getReturnType());	
+		 $$->setReturnType($1->getReturnType());
+		 $$->setCode($1->getCode());
+		 $$->setAssemblyID($1->getAssemblyID());
+	
 		  	}
 		 | rel_expression LOGICOP rel_expression {
 		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() + " " +  $3->getName(), "logic_expression");
@@ -588,7 +689,21 @@ logic_expression : rel_expression 	{
 		 logfile << "logic_expression : rel_expression LOGICOP rel_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType("int");
+		 
+		 evaluateTypeConsistencyForOperands($1,$3);
 
+		 string code = $1->getCode() + $3->getCode();
+
+		 		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+
+		 string tempVar = generateNewTempVariable();
+		 $$->setAssemblyID(tempVar);
+		
+		code += generateCodeForLogicOp($1->getAssemblyID(), $2->getName(), $3->getAssemblyID(), $$->getAssemblyID());
+
+		$$->setCode(code);
+
+		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 	 	}
 		 ;
 
@@ -611,19 +726,20 @@ rel_expression	: simple_expression {
 		 logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType("int");
 
-		 evaluateTypeConsistencyForRelop($1,$3);
+		 evaluateTypeConsistencyForOperands($1,$3);
 
 
 		 string tempVar = generateNewTempVariable();
 		 $$->setAssemblyID(tempVar);
 
 		 string code = $1->getCode() + $3->getCode();
+				 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
 		 code += generateCodeForRelop($1->getAssemblyID(), $2->getName(), $3->getAssemblyID(), $$->getAssemblyID());
 
 		 $$->setCode(code);
+		 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
-		 scratchfile << "\n\nCODE TEST" << code << "\n";
 	 	}
 		;
 

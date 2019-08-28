@@ -35,7 +35,7 @@
 	vector<pair<string, string>> arr_dec;
 	string curfunction;
 
-	void yyerror(const char *s)
+	void yyerror(const string s)
 	{
 		error_count++;
 		fprintf(error, "Line no %d : %s\n\n", line_count, s);
@@ -43,16 +43,16 @@
 
 	int labelCount = 0;
 	int tempCount = 0;
-	string IntToString(int a)
+	string IntToint a)
 	{
 		ostringstream temp;
 		temp << a;
 		return temp.str();
 	}
 
-	char *newLabel()
+	string newLabel()
 	{
-		char *lb = new char[4];
+		string lb = new char[4];
 		strcpy(lb, "L");
 		char b[3];
 		sprintf(b, "%d", labelCount);
@@ -61,9 +61,9 @@
 		return lb;
 	}
 
-	char *generateNewTempVariable()
+	string generateNewTempVariable()
 	{
-		char *t = new char[4];
+		string t = new char[4];
 		strcpy(t, "t");
 		char b[3];
 		sprintf(b, "%d", tempCount);
@@ -332,7 +332,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 			s->get_isFunction()->getclear();
 			for (int i = 0; i < para_list.size(); i++)
 			{
-				s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntToString(table->getNextId()), para_list[i]->getReturnType());
+				s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntTotable->getNextId()), para_list[i]->getReturnType());
 				//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
 			}
 			s->get_isFunction()->set_isdefined();
@@ -352,7 +352,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 		s->get_isFunction()->set_isdefined();
 		for (int i = 0; i < para_list.size(); i++)
 		{
-			s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntToString(table->getNextId()), para_list[i]->getReturnType());
+			s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntTotable->getNextId()), para_list[i]->getReturnType());
 			//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
 		}
 		//	para_list.clear();
@@ -545,7 +545,7 @@ compound_statement : LCURL
 	{
 		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
 		//table->printcurrent();
-		var_dec.push_back(para_list[i]->getName() + IntToString(table->getCurrentId()));
+		var_dec.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
 	}
 	para_list.clear();
 }
@@ -566,7 +566,7 @@ statements RCURL
 	{
 		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
 		//table->printcurrent();
-		var_dec.push_back(para_list[i]->getName() + IntToString(table->getCurrentId()));
+		var_dec.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
 	}
 	para_list.clear();
 	$$ = new SymbolInfo();
@@ -601,7 +601,7 @@ var_declaration : type_specifier declaration_list SEMICOLON
 			}
 			if (dec_list[i]->get_type().size() > 2)
 			{
-				arr_dec.push_back(make_pair(dec_list[i]->getName() + IntToString(table->getCurrentId()),
+				arr_dec.push_back(make_pair(dec_list[i]->getName() + IntTotable->getCurrentId()),
 
 											dec_list[i]->get_type().substr(2, dec_list[i]->get_type().size() - 1)));
 
@@ -611,9 +611,9 @@ var_declaration : type_specifier declaration_list SEMICOLON
 			}
 			else
 			{
-				func_var_dec.push_back(dec_list[i]->getName() + IntToString(table->getCurrentId()));
+				func_var_dec.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
 				table->Insert(dec_list[i]->getName(), dec_list[i]->get_type(), $1->getName());
-				var_dec.push_back(dec_list[i]->getName() + IntToString(table->getCurrentId()));
+				var_dec.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
 			}
 		}
 	}
@@ -732,17 +732,17 @@ statement : var_declaration
 	{
 		//cout<<line_count<<" "<<$7->getCode()<<endl;
 		string code = $3->getCode();
-		char *label1 = newLabel();
-		char *label2 = newLabel();
-		code += string(label1) + ":\n";
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
 		code += $4->getCode();
 		code += "MOV AX," + $4->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
-		code += "JE " + string(label2) + "\n";
+		code += "JE " + label2 + "\n";
 		code += $7->getCode();
 		code += $5->getCode();
-		code += "JMP " + string(label1) + "\n";
-		code += string(label2) + ":\n";
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
 		$$->setCode(code);
 	}
 
@@ -762,12 +762,12 @@ statement : var_declaration
 	else
 	{
 		string code = $3->getCode();
-		char *label1 = newLabel();
+		string label1 = newLabel();
 		code += "MOV AX," + $3->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
-		code += "JE " + string(label1) + "\n";
+		code += "JE " + label1 + "\n";
 		code += $5->getCode();
-		code += string(label1) + ":\n";
+		code += label1 + ":\n";
 		$$->setCode(code);
 	}
 
@@ -787,16 +787,16 @@ statement : var_declaration
 	else
 	{
 		string code = $3->getCode();
-		char *label1 = newLabel();
-		char *label2 = newLabel();
+		string label1 = newLabel();
+		string label2 = newLabel();
 		code += "MOV AX," + $3->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
-		code += "JE " + string(label1) + "\n";
+		code += "JE " + label1 + "\n";
 		code += $5->getCode();
-		code += "JMP " + string(label2) + "\n";
-		code += string(label1) + ":\n";
+		code += "JMP " + label2 + "\n";
+		code += label1 + ":\n";
 		code += $7->getCode();
-		code += string(label2) + ":\n";
+		code += label2 + ":\n";
 		$$->setCode(code);
 	}
 
@@ -817,16 +817,16 @@ statement : var_declaration
 	else
 	{
 		string code = "";
-		char *label1 = newLabel();
-		char *label2 = newLabel();
-		code += string(label1) + ":\n";
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
 		code += $3->getCode();
 		code += "MOV AX," + $3->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
-		code += "JE " + string(label2) + "\n";
+		code += "JE " + label2 + "\n";
 		code += $5->getCode();
-		code += "JMP " + string(label1) + "\n";
-		code += string(label2) + ":\n";
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
 		$$->setCode(code);
 	}
 	$$->setName("while(" + $3->getName() + ")\n" + $5->getName());
@@ -845,7 +845,7 @@ statement : var_declaration
 	else
 	{
 
-		code += "MOV AX," + $3->getName() + IntToString(table->lookupscopeid($3->getName()));
+		code += "MOV AX," + $3->getName() + IntTotable->lookupscopeid($3->getName()));
 		code += "\nCALL OUTDEC\n";
 	}
 	$$->setName("println(" + $3->getName() + ");");
@@ -910,7 +910,7 @@ variable : ID
 	{
 		//cout<<line_count<<" "<<$1->getName()<<" "<<table->lookup($1->getName())->getReturnType()<<endl;
 		$$->setReturnType(table->lookup($1->getName())->getReturnType());
-		$$->setAssemblyID($1->getName() + IntToString(table->lookupscopeid($1->getName())));
+		$$->setAssemblyID($1->getName() + IntTotable->lookupscopeid($1->getName())));
 	}
 	$$->setName($1->getName());
 	$$->set_type("notarray");
@@ -930,7 +930,7 @@ variable : ID
 	{
 		error_count++;
 		fprintf(error, "Error at Line No.%d:  Non-integer Array Index  \n\n", line_count);
-		$$->setAssemblyID($1->getName() + IntToString(table->lookupscopeid($1->getName())));
+		$$->setAssemblyID($1->getName() + IntTotable->lookupscopeid($1->getName())));
 	}
 	else if (table->lookup($1->getName()) != 0)
 	{
@@ -958,7 +958,7 @@ variable : ID
 			code += $3->getCode();
 			code += "MOV BX," + $3->getAssemblyID() + "\n";
 			code += "ADD BX,BX\n";
-			$$->setAssemblyID($1->getName() + IntToString(table->lookupscopeid($1->getName())));
+			$$->setAssemblyID($1->getName() + IntTotable->lookupscopeid($1->getName())));
 			//cout<<line_count<<" "<<$$->getAssemblyID()<<endl;
 			$$->setCode(code);
 		}
@@ -1043,40 +1043,40 @@ logic_expression : rel_expression
 	{
 		string code = $1->getCode();
 		code += $3->getCode();
-		char *label1 = newLabel();
-		char *label2 = newLabel();
-		char *label3 = newLabel();
-		char *temp = generateNewTempVariable();
+		string label1 = newLabel();
+		string label2 = newLabel();
+		string label3 = newLabel();
+		string temp = generateNewTempVariable();
 
 		if ($2->getName() == "||")
 		{
 			code += "MOV AX," + $1->getAssemblyID() + "\n";
 			code += "CMP AX,0\n";
-			code += "JNE " + string(label2) + "\n";
+			code += "JNE " + label2 + "\n";
 			code += "MOV AX," + $3->getAssemblyID() + "\n";
 			code += "CMP AX,0\n";
-			code += "JNE " + string(label2) + "\n";
-			code += string(label1) + ":\n";
-			code += "MOV " + string(temp) + ",0\n";
-			code += "JMP " + string(label3) + "\n";
-			code += string(label2) + ":\n";
-			code += "MOV " + string(temp) + ",1\n";
-			code += string(label3) + ":\n";
+			code += "JNE " + label2 + "\n";
+			code += label1 + ":\n";
+			code += "MOV " + temp) + ",0\n";
+			code += "JMP " + label3 + "\n";
+			code += label2 + ":\n";
+			code += "MOV " + temp) + ",1\n";
+			code += label3 + ":\n";
 		}
 		else
 		{
 			code += "MOV AX," + $1->getAssemblyID() + "\n";
 			code += "CMP AX,0\n";
-			code += "JE " + string(label2) + "\n";
+			code += "JE " + label2 + "\n";
 			code += "MOV AX," + $3->getAssemblyID() + "\n";
 			code += "CMP AX,0\n";
-			code += "JE " + string(label2) + "\n";
-			code += string(label1) + ":\n";
-			code += "MOV " + string(temp) + ",1\n";
-			code += "JMP " + string(label3) + "\n";
-			code += string(label2) + ":\n";
-			code += "MOV " + string(temp) + ",0\n";
-			code += string(label3) + ":\n";
+			code += "JE " + label2 + "\n";
+			code += label1 + ":\n";
+			code += "MOV " + temp) + ",1\n";
+			code += "JMP " + label3 + "\n";
+			code += label2 + ":\n";
+			code += "MOV " + temp) + ",0\n";
+			code += label3 + ":\n";
 		}
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
@@ -1111,40 +1111,40 @@ rel_expression : simple_expression
 	{
 		string code = $1->getCode();
 		code += $3->getCode();
-		char *temp = generateNewTempVariable();
-		char *label1 = newLabel();
-		char *label2 = newLabel();
+		string temp = generateNewTempVariable();
+		string label1 = newLabel();
+		string label2 = newLabel();
 		code += "MOV AX," + $1->getAssemblyID() + "\n";
 		code += "CMP AX," + $3->getAssemblyID() + "\n";
 		if ($2->getName() == "<")
 		{
-			code += "JL " + string(label1) + "\n";
+			code += "JL " + label1 + "\n";
 		}
 		else if ($2->getName() == ">")
 		{
-			code += "JG " + string(label1) + "\n";
+			code += "JG " + label1 + "\n";
 		}
 		else if ($2->getName() == "<=")
 		{
-			code += "JLE " + string(label1) + "\n";
+			code += "JLE " + label1 + "\n";
 		}
 		else if ($2->getName() == ">=")
 		{
-			code += "JGE " + string(label1) + "\n";
+			code += "JGE " + label1 + "\n";
 		}
 		else if ($2->getName() == "==")
 		{
-			code += "JE " + string(label1) + "\n";
+			code += "JE " + label1 + "\n";
 		}
 		else if ($2->getName() == "!=")
 		{
-			code += "JNE " + string(label1) + "\n";
+			code += "JNE " + label1 + "\n";
 		}
-		code += "MOV " + string(temp) + ",0\n";
-		code += "JMP " + string(label2) + "\n";
-		code += string(label1) + ":\n";
-		code += "MOV " + string(temp) + ",1\n";
-		code += string(label2) + ":\n";
+		code += "MOV " + temp) + ",0\n";
+		code += "JMP " + label2 + "\n";
+		code += label1 + ":\n";
+		code += "MOV " + temp) + ",1\n";
+		code += label2 + ":\n";
 		var_dec.push_back(temp);
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
@@ -1185,7 +1185,7 @@ simple_expression : term
 		string code = $1->getCode() + $3->getCode();
 
 		code += "MOV AX," + $1->getAssemblyID() + "\n";
-		char *temp = generateNewTempVariable();
+		string temp = generateNewTempVariable();
 		if ($2->getName() == "+")
 		{
 			code += "ADD AX," + $3->getAssemblyID() + "\n";
@@ -1194,7 +1194,7 @@ simple_expression : term
 		{
 			code += "SUB AX," + $3->getAssemblyID() + "\n";
 		}
-		code += "MOV " + string(temp) + ",AX\n";
+		code += "MOV " + temp) + ",AX\n";
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
 		var_dec.push_back(temp);
@@ -1239,12 +1239,12 @@ term : unary_expression
 			$$->setReturnType("int ");
 		}
 		string code = $1->getCode() + $3->getCode();
-		char *temp = generateNewTempVariable();
+		string temp = generateNewTempVariable();
 		code += "MOV AX," + $1->getAssemblyID() + "\n";
 		code += "MOV BX," + $3->getAssemblyID() + "\n";
 		code += "MOV DX,0\n";
 		code += "DIV BX\n";
-		code += "MOV " + string(temp) + ", DX\n";
+		code += "MOV " + temp) + ", DX\n";
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
 		var_dec.push_back(temp);
@@ -1264,11 +1264,11 @@ term : unary_expression
 			else
 				$$->setReturnType("float ");
 			string code = $1->getCode() + $3->getCode();
-			char *temp = generateNewTempVariable();
+			string temp = generateNewTempVariable();
 			code += "MOV AX," + $1->getAssemblyID() + "\n";
 			code += "MOV BX," + $3->getAssemblyID() + "\n";
 			code += "DIV BX\n";
-			code += "MOV " + string(temp) + ", AX\n";
+			code += "MOV " + temp) + ", AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
 			var_dec.push_back(temp);
@@ -1290,11 +1290,11 @@ term : unary_expression
 				$$->setReturnType("int ");
 
 			string code = $1->getCode() + $3->getCode();
-			char *temp = generateNewTempVariable();
+			string temp = generateNewTempVariable();
 			code += "MOV AX," + $1->getAssemblyID() + "\n";
 			code += "MOV BX," + $3->getAssemblyID() + "\n";
 			code += "MUL BX\n";
-			code += "MOV " + string(temp) + ", AX\n";
+			code += "MOV " + temp) + ", AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
 			var_dec.push_back(temp);
@@ -1378,9 +1378,9 @@ factor : variable
 	string code = $1->getCode();
 	if ($1->get_type() == "array")
 	{
-		char *temp = generateNewTempVariable();
+		string temp = generateNewTempVariable();
 		code += "MOV AX," + $1->getAssemblyID() + "[BX]\n";
-		code += "MOV " + string(temp) + ",AX\n";
+		code += "MOV " + temp) + ",AX\n";
 		var_dec.push_back(temp);
 		$$->setAssemblyID(temp);
 	}
@@ -1451,8 +1451,8 @@ factor : variable
 			code += "CALL " + $1->getName() + "\n";
 
 			code += "MOV AX," + $1->getName() + "_return\n";
-			char *temp = generateNewTempVariable();
-			code += "MOV " + string(temp) + ",AX\n";
+			string temp = generateNewTempVariable();
+			code += "MOV " + temp) + ",AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
 			var_dec.push_back(temp);
@@ -1479,10 +1479,10 @@ factor : variable
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
 	$$->setReturnType("int ");
 	$$->setName($1->getName());
-	char *temp = generateNewTempVariable();
-	string code = "MOV " + string(temp) + "," + $1->getName() + "\n";
+	string temp = generateNewTempVariable();
+	string code = "MOV " + temp) + "," + $1->getName() + "\n";
 	$$->setCode(code);
-	$$->setAssemblyID(string(temp));
+	$$->setAssemblyID(temp));
 	//cout<<code<<endl;
 	var_dec.push_back(temp);
 }
@@ -1493,10 +1493,10 @@ factor : variable
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
 	$$->setReturnType("float ");
 	$$->setName($1->getName());
-	char *temp = generateNewTempVariable();
-	string code = "MOV " + string(temp) + "," + $1->getName() + "\n";
+	string temp = generateNewTempVariable();
+	string code = "MOV " + temp) + "," + $1->getName() + "\n";
 	$$->setCode(code);
-	$$->setAssemblyID(string(temp));
+	$$->setAssemblyID(temp));
 	var_dec.push_back(temp);
 }
 | variable INCOP
@@ -1505,7 +1505,7 @@ factor : variable
 	fprintf(parsertext, "Line at %d : factor->variable INCOP\n\n", line_count);
 	fprintf(parsertext, "%s++\n\n", $1->getName().c_str());
 	$$->setReturnType($1->getReturnType());
-	char *temp = generateNewTempVariable();
+	string temp = generateNewTempVariable();
 	string code = "";
 	//todo find if this actually works.
 	if ($1->get_type() == "array")
@@ -1515,7 +1515,7 @@ factor : variable
 	else
 		code += "MOV AX," + $1->getAssemblyID() + "\n";
 
-	code += "MOV " + string(temp) + ",AX\n";
+	code += "MOV " + temp) + ",AX\n";
 	if ($1->get_type() == "array")
 	{
 		code += "MOV AX," + $1->getAssemblyID() + "[BX]\n";
@@ -1536,7 +1536,7 @@ factor : variable
 	fprintf(parsertext, "Line at %d : factor->variable DECOP\n\n", line_count);
 	fprintf(parsertext, "%s--\n\n", $1->getName().c_str());
 	$$->setReturnType($1->getReturnType());
-	char *temp = generateNewTempVariable();
+	string temp = generateNewTempVariable();
 	string code = "";
 	if ($1->get_type() == "array")
 	{
@@ -1544,7 +1544,7 @@ factor : variable
 	}
 	else
 		code += "MOV AX," + $1->getAssemblyID() + "\n";
-	code += "MOV " + string(temp) + ",AX\n";
+	code += "MOV " + temp) + ",AX\n";
 	if ($1->get_type() == "array")
 	{
 		code += "MOV AX," + $1->getAssemblyID() + "[BX]\n";
@@ -1675,14 +1675,14 @@ arguments : arguments COMMA logic_expression
 void optimization(FILE *asmcode)
 {
 	FILE *optcode = fopen("optcode.asm", "w");
-	char *line = NULL;
+	string line = NULL;
 	size_t len = 0;
 	ssize_t read;
 	vector<string> v;
 	while ((read = getline(&line, &len, asmcode)) != -1)
 	{
 		// printf("%s", line);
-		v.push_back(string(line));
+		v.push_back(line));
 	}
 	int sz = v.size();
 	int mark[sz];
@@ -1706,7 +1706,7 @@ void optimization(FILE *asmcode)
 	if (line)
 		free(line);
 }
-int main(int argc, char *argv[])
+int main(int argc, string argv[])
 {
 
 	if ((fp = fopen(argv[1], "r")) == NULL)

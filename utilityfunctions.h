@@ -124,6 +124,48 @@ string generateCodeForRelop(string expressionAssemblyId1 ,string relOperator ,st
 }
 
 
+string generateCodeForLogicOp(string expressionAssemblyId1 ,string logicOperator ,string expressionAssemblyId2, string tempVariableForParentExpression) {
+        
+        string code = "";
+
+        string label1 = newLabel();
+		string label2 = newLabel();
+		string label3 = newLabel();
+
+        if (logicOperator == "||") {
+			code += "MOV AX," +expressionAssemblyId1 + "\n";
+			code += "CMP AX,0\n";
+			code += "JNE " + string(label2) + "\n";
+			code += "MOV AX," + expressionAssemblyId2 + "\n";
+			code += "CMP AX,0\n";
+			code += "JNE " + label2 + "\n";
+			code += label1 + ":\n";
+			code += "MOV " + tempVariableForParentExpression + ",0\n";
+			code += "JMP " + label3 + "\n";
+			code += label2 + ":\n";
+			code += "MOV " + tempVariableForParentExpression + ",1\n";
+			code += label3 + ":\n";
+		} else if (logicOperator == "&&")
+		{
+			code += "MOV AX," + expressionAssemblyId1 + "\n";
+			code += "CMP AX,0\n";
+			code += "JE " + label2 + "\n";
+			code += "MOV AX," + expressionAssemblyId2 + "\n";
+			code += "CMP AX,0\n";
+			code += "JE " + label2 + "\n";
+			code += label1 + ":\n";
+			code += "MOV " + tempVariableForParentExpression + ",1\n";
+			code += "JMP " + label3 + "\n";
+			code += label2 + ":\n";
+			code += "MOV " + tempVariableForParentExpression + ",0\n";
+			code += label3 + ":\n";
+		}
+
+        return code;
+
+}
+
+
 void addLineNoErr() {
     logfile << "Error At line No: " << line_no << " ";
     errorCount++;
@@ -333,15 +375,15 @@ string evaluateReturnTypeForADDOP(SymbolInfo* simpleExpression, SymbolInfo* term
 
 }
 
-bool evaluateTypeConsistencyForRelop(SymbolInfo* simpleExpression1, SymbolInfo* simpleExpression2) {
+bool evaluateTypeConsistencyForOperands(SymbolInfo* operand1, SymbolInfo* operand2) {
 
-    if(simpleExpression1->getReturnType() != "int" && simpleExpression1->getReturnType() != "float" ) {
+    if(operand1->getReturnType() != "int" && operand1->getReturnType() != "float" ) {
         addLineNoErr();
         logfile << "Expression return type not set/undefined \n\n";
         return false;
     }
 
-    if(simpleExpression2->getReturnType() != "int" && simpleExpression2->getReturnType() != "float" ) {
+    if(operand2->getReturnType() != "int" && operand2->getReturnType() != "float" ) {
         addLineNoErr();
         logfile << "Expression return type not set/undefined \n\n";
         return false;

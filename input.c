@@ -22,12 +22,8 @@ int main(){
     int j, asd; 
 
 	j= 5 % 3;
-    j = j + b;
-    j = j - b;
-
-    int d;
-
-    d = j > a;
+    
+    a = j > j;
 
 	asd = 213;
 	

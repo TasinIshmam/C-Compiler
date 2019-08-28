@@ -333,6 +333,8 @@ class ScopeTable {
     ScopeTable *parentScopeTable;
     int tableId, tableSize;
 
+    friend class SymbolTable;
+
 public:
 
 
@@ -399,7 +401,7 @@ public:
 
     }
 
-
+protected: 
 
     SymbolInfo *lookUp(const string &itemName) {
         int hash = getHash(itemName);
@@ -433,7 +435,7 @@ public:
 
 
     
-
+public: 
 
    
     bool insert(SymbolInfo *item) {

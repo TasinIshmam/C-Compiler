@@ -2,12 +2,19 @@ c53
 
 
 
-CODE TESTMOV AX,
+CODE TEST
+
+
+
+
+CODE TEST
+
+MOV AX,
 CMP AX,
 JG Label0
-MOV temp9,0
+MOV temp7,0
 JMP Label0
 Label0:
-MOV temp9,1
+MOV temp7,1
 Label1:
 

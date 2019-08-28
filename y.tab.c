@@ -554,10 +554,10 @@ static const yytype_uint16 yyrline[] =
        0,    73,    73,   110,   117,   126,   134,   141,   150,   164,
      178,   178,   221,   221,   252,   259,   266,   273,   283,   283,
      299,   299,   317,   330,   337,   344,   354,   361,   372,   379,
-     388,   395,   404,   411,   418,   425,   436,   445,   456,   465,
-     474,   483,   490,   499,   516,   550,   564,   576,   584,   595,
-     606,   630,   642,   668,   678,   728,   758,   777,   790,   811,
-     826,   837,   851,   864,   900,   934,   941,   950,   957
+     388,   395,   404,   411,   420,   429,   457,   476,   501,   524,
+     546,   565,   572,   584,   601,   634,   650,   674,   685,   710,
+     721,   746,   758,   784,   794,   844,   874,   893,   906,   927,
+     942,   953,   967,   980,  1016,  1050,  1057,  1066,  1073
 };
 #endif
 
@@ -1895,24 +1895,28 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : expression_statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+		(yyval)->setName((yyvsp[0])->getName());
+		(yyval)->setCode((yyvsp[0])->getCode());
 	 	}
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 1902 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 418 "1605115_parser.y" /* yacc.c:1646  */
+#line 420 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "statement");
 		 (yyval)->addChildSymbol((yyvsp[0]));
 		 addLineNoLog();
 		 logfile << "statement : compound_statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+		 (yyval)->setName((yyvsp[0])->getName());
+		(yyval)->setCode((yyvsp[0])->getCode());
 	 	}
-#line 1912 "y.tab.c" /* yacc.c:1646  */
+#line 1916 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 425 "1605115_parser.y" /* yacc.c:1646  */
+#line 429 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-6])->getName() + (yyvsp[-5])->getName() + (yyvsp[-4])->getName() + (yyvsp[-3])->getName() +
 		 (yyvsp[-2])->getName() + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "statement");
@@ -1923,12 +1927,29 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		string code = (yyvsp[-4])->getCode();
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
+		code += (yyvsp[-3])->getCode();
+		code += "MOV AX," + (yyvsp[-3])->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label2 + "\n";
+		code += (yyvsp[0])->getCode();
+		code += (yyvsp[-2])->getCode();
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
+		(yyval)->setCode(code);
+
+		//todo change arouond logic for copychecker mara prevention
+
 	 	}
-#line 1928 "y.tab.c" /* yacc.c:1646  */
+#line 1949 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 436 "1605115_parser.y" /* yacc.c:1646  */
+#line 457 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-4])->getName() + (yyvsp[-3])->getName() + (yyvsp[-2])->getName() + (yyvsp[-1])->getName() +
 		 (yyvsp[0])->getName(), "statement");
@@ -1937,12 +1958,22 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : IF LPAREN expression RPAREN statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		string code = (yyvsp[-2])->getCode();
+		string label1 = newLabel();
+		code += "MOV AX," + (yyvsp[-2])->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label1 + "\n";
+		code += (yyvsp[0])->getCode();
+		code += label1 + ":\n";
+		(yyval)->setCode(code);
+
 	 	}
-#line 1942 "y.tab.c" /* yacc.c:1646  */
+#line 1973 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 445 "1605115_parser.y" /* yacc.c:1646  */
+#line 476 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-6])->getName() + (yyvsp[-5])->getName() + (yyvsp[-4])->getName() + (yyvsp[-3])->getName() +
 		 (yyvsp[-2])->getName() + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "statement");
@@ -1953,12 +1984,26 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : IF LPAREN expression RPAREN statement ELSE statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		 string code = (yyvsp[-4])->getCode();
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += "MOV AX," + (yyvsp[-4])->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " +label1 + "\n";
+		code += (yyvsp[-2])->getCode();
+		code += "JMP " + label2 + "\n";
+		code += label1 + ":\n";
+		code += (yyvsp[0])->getCode();
+		code += label2 + ":\n";
+		 (yyval)-> setCode(code);
+
 	 	}
-#line 1958 "y.tab.c" /* yacc.c:1646  */
+#line 2003 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 456 "1605115_parser.y" /* yacc.c:1646  */
+#line 501 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-4])->getName() + (yyvsp[-3])->getName() + (yyvsp[-2])->getName() + (yyvsp[-1])->getName() +
 		 (yyvsp[0])->getName(), "statement");
@@ -1967,12 +2012,26 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : WHILE LPAREN expression RPAREN statement\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		string code = "";
+		string label1 = newLabel();
+		string label2 = newLabel();
+		code += label1 + ":\n";
+		code += (yyvsp[-2])->getCode();
+		code += "MOV AX," + (yyvsp[-2])->getAssemblyID() + "\n";
+		code += "CMP AX,0\n";
+		code += "JE " + label2 + "\n";
+		code += (yyvsp[0])->getCode();
+		code += "JMP " + label1 + "\n";
+		code += label2 + ":\n";
+		(yyval)->setCode(code);
+
 	 	}
-#line 1972 "y.tab.c" /* yacc.c:1646  */
+#line 2031 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 465 "1605115_parser.y" /* yacc.c:1646  */
+#line 524 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-4])->getName() + (yyvsp[-3])->getName() + (yyvsp[-2])->getName() + (yyvsp[-1])->getName() +
 		 (yyvsp[0])->getName(), "statement");
@@ -1981,24 +2040,45 @@ yyreduce:
 		 addLineNoLog();
 		 logfile << "statement : PRINTLN LPAREN ID RPAREN SEMICOLON\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		 SymbolInfo* symbolTableEntry = symbolTable.lookup((yyvsp[-2])->getName());
+
+		 if (symbolTableEntry == nullptr) {
+			 addLineNoErr();
+			 logfile << "Undeclared variable";
+		 }
+
+		 string code = "MOV AX," + symbolTableEntry->getAssemblyID();
+		 code += "\nCALL OUTDEC\n";
+		 (yyval)->setCode(code);
+
+
 	 	}
-#line 1986 "y.tab.c" /* yacc.c:1646  */
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 474 "1605115_parser.y" /* yacc.c:1646  */
+#line 546 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "statement");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
 		 addLineNoLog();
 		 logfile << "statement : RETURN expression SEMICOLON\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		 string code = (yyvsp[-1])->getCode();
+		code += "MOV AX," + (yyvsp[-1])->getAssemblyID() + "\n";
+		code += "MOV " + curfunction + "_return,AX\n";
+		code += "JMP LReturn" + curfunction + "\n";
+		(yyval)->setCode(code);
+
+		//todo understand/uncomment function code. (USED FOR FUNCTIONS. SO NA USE KORTE PARLE BAAD DIO.)
 	 	}
-#line 1998 "y.tab.c" /* yacc.c:1646  */
+#line 2078 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 483 "1605115_parser.y" /* yacc.c:1646  */
+#line 565 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName()  + "\n" , "expression_statement");
 		 (yyval)->addChildSymbol((yyvsp[0]));
@@ -2006,23 +2086,26 @@ yyreduce:
 		 logfile << "expression_statement : SEMICOLON\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
 	 	}
-#line 2010 "y.tab.c" /* yacc.c:1646  */
+#line 2090 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 490 "1605115_parser.y" /* yacc.c:1646  */
+#line 572 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-1])->getName() + (yyvsp[0])->getName() + "\n"  , "expression_statement");
 		 (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
 		 addLineNoLog();
 		 logfile << "expression_statement : expression SEMICOLON\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
+
+		 (yyval)->setCode((yyvsp[-1])->getCode());
+		(yyval)->setAssemblyID((yyvsp[-1])->getAssemblyID());
 	 	}
-#line 2022 "y.tab.c" /* yacc.c:1646  */
+#line 2105 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 499 "1605115_parser.y" /* yacc.c:1646  */
+#line 584 "1605115_parser.y" /* yacc.c:1646  */
     {
 				(yyval) = new SymbolInfo((yyvsp[0])->getName(), "variable");
 
@@ -2040,11 +2123,11 @@ yyreduce:
 
 
 		}
-#line 2044 "y.tab.c" /* yacc.c:1646  */
+#line 2127 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 516 "1605115_parser.y" /* yacc.c:1646  */
+#line 601 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-3])->getName() + (yyvsp[-2])->getName() + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "variable");
 		 (yyval)->addChildSymbol((yyvsp[-3])); (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2062,12 +2145,11 @@ yyreduce:
 		string codes = "";
 		codes += (yyvsp[-1])->getCode();
 		codes += "\tMOV BX," + (yyvsp[-1])->getAssemblyID() + "\n";
-		codes+="\tADD BX,BX\n";  //todo find out why tf we're doing this
+		codes+="\tADD BX,BX\n"; 
 		(yyval)->setAssemblyArrayMember(true);
 
 
-		//instead of generating it manually based on symbol table data like bhaia did, we just fetch the assemblyName assigned to ID in symboltable.
-		//ID was given a assemblyName during declaration.
+	
 		string assemblyName = symbolTable.lookup((yyvsp[-3])->getName())->getAssemblyID();
 
 
@@ -2077,11 +2159,11 @@ yyreduce:
 		scratchfile << "variable with code created. CODE: \n" << codes;
 
 	 }
-#line 2081 "y.tab.c" /* yacc.c:1646  */
+#line 2163 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 550 "1605115_parser.y" /* yacc.c:1646  */
+#line 634 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "expression");
 		 (yyval)->addChildSymbol((yyvsp[0]));
@@ -2090,17 +2172,19 @@ yyreduce:
 		 logfile << (yyval)->getName() <<endl << endl;
 		 (yyval)->setReturnType((yyvsp[0])->getReturnType());
 
+		 	(yyval)->setCode((yyvsp[0])->getCode());
+			(yyval)->setAssemblyID((yyvsp[0])->getAssemblyID());
+
 		//  if($$->getReturnType() == "" || $$->getReturnType() == "void") {
 		// 	cerr<< ($$->getName() << "Expression with return type: " << $$->getReturnType() << " - in line " << line_no << endl << endl;
 		//  }
 
-		(yyval)->setReturnType((yyvsp[0])->getReturnType());
 	 	}
-#line 2100 "y.tab.c" /* yacc.c:1646  */
+#line 2184 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 564 "1605115_parser.y" /* yacc.c:1646  */
+#line 650 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " +  (yyvsp[-1])->getName() + " " + (yyvsp[0])->getName(), "expression");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2110,25 +2194,40 @@ yyreduce:
 		evaluateTypeConversionForASSIGNOP((yyvsp[-2]), (yyvsp[0]));
 		 (yyval)->setReturnType((yyvsp[-2])->getReturnType());
 
+		string code = (yyvsp[-2])->getCode() + (yyvsp[0])->getCode();
+		code += "MOV AX," + (yyvsp[0])->getAssemblyID() + "\n";
+
+		if((yyvsp[-2])->isAssemblyArrayMember()) {
+			code += "MOV " + (yyvsp[-2])->getAssemblyID() + "[BX],AX\n";
+		} else {
+			code += "MOV " + (yyvsp[-2])->getAssemblyID() + ",AX\n";
+		}
+		
+		(yyval)->setCode(code);
+		(yyval)->setAssemblyID((yyvsp[-2])->getAssemblyID());
+
 	 	}
-#line 2115 "y.tab.c" /* yacc.c:1646  */
+#line 2211 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 576 "1605115_parser.y" /* yacc.c:1646  */
+#line 674 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "logic_expression");
 		 (yyval)->addChildSymbol((yyvsp[0]));
 		 addLineNoLog();
 		 logfile << "logic_expression : rel_expression\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
-		 (yyval)->setReturnType((yyvsp[0])->getReturnType());	
+		 (yyval)->setReturnType((yyvsp[0])->getReturnType());
+		 (yyval)->setCode((yyvsp[0])->getCode());
+		 (yyval)->setAssemblyID((yyvsp[0])->getAssemblyID());
+	
 		  	}
-#line 2128 "y.tab.c" /* yacc.c:1646  */
+#line 2227 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 584 "1605115_parser.y" /* yacc.c:1646  */
+#line 685 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " + (yyvsp[-1])->getName() + " " +  (yyvsp[0])->getName(), "logic_expression");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2136,13 +2235,27 @@ yyreduce:
 		 logfile << "logic_expression : rel_expression LOGICOP rel_expression\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
 		 (yyval)->setReturnType("int");
+		 
+		 evaluateTypeConsistencyForOperands((yyvsp[-2]),(yyvsp[0]));
 
+		 string code = (yyvsp[-2])->getCode() + (yyvsp[0])->getCode();
+
+		 		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+
+		 string tempVar = generateNewTempVariable();
+		 (yyval)->setAssemblyID(tempVar);
+		
+		code += generateCodeForLogicOp((yyvsp[-2])->getAssemblyID(), (yyvsp[-1])->getName(), (yyvsp[0])->getAssemblyID(), (yyval)->getAssemblyID());
+
+		(yyval)->setCode(code);
+
+		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 	 	}
-#line 2142 "y.tab.c" /* yacc.c:1646  */
+#line 2255 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 595 "1605115_parser.y" /* yacc.c:1646  */
+#line 710 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "rel_expression");
 		 (yyval)->addChildSymbol((yyvsp[0]));
@@ -2154,11 +2267,11 @@ yyreduce:
 		 (yyval)->setCode((yyvsp[0])->getCode());
 		(yyval)->setAssemblyID((yyvsp[0])->getAssemblyID());
 	 	}
-#line 2158 "y.tab.c" /* yacc.c:1646  */
+#line 2271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 606 "1605115_parser.y" /* yacc.c:1646  */
+#line 721 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " + (yyvsp[-1])->getName() + " " +  (yyvsp[0])->getName(), "rel_expression");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2167,25 +2280,26 @@ yyreduce:
 		 logfile << (yyval)->getName() <<endl << endl;
 		 (yyval)->setReturnType("int");
 
-		 evaluateTypeConsistencyForRelop((yyvsp[-2]),(yyvsp[0]));
+		 evaluateTypeConsistencyForOperands((yyvsp[-2]),(yyvsp[0]));
 
 
 		 string tempVar = generateNewTempVariable();
 		 (yyval)->setAssemblyID(tempVar);
 
 		 string code = (yyvsp[-2])->getCode() + (yyvsp[0])->getCode();
+				 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
 		 code += generateCodeForRelop((yyvsp[-2])->getAssemblyID(), (yyvsp[-1])->getName(), (yyvsp[0])->getAssemblyID(), (yyval)->getAssemblyID());
 
 		 (yyval)->setCode(code);
+		 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
-		 scratchfile << "\n\nCODE TEST" << code << "\n";
 	 	}
-#line 2185 "y.tab.c" /* yacc.c:1646  */
+#line 2299 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 630 "1605115_parser.y" /* yacc.c:1646  */
+#line 746 "1605115_parser.y" /* yacc.c:1646  */
     {
 		(yyval) = new SymbolInfo((yyvsp[0])->getName() , "simple_expression");
 		(yyval)->addChildSymbol((yyvsp[0]));
@@ -2198,11 +2312,11 @@ yyreduce:
 
 
 	}
-#line 2202 "y.tab.c" /* yacc.c:1646  */
+#line 2316 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 642 "1605115_parser.y" /* yacc.c:1646  */
+#line 758 "1605115_parser.y" /* yacc.c:1646  */
     {
 		(yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " +  (yyvsp[-1])->getName() + " " +  (yyvsp[0])->getName(), "simple_expression");
 		(yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2227,11 +2341,11 @@ yyreduce:
 		(yyval)->setCode(code);
 		(yyval)->setAssemblyID(tempVariable);
 	}
-#line 2231 "y.tab.c" /* yacc.c:1646  */
+#line 2345 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 668 "1605115_parser.y" /* yacc.c:1646  */
+#line 784 "1605115_parser.y" /* yacc.c:1646  */
     {
 						(yyval) = new SymbolInfo((yyvsp[0])->getName(), "term");
 						(yyval)->addChildSymbol((yyvsp[0]));
@@ -2242,11 +2356,11 @@ yyreduce:
 						(yyval)->setCode((yyvsp[0])->getCode());
 						(yyval)->setAssemblyID((yyvsp[0])->getAssemblyID());
 	}
-#line 2246 "y.tab.c" /* yacc.c:1646  */
+#line 2360 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 678 "1605115_parser.y" /* yacc.c:1646  */
+#line 794 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + " " +   (yyvsp[-1])->getName() + " " + (yyvsp[0])->getName(), "term");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2295,11 +2409,11 @@ yyreduce:
 
 
 	}
-#line 2299 "y.tab.c" /* yacc.c:1646  */
+#line 2413 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 728 "1605115_parser.y" /* yacc.c:1646  */
+#line 844 "1605115_parser.y" /* yacc.c:1646  */
     {
 						(yyval) = new SymbolInfo((yyvsp[-1])->getName() + " " +  (yyvsp[0])->getName(), "unary_expression");
 						(yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2330,11 +2444,11 @@ yyreduce:
 					
 
 	}
-#line 2334 "y.tab.c" /* yacc.c:1646  */
+#line 2448 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 758 "1605115_parser.y" /* yacc.c:1646  */
+#line 874 "1605115_parser.y" /* yacc.c:1646  */
     {
 						(yyval) = new SymbolInfo((yyvsp[-1])->getName() + (yyvsp[0])->getName(), "unary_expression");
 						(yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2354,11 +2468,11 @@ yyreduce:
 						
 
 	}
-#line 2358 "y.tab.c" /* yacc.c:1646  */
+#line 2472 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 777 "1605115_parser.y" /* yacc.c:1646  */
+#line 893 "1605115_parser.y" /* yacc.c:1646  */
     {
 						(yyval) = new SymbolInfo((yyvsp[0])->getName(), "unary_expression");
 						(yyval)->addChildSymbol((yyvsp[0]));
@@ -2370,11 +2484,11 @@ yyreduce:
 						(yyval)->setAssemblyID((yyvsp[0])->getAssemblyID());
 
 	}
-#line 2374 "y.tab.c" /* yacc.c:1646  */
+#line 2488 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 790 "1605115_parser.y" /* yacc.c:1646  */
+#line 906 "1605115_parser.y" /* yacc.c:1646  */
     {
 						(yyval) = new SymbolInfo((yyvsp[0])->getName(), "factor");
 						(yyval)->addChildSymbol((yyvsp[0]));
@@ -2396,11 +2510,11 @@ yyreduce:
 						(yyval)->setCode(currentCode);
 						
 	}
-#line 2400 "y.tab.c" /* yacc.c:1646  */
+#line 2514 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 811 "1605115_parser.y" /* yacc.c:1646  */
+#line 927 "1605115_parser.y" /* yacc.c:1646  */
     {
 		//todo Function call. Handle Later.
 
@@ -2416,11 +2530,11 @@ yyreduce:
 
 		 
 	}
-#line 2420 "y.tab.c" /* yacc.c:1646  */
+#line 2534 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 826 "1605115_parser.y" /* yacc.c:1646  */
+#line 942 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "factor");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2432,11 +2546,11 @@ yyreduce:
 		 (yyval)->setCode((yyvsp[-1])->getCode());
 		 (yyval)->setAssemblyID((yyvsp[-1])->getAssemblyID());
 	}
-#line 2436 "y.tab.c" /* yacc.c:1646  */
+#line 2550 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 837 "1605115_parser.y" /* yacc.c:1646  */
+#line 953 "1605115_parser.y" /* yacc.c:1646  */
     {
 			(yyval) = new SymbolInfo((yyvsp[0])->getName(), "factor");
 			(yyval)->addChildSymbol((yyvsp[0]));
@@ -2451,11 +2565,11 @@ yyreduce:
 			(yyval)->setCode(code);
 
 	 }
-#line 2455 "y.tab.c" /* yacc.c:1646  */
+#line 2569 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 851 "1605115_parser.y" /* yacc.c:1646  */
+#line 967 "1605115_parser.y" /* yacc.c:1646  */
     {
 			(yyval) = new SymbolInfo((yyvsp[0])->getName(), "factor");
 			(yyval)->addChildSymbol((yyvsp[0]));
@@ -2469,11 +2583,11 @@ yyreduce:
 			(yyval)->setAssemblyID(temp);
 			(yyval)->setCode(code);
 	 }
-#line 2473 "y.tab.c" /* yacc.c:1646  */
+#line 2587 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 864 "1605115_parser.y" /* yacc.c:1646  */
+#line 980 "1605115_parser.y" /* yacc.c:1646  */
     {
 			(yyval) = new SymbolInfo((yyvsp[-1])->getName() + (yyvsp[0])->getName(), "factor");
 			(yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2510,11 +2624,11 @@ yyreduce:
 
 			
 	}
-#line 2514 "y.tab.c" /* yacc.c:1646  */
+#line 2628 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 900 "1605115_parser.y" /* yacc.c:1646  */
+#line 1016 "1605115_parser.y" /* yacc.c:1646  */
     {
 			(yyval) = new SymbolInfo((yyvsp[-1])->getName() + (yyvsp[0])->getName(), "factor");
 			(yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2547,11 +2661,11 @@ yyreduce:
 			(yyval)->setCode(codes);
 			(yyval)->setAssemblyID(tempVar);
 	}
-#line 2551 "y.tab.c" /* yacc.c:1646  */
+#line 2665 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 934 "1605115_parser.y" /* yacc.c:1646  */
+#line 1050 "1605115_parser.y" /* yacc.c:1646  */
     { 
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "argument_list");
 		 (yyval)->addChildSymbol((yyvsp[0]));
@@ -2559,11 +2673,11 @@ yyreduce:
 		 logfile << "argument_list : arguments\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
 	 	}
-#line 2563 "y.tab.c" /* yacc.c:1646  */
+#line 2677 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 941 "1605115_parser.y" /* yacc.c:1646  */
+#line 1057 "1605115_parser.y" /* yacc.c:1646  */
     {
 				  (yyval) = new SymbolInfo("", "argument_list");
 		 		 
@@ -2571,11 +2685,11 @@ yyreduce:
 		 		logfile << "argument_list : \n\n";
 		 		logfile << (yyval)->getName() <<endl << endl;
 			  }
-#line 2575 "y.tab.c" /* yacc.c:1646  */
+#line 2689 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 950 "1605115_parser.y" /* yacc.c:1646  */
+#line 1066 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[-2])->getName() + (yyvsp[-1])->getName() + (yyvsp[0])->getName(), "arguments");
 		 (yyval)->addChildSymbol((yyvsp[-2])); (yyval)->addChildSymbol((yyvsp[-1])); (yyval)->addChildSymbol((yyvsp[0]));
@@ -2583,11 +2697,11 @@ yyreduce:
 		 logfile << "arguments : arguments COMMA logic_expression\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
 	 	}
-#line 2587 "y.tab.c" /* yacc.c:1646  */
+#line 2701 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 957 "1605115_parser.y" /* yacc.c:1646  */
+#line 1073 "1605115_parser.y" /* yacc.c:1646  */
     {
 		 (yyval) = new SymbolInfo((yyvsp[0])->getName() , "arguments");
 		 (yyval)->addChildSymbol((yyvsp[0]));
@@ -2595,11 +2709,11 @@ yyreduce:
 		 logfile << "arguments : logic_expression\n\n";
 		 logfile << (yyval)->getName() <<endl << endl;
 	 	}
-#line 2599 "y.tab.c" /* yacc.c:1646  */
+#line 2713 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2603 "y.tab.c" /* yacc.c:1646  */
+#line 2717 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2827,7 +2941,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 967 "1605115_parser.y" /* yacc.c:1906  */
+#line 1083 "1605115_parser.y" /* yacc.c:1906  */
 
 int main(int argc,char *argv[])
 {
