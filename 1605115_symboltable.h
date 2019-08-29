@@ -270,6 +270,12 @@ public:
     }
 
      const string &getAssemblyID() const {
+         if(assemblyID == ""){
+             scratchfile << "\nError with "  << name;
+             scratchfile << "\nType: " << type << "\n";
+             scratchfile << "Line No: " << line_no << "\n\n";
+             
+         }
         return assemblyID;
     }
 

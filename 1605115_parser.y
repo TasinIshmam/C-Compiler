@@ -14,6 +14,7 @@ extern FILE *yyin;
 int line_no = 1;
 int errorCount = 0;
 
+string main_code = "\nMAIN PROC\n\nMOV AX, @DATA\nMOV DS, AX\n\n";
 
 //todo consider modifying this function. Might hit copychecker.
 
@@ -35,7 +36,7 @@ SymbolTable symbolTable(10);
 
 
 vector<string> variableDeclarationList;
-vector<string> functionDelcarationList;
+vector<string> functionVariableDelcarationList;
 vector<pair<string,string> >arrayDeclarationList;
 
 
@@ -91,7 +92,8 @@ start : program	{
 		
 		finalCode += ".CODE\n";
 		
-
+		finalCode += main_code;
+		finalCode += "JMP LReturnmain\nLReturnmain:\nMOV AH, 4CH \nINT 21H\n";
 		finalCode += $1->getCode();
 		finalCode += outdecProcCode;
 
@@ -113,6 +115,7 @@ program : program unit	{
 		 addLineNoLog();
 		 logfile << "program : program unit\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 	$$->setCode($1->getCode() + $2->getCode());
 	 	}
 	| unit	{
 		 $$ = new SymbolInfo($1->getName() + "\n" , "program");
@@ -120,6 +123,8 @@ program : program unit	{
 		 addLineNoLog();
 		 logfile << "program : unit\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 	$$->setCode($1->getCode());
+
 	 	}
 	;
 
@@ -130,6 +135,9 @@ unit : var_declaration {
 		 
 		 logfile << "unit : var_declaration\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 	$$->setCode($1->getCode());
+
 	 	}
      | func_declaration {
 		 $$ = new SymbolInfo($1->getName() + "\n" , "unit");
@@ -137,6 +145,8 @@ unit : var_declaration {
 		 addLineNoLog();
 		 logfile << "unit : func_declaration\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 	$$->setCode($1->getCode());
+
 	 	}
      | func_definition {
 		 $$ = new SymbolInfo($1->getName() + "\n", "unit");
@@ -144,6 +154,8 @@ unit : var_declaration {
 		 addLineNoLog();
 		 logfile << "unit : func_definition\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 	$$->setCode($1->getCode());
+
 	 	}
      ;
 
@@ -217,7 +229,10 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 addLineNoLog();
 		 logfile << "func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
-	 	}
+	 	} 
+		 // FINISH FIRST RULE
+
+		 //STARTING SECOND RULE
 		| type_specifier ID LPAREN RPAREN {
 	
 	string functionName = $2->getName();
@@ -245,6 +260,10 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 addLineNoLog();
 		 logfile << "func_definition : type_specifier ID LPAREN RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 if($2->getName()=="main") {
+			 	main_code += $6->getCode();
+		 }
 	 	}
  		;
 
@@ -287,14 +306,17 @@ compound_statement : LCURL {
 		symbolTable.enterScope();
 	}
 } statements RCURL 	{
+	//todo finish for function
 		 $$ = new SymbolInfo($1->getName() + $3->getName() + $4->getName(), "compound_statement");
 		 $$->addChildSymbol($1); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 addLineNoLog();
 		 logfile << "compound_statement : LCURL statements RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
-
+		
 		 symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
+
+		 $$->setCode($3->getCode());
 	 	}
  		| LCURL { 
 			if(functionScopeBeginFlag) {
@@ -391,6 +413,8 @@ statements : statement	{
 		 addLineNoLog();
 		 logfile << "statements : statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+			$$->setCode($1->getCode());
 	 	}
 	   | statements statement	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() , "statements");
@@ -398,6 +422,8 @@ statements : statement	{
 		 addLineNoLog();
 		 logfile << "statements : statements statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 	$$->setCode($1->getCode() + $2->getCode());
 	 	}
 	   ;
 
@@ -440,15 +466,22 @@ statement : var_declaration	{
 		string code = $3->getCode();
 		string label1 = newLabel();
 		string label2 = newLabel();
+		code += ";Loop Begin\n";
 		code += label1 + ":\n";
+		code += ";$4 code Begin\n";
 		code += $4->getCode();
+		code += ";$4 code End\n";
+
 		code += "MOV AX," + $4->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
 		code += "JE " + label2 + "\n";
+		code += ";$7 code Begin\n";
 		code += $7->getCode();
+		code += ";$5 code Begin\n";
 		code += $5->getCode();
 		code += "JMP " + label1 + "\n";
 		code += label2 + ":\n";
+		code += ";Loop END\n";
 		$$->setCode(code);
 
 		//todo change arouond logic for copychecker mara prevention
@@ -591,6 +624,10 @@ variable : ID	{
 
 				verifyVariableIDIsDeclared($1);
 				$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));	
+				string assemblyName = symbolTable.lookup($1->getName())->getAssemblyID();
+						$$->setAssemblyID(assemblyName);
+
+
 
 				$$->setCode("");
 

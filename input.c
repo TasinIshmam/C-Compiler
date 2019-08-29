@@ -17,13 +17,24 @@ int main(){
     a=1;
     b=2 * a;
     a = b / a;
-  
+    
+    a = 0;
+
+    for( a = 0; a < 20; a = a + 1) {
+        c[a] = a;
+        
+        b = c[a];
+
+        println(b);
+    }
+
+
 
     int j, asd; 
 
 	j= 5 % 3;
     
-    a = j > j;
+    a = j + j;
 
 	asd = 213;
 	

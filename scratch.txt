@@ -4,17 +4,25 @@ c53
 
 CODE TEST
 
+	MOV t6,20
 
 
 
 CODE TEST
 
-MOV AX,
-CMP AX,
-JG Label0
-MOV temp7,0
-JMP Label0
-Label0:
-MOV temp7,1
-Label1:
+	MOV t6,20
+MOV AX,a2
+CMP AX,t6
+JL L0
+MOV t7,0
+JMP L1
+L0:
+MOV t7,1
+L1:
 
+variable with code created. CODE: 
+	MOV BX,a2
+	ADD BX,BX
+variable with code created. CODE: 
+	MOV BX,a2
+	ADD BX,BX

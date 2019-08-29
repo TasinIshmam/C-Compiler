@@ -30,9 +30,9 @@
 	vector<SymbolInfo *> para_list;
 	vector<SymbolInfo *> dec_list;
 	vector<SymbolInfo *> arg_list;
-	vector<string> var_dec;
-	vector<string> func_var_dec;
-	vector<pair<string, string>> arr_dec;
+	vector<string> variableDeclarationList;
+	vector<string> functionVariableDelcarationList;
+	vector<pair<string, string>> arrayDeclarationList;
 	string curfunction;
 
 	void yyerror(const string s)
@@ -97,13 +97,13 @@
 		string code = "";
 		code += ".MODEL SMALL\n\.STACK 100H\n\.DATA \n";
 
-		for (int i = 0; i < var_dec.size(); i++)
+		for (int i = 0; i < variableDeclarationList.size(); i++)
 		{
-			code += var_dec[i] + " dw ?\n";
+			code += variableDeclarationList[i] + " dw ?\n";
 		}
-		for (int i = 0; i < arr_dec.size(); i++)
+		for (int i = 0; i < arrayDeclarationList.size(); i++)
 		{
-			code += arr_dec[i].first + " dw " + arr_dec[i].second + " dup(?)\n";
+			code += arrayDeclarationList[i].first + " dw " + arrayDeclarationList[i].second + " dup(?)\n";
 		}
 
 		$1->setCode(code + ".CODE\n" + $1->getCode());
@@ -184,13 +184,13 @@ program : program unit
 	$$->setCode($1->getCode());
 };
 
-unit : var_declaration
+unit : variableDeclarationListlaration
 {
 	$$ = new SymbolInfo();
-	fprintf(parsertext, "Line at %d : unit->var_declaration\n\n", line_count);
+	fprintf(parsertext, "Line at %d : unit->variableDeclarationListlaration\n\n", line_count);
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
 	$$->setName($1->getName() + "\n");
-	func_var_dec.clear();
+	functionVariableDelcarationList.clear();
 	$$->setCode($1->getCode());
 }
 | func_declaration
@@ -361,7 +361,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 		//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
 	}
 	curfunction = $2->getName();
-	var_dec.push_back(curfunction + "_return");
+	variableDeclarationList.push_back(curfunction + "_return");
 }
 compound_statement
 {
@@ -377,11 +377,11 @@ compound_statement
 	{
 		SymbolInfo *s = table->lookup($2->getName());
 
-		for (int i = 0; i < func_var_dec.size(); i++)
+		for (int i = 0; i < functionVariableDelcarationList.size(); i++)
 		{
-			s->get_isFunction()->add_var(func_var_dec[i]);
+			s->get_isFunction()->add_var(functionVariableDelcarationList[i]);
 		}
-		func_var_dec.clear();
+		functionVariableDelcarationList.clear();
 
 		string code = $$->getCode() +
 					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
@@ -449,7 +449,7 @@ compound_statement
 	}
 	//cout<<table->getNextId()<<endl;
 	curfunction = $2->getName();
-	var_dec.push_back(curfunction + "_return");
+	variableDeclarationList.push_back(curfunction + "_return");
 	$1->setName($1->getName() + " " + $2->getName() + "()");
 }
 compound_statement
@@ -466,11 +466,11 @@ compound_statement
 	{
 		SymbolInfo *s = table->lookup($2->getName());
 
-		for (int i = 0; i < func_var_dec.size(); i++)
+		for (int i = 0; i < functionVariableDelcarationList.size(); i++)
 		{
-			s->get_isFunction()->add_var(func_var_dec[i]);
+			s->get_isFunction()->add_var(functionVariableDelcarationList[i]);
 		}
-		func_var_dec.clear();
+		functionVariableDelcarationList.clear();
 
 		string code = $$->getCode() +
 					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
@@ -545,7 +545,7 @@ compound_statement : LCURL
 	{
 		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
 		//table->printcurrent();
-		var_dec.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
+		variableDeclarationList.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
 	}
 	para_list.clear();
 }
@@ -566,7 +566,7 @@ statements RCURL
 	{
 		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
 		//table->printcurrent();
-		var_dec.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
+		variableDeclarationList.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
 	}
 	para_list.clear();
 	$$ = new SymbolInfo();
@@ -577,10 +577,10 @@ statements RCURL
 	table->Exit_Scope();
 };
 
-var_declaration : type_specifier declaration_list SEMICOLON
+variableDeclarationListlaration : type_specifier declaration_list SEMICOLON
 {
 	$$ = new SymbolInfo();
-	fprintf(parsertext, "Line at %d : var_declaration->type_specifier declaration_list SEMICOLON\n\n", line_count);
+	fprintf(parsertext, "Line at %d : variableDeclarationListlaration->type_specifier declaration_list SEMICOLON\n\n", line_count);
 	fprintf(parsertext, "%s %s;\n\n", $1->getName().c_str(), $2->getName().c_str());
 	if ($1->getName() == "void ")
 	{
@@ -589,7 +589,7 @@ var_declaration : type_specifier declaration_list SEMICOLON
 	}
 	else
 	{
-		//	func_var_dec.clear();
+		//	functionVariableDelcarationList.clear();
 		for (int i = 0; i < dec_list.size(); i++)
 		{
 
@@ -601,7 +601,7 @@ var_declaration : type_specifier declaration_list SEMICOLON
 			}
 			if (dec_list[i]->get_type().size() > 2)
 			{
-				arr_dec.push_back(make_pair(dec_list[i]->getName() + IntTotable->getCurrentId()),
+				arrayDeclarationList.push_back(make_pair(dec_list[i]->getName() + IntTotable->getCurrentId()),
 
 											dec_list[i]->get_type().substr(2, dec_list[i]->get_type().size() - 1)));
 
@@ -611,9 +611,9 @@ var_declaration : type_specifier declaration_list SEMICOLON
 			}
 			else
 			{
-				func_var_dec.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
+				functionVariableDelcarationList.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
 				table->Insert(dec_list[i]->getName(), dec_list[i]->get_type(), $1->getName());
-				var_dec.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
+				variableDeclarationList.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
 			}
 		}
 	}
@@ -694,10 +694,10 @@ statements : statement
 	$$->setCode($1->getCode() + $2->getCode());
 };
 
-statement : var_declaration
+statement : variableDeclarationListlaration
 {
 	$$ = new SymbolInfo();
-	fprintf(parsertext, "Line at %d : statement -> var_declaration\n\n", line_count);
+	fprintf(parsertext, "Line at %d : statement -> variableDeclarationListlaration\n\n", line_count);
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
 	$$->setName($1->getName());
 }
@@ -734,15 +734,21 @@ statement : var_declaration
 		string code = $3->getCode();
 		string label1 = newLabel();
 		string label2 = newLabel();
+		code += ";Loop Begin\n";
 		code += label1 + ":\n";
+		code += ";$4 code Begin\n";
 		code += $4->getCode();
 		code += "MOV AX," + $4->getAssemblyID() + "\n";
 		code += "CMP AX,0\n";
 		code += "JE " + label2 + "\n";
+		code += ";$7 code Begin\n";
 		code += $7->getCode();
+		code += ";$5 code Begin\n";
 		code += $5->getCode();
 		code += "JMP " + label1 + "\n";
 		code += label2 + ":\n";
+				code += ";Loop END\n";
+
 		$$->setCode(code);
 	}
 
@@ -1080,7 +1086,7 @@ logic_expression : rel_expression
 		}
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
-		var_dec.push_back(temp);
+		variableDeclarationList.push_back(temp);
 	}
 	$$->setReturnType("int ");
 	$$->setName($1->getName() + $2->getName() + $3->getName());
@@ -1145,7 +1151,7 @@ rel_expression : simple_expression
 		code += label1 + ":\n";
 		code += "MOV " + temp) + ",1\n";
 		code += label2 + ":\n";
-		var_dec.push_back(temp);
+		variableDeclarationList.push_back(temp);
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
 	}
@@ -1197,7 +1203,7 @@ simple_expression : term
 		code += "MOV " + temp) + ",AX\n";
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
-		var_dec.push_back(temp);
+		variableDeclarationList.push_back(temp);
 	}
 	$$->setName($1->getName() + $2->getName() + $3->getName());
 };
@@ -1247,7 +1253,7 @@ term : unary_expression
 		code += "MOV " + temp) + ", DX\n";
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
-		var_dec.push_back(temp);
+		variableDeclarationList.push_back(temp);
 	}
 	else if ($2->getName() == "/")
 	{
@@ -1271,7 +1277,7 @@ term : unary_expression
 			code += "MOV " + temp) + ", AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
-			var_dec.push_back(temp);
+			variableDeclarationList.push_back(temp);
 		}
 	}
 	else
@@ -1297,7 +1303,7 @@ term : unary_expression
 			code += "MOV " + temp) + ", AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
-			var_dec.push_back(temp);
+			variableDeclarationList.push_back(temp);
 		}
 	}
 	$$->setName($1->getName() + $2->getName() + $3->getName());
@@ -1381,7 +1387,7 @@ factor : variable
 		string temp = generateNewTempVariable();
 		code += "MOV AX," + $1->getAssemblyID() + "[BX]\n";
 		code += "MOV " + temp) + ",AX\n";
-		var_dec.push_back(temp);
+		variableDeclarationList.push_back(temp);
 		$$->setAssemblyID(temp);
 	}
 	else
@@ -1455,7 +1461,7 @@ factor : variable
 			code += "MOV " + temp) + ",AX\n";
 			$$->setCode(code);
 			$$->setAssemblyID(temp);
-			var_dec.push_back(temp);
+			variableDeclarationList.push_back(temp);
 		}
 	}
 	arg_list.clear();
@@ -1484,7 +1490,7 @@ factor : variable
 	$$->setCode(code);
 	$$->setAssemblyID(temp));
 	//cout<<code<<endl;
-	var_dec.push_back(temp);
+	variableDeclarationList.push_back(temp);
 }
 | CONST_FLOAT
 {
@@ -1497,7 +1503,7 @@ factor : variable
 	string code = "MOV " + temp) + "," + $1->getName() + "\n";
 	$$->setCode(code);
 	$$->setAssemblyID(temp));
-	var_dec.push_back(temp);
+	variableDeclarationList.push_back(temp);
 }
 | variable INCOP
 {
@@ -1524,7 +1530,7 @@ factor : variable
 	}
 	else
 		code += "INC " + $1->getAssemblyID() + "\n";
-	var_dec.push_back(temp);
+	variableDeclarationList.push_back(temp);
 
 	$$->setName($1->getName() + "++");
 	$$->setCode(code);
@@ -1553,7 +1559,7 @@ factor : variable
 	}
 	else
 		code += "DEC " + $1->getAssemblyID() + "\n";
-	var_dec.push_back(temp);
+	variableDeclarationList.push_back(temp);
 	$$->setName($1->getName() + "--");
 	$$->setCode(code);
 	$$->setAssemblyID(temp);

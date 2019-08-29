@@ -25,6 +25,7 @@
       "bitset": "cpp",
       "vector": "cpp",
       "*.txt": "cpp",
-      "random": "cpp"
+      "random": "cpp",
+      "deque": "cpp"
     }
 }

@@ -23,7 +23,7 @@ int tempCount = 0;
 
 
 extern vector<string> variableDeclarationList;
-extern vector<string> functionDelcarationList;
+extern vector<string> functionVariableDelcarationList;
 extern vector<pair<string,string> >arrayDeclarationList;
 
 
@@ -37,14 +37,14 @@ string intToString (int a)
 
 string newLabel()
 {
-	string lb= "Label" + to_string( labelCount);
+	string lb= "L" + to_string( labelCount);
 	labelCount++;
 	return lb;
 }
 
 string generateNewTempVariable()
 {
-	string temp = "temp" + to_string(tempCount);
+	string temp = "t" + to_string(tempCount);
     variableDeclarationList.push_back(temp);
     	//todo investigate what you just commented out
 	tempCount++;
@@ -113,7 +113,7 @@ string generateCodeForRelop(string expressionAssemblyId1 ,string relOperator ,st
 			code += "JNE " + label1 + "\n";
 		}
 		code += "MOV " + tempVariableForParentExpression + ",0\n";
-		code += "JMP " + label1 + "\n";
+		code += "JMP " + label2 + "\n";
 		code += label1 + ":\n";
 		code += "MOV " + tempVariableForParentExpression + ",1\n";
 		code += label2 + ":\n";

@@ -239,308 +239,784 @@ b = 2 * a;
 a = b / a;
 
 
-At line no: 22 type_specifier : INT
+At line no: 21 variable : ID
 
-int
+a
 
-At line no: 22 declaration_list : ID
+At line no: 21 factor : CONST_INT
 
-j
+0
 
-At line no: 22 declaration_list : declaration_list COMMA ID
+At line no: 21 unary_expression : factor
 
-j, asd
+0
 
-At line no: 22 var_declaration : type_specifier declaration_list SEMICOLON
+At line no: 21 term : unary_expression
 
-int j, asd;
+0
+
+At line no: 21 simple_expression : term
+
+0
+
+At line no: 21 rel_expression : simple_expression
+
+0
+
+At line no: 21 logic_expression : rel_expression
+
+0
+
+At line no: 21 expression : variable ASSIGNOP logic_expression
+
+a = 0
+
+At line no: 21 expression_statement : expression SEMICOLON
+
+a = 0;
 
 
-At line no: 22 statement : var_declaration
+At line no: 21 statement : expression_statement
 
-int j, asd;
+a = 0;
 
 
-At line no: 22 statements : statements statement
+At line no: 21 statements : statements statement
 
 int a, b;
 int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
 
+
+At line no: 23 variable : ID
+
+a
+
+At line no: 23 factor : CONST_INT
+
+0
+
+At line no: 23 unary_expression : factor
+
+0
+
+At line no: 23 term : unary_expression
+
+0
+
+At line no: 23 simple_expression : term
+
+0
+
+At line no: 23 rel_expression : simple_expression
+
+0
+
+At line no: 23 logic_expression : rel_expression
+
+0
+
+At line no: 23 expression : variable ASSIGNOP logic_expression
+
+a = 0
+
+At line no: 23 expression_statement : expression SEMICOLON
+
+a = 0;
+
+
+At line no: 23 variable : ID
+
+a
+
+At line no: 23 factor : variable
+
+a
+
+At line no: 23 unary_expression : factor
+
+a
+
+At line no: 23 term : unary_expression
+
+a
+
+At line no: 23 simple_expression : term
+
+a
+
+At line no: 23 factor : CONST_INT
+
+20
+
+At line no: 23 unary_expression : factor
+
+20
+
+At line no: 23 term : unary_expression
+
+20
+
+At line no: 23 simple_expression : term
+
+20
+
+At line no: 23 rel_expression : simple_expression RELOP simple_expression
+
+a < 20
+
+At line no: 23 logic_expression : rel_expression
+
+a < 20
+
+At line no: 23 expression : logic_expression
+
+a < 20
+
+At line no: 23 expression_statement : expression SEMICOLON
+
+a < 20;
+
+
+At line no: 23 variable : ID
+
+a
+
+At line no: 23 variable : ID
+
+a
+
+At line no: 23 factor : variable
+
+a
+
+At line no: 23 unary_expression : factor
+
+a
+
+At line no: 23 term : unary_expression
+
+a
+
+At line no: 23 simple_expression : term
+
+a
+
+At line no: 23 factor : CONST_INT
+
+1
+
+At line no: 23 unary_expression : factor
+
+1
+
+At line no: 23 term : unary_expression
+
+1
+
+At line no: 23 simple_expression : simple_expression ADDOP term
+
+a + 1
+
+At line no: 23 rel_expression : simple_expression
+
+a + 1
+
+At line no: 23 logic_expression : rel_expression
+
+a + 1
+
+At line no: 23 expression : variable ASSIGNOP logic_expression
+
+a = a + 1
 
 At line no: 24 variable : ID
 
-j
+a
 
-At line no: 24 factor : CONST_INT
+At line no: 24 factor : variable
 
-5
+a
 
 At line no: 24 unary_expression : factor
 
-5
+a
 
 At line no: 24 term : unary_expression
 
-5
-
-At line no: 24 factor : CONST_INT
-
-3
-
-At line no: 24 unary_expression : factor
-
-3
-
-At line no: 24 term : term MULOP unary_expression
-
-5 % 3
+a
 
 At line no: 24 simple_expression : term
 
-5 % 3
+a
 
 At line no: 24 rel_expression : simple_expression
 
-5 % 3
+a
 
 At line no: 24 logic_expression : rel_expression
 
-5 % 3
+a
+
+At line no: 24 expression : logic_expression
+
+a
+
+At line no: 24 variable : ID LTHIRD expression RTHIRD
+
+c[a]
+
+At line no: 24 variable : ID
+
+a
+
+At line no: 24 factor : variable
+
+a
+
+At line no: 24 unary_expression : factor
+
+a
+
+At line no: 24 term : unary_expression
+
+a
+
+At line no: 24 simple_expression : term
+
+a
+
+At line no: 24 rel_expression : simple_expression
+
+a
+
+At line no: 24 logic_expression : rel_expression
+
+a
 
 At line no: 24 expression : variable ASSIGNOP logic_expression
 
-j = 5 % 3
+c[a] = a
 
 At line no: 24 expression_statement : expression SEMICOLON
 
-j = 5 % 3;
+c[a] = a;
 
 
 At line no: 24 statement : expression_statement
 
-j = 5 % 3;
+c[a] = a;
 
 
-At line no: 24 statements : statements statement
+At line no: 24 statements : statement
 
-int a, b;
-int c[53];
-a = 1;
-b = 2 * a;
-a = b / a;
-int j, asd;
-j = 5 % 3;
+c[a] = a;
 
+
+At line no: 26 variable : ID
+
+b
 
 At line no: 26 variable : ID
 
 a
 
-At line no: 26 variable : ID
-
-j
-
 At line no: 26 factor : variable
 
-j
+a
 
 At line no: 26 unary_expression : factor
 
-j
+a
 
 At line no: 26 term : unary_expression
 
-j
+a
 
 At line no: 26 simple_expression : term
 
-j
+a
 
-At line no: 26 variable : ID
+At line no: 26 rel_expression : simple_expression
 
-j
-
-At line no: 26 factor : variable
-
-j
-
-At line no: 26 unary_expression : factor
-
-j
-
-At line no: 26 term : unary_expression
-
-j
-
-At line no: 26 simple_expression : term
-
-j
-
-At line no: 26 rel_expression : simple_expression RELOP simple_expression
-
-j > j
+a
 
 At line no: 26 logic_expression : rel_expression
 
-j > j
+a
+
+At line no: 26 expression : logic_expression
+
+a
+
+At line no: 26 variable : ID LTHIRD expression RTHIRD
+
+c[a]
+
+At line no: 26 factor : variable
+
+c[a]
+
+At line no: 26 unary_expression : factor
+
+c[a]
+
+At line no: 26 term : unary_expression
+
+c[a]
+
+At line no: 26 simple_expression : term
+
+c[a]
+
+At line no: 26 rel_expression : simple_expression
+
+c[a]
+
+At line no: 26 logic_expression : rel_expression
+
+c[a]
 
 At line no: 26 expression : variable ASSIGNOP logic_expression
 
-a = j > j
+b = c[a]
 
 At line no: 26 expression_statement : expression SEMICOLON
 
-a = j > j;
+b = c[a];
 
 
 At line no: 26 statement : expression_statement
 
-a = j > j;
+b = c[a];
 
 
 At line no: 26 statements : statements statement
 
-int a, b;
-int c[53];
-a = 1;
-b = 2 * a;
-a = b / a;
-int j, asd;
-j = 5 % 3;
-a = j > j;
+c[a] = a;
+b = c[a];
 
 
-At line no: 28 variable : ID
+At line no: 28 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
 
-asd
-
-At line no: 28 factor : CONST_INT
-
-213
-
-At line no: 28 unary_expression : factor
-
-213
-
-At line no: 28 term : unary_expression
-
-213
-
-At line no: 28 simple_expression : term
-
-213
-
-At line no: 28 rel_expression : simple_expression
-
-213
-
-At line no: 28 logic_expression : rel_expression
-
-213
-
-At line no: 28 expression : variable ASSIGNOP logic_expression
-
-asd = 213
-
-At line no: 28 expression_statement : expression SEMICOLON
-
-asd = 213;
-
-
-At line no: 28 statement : expression_statement
-
-asd = 213;
-
+println(b);
 
 At line no: 28 statements : statements statement
 
+c[a] = a;
+b = c[a];
+println(b);
+
+At line no: 29 compound_statement : LCURL statements RCURL
+
+{c[a] = a;
+b = c[a];
+println(b);}
+
+
+ ScopeTable # 3
+ 0--> 
+ 1--> 
+ 2--> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8--> 
+ 9--> 
+
+ ScopeTable # 2
+ 0--> 
+ 1--> 
+ 2-->  < b : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6-->  < c : ID> 
+ 7--> 
+ 8-->  < a : ID> 
+ 9--> 
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2-->  < main : ID> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8--> 
+ 9--> 
+At line no: 29 statement : compound_statement
+
+{c[a] = a;
+b = c[a];
+println(b);}
+
+At line no: 29 statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement
+
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}
+
+At line no: 29 statements : statements statement
+
 int a, b;
 int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}
+
+At line no: 33 type_specifier : INT
+
+int
+
+At line no: 33 declaration_list : ID
+
+j
+
+At line no: 33 declaration_list : declaration_list COMMA ID
+
+j, asd
+
+At line no: 33 var_declaration : type_specifier declaration_list SEMICOLON
+
 int j, asd;
-j = 5 % 3;
-a = j > j;
-asd = 213;
 
 
-At line no: 30 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+At line no: 33 statement : var_declaration
 
-println(a);
+int j, asd;
 
-At line no: 30 statements : statements statement
+
+At line no: 33 statements : statements statement
 
 int a, b;
 int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+
+
+At line no: 35 variable : ID
+
+j
+
+At line no: 35 factor : CONST_INT
+
+5
+
+At line no: 35 unary_expression : factor
+
+5
+
+At line no: 35 term : unary_expression
+
+5
+
+At line no: 35 factor : CONST_INT
+
+3
+
+At line no: 35 unary_expression : factor
+
+3
+
+At line no: 35 term : term MULOP unary_expression
+
+5 % 3
+
+At line no: 35 simple_expression : term
+
+5 % 3
+
+At line no: 35 rel_expression : simple_expression
+
+5 % 3
+
+At line no: 35 logic_expression : rel_expression
+
+5 % 3
+
+At line no: 35 expression : variable ASSIGNOP logic_expression
+
+j = 5 % 3
+
+At line no: 35 expression_statement : expression SEMICOLON
+
 j = 5 % 3;
-a = j > j;
+
+
+At line no: 35 statement : expression_statement
+
+j = 5 % 3;
+
+
+At line no: 35 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+j = 5 % 3;
+
+
+At line no: 37 variable : ID
+
+a
+
+At line no: 37 variable : ID
+
+j
+
+At line no: 37 factor : variable
+
+j
+
+At line no: 37 unary_expression : factor
+
+j
+
+At line no: 37 term : unary_expression
+
+j
+
+At line no: 37 simple_expression : term
+
+j
+
+At line no: 37 variable : ID
+
+j
+
+At line no: 37 factor : variable
+
+j
+
+At line no: 37 unary_expression : factor
+
+j
+
+At line no: 37 term : unary_expression
+
+j
+
+At line no: 37 simple_expression : simple_expression ADDOP term
+
+j + j
+
+At line no: 37 rel_expression : simple_expression
+
+j + j
+
+At line no: 37 logic_expression : rel_expression
+
+j + j
+
+At line no: 37 expression : variable ASSIGNOP logic_expression
+
+a = j + j
+
+At line no: 37 expression_statement : expression SEMICOLON
+
+a = j + j;
+
+
+At line no: 37 statement : expression_statement
+
+a = j + j;
+
+
+At line no: 37 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+j = 5 % 3;
+a = j + j;
+
+
+At line no: 39 variable : ID
+
+asd
+
+At line no: 39 factor : CONST_INT
+
+213
+
+At line no: 39 unary_expression : factor
+
+213
+
+At line no: 39 term : unary_expression
+
+213
+
+At line no: 39 simple_expression : term
+
+213
+
+At line no: 39 rel_expression : simple_expression
+
+213
+
+At line no: 39 logic_expression : rel_expression
+
+213
+
+At line no: 39 expression : variable ASSIGNOP logic_expression
+
+asd = 213
+
+At line no: 39 expression_statement : expression SEMICOLON
+
+asd = 213;
+
+
+At line no: 39 statement : expression_statement
+
+asd = 213;
+
+
+At line no: 39 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+j = 5 % 3;
+a = j + j;
+asd = 213;
+
+
+At line no: 41 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+println(a);
+
+At line no: 41 statements : statements statement
+
+int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+j = 5 % 3;
+a = j + j;
 asd = 213;
 println(a);
 
-At line no: 31 factor : CONST_INT
+At line no: 42 factor : CONST_INT
 
 0
 
-At line no: 31 unary_expression : factor
+At line no: 42 unary_expression : factor
 
 0
 
-At line no: 31 term : unary_expression
+At line no: 42 term : unary_expression
 
 0
 
-At line no: 31 simple_expression : term
+At line no: 42 simple_expression : term
 
 0
 
-At line no: 31 rel_expression : simple_expression
+At line no: 42 rel_expression : simple_expression
 
 0
 
-At line no: 31 logic_expression : rel_expression
+At line no: 42 logic_expression : rel_expression
 
 0
 
-At line no: 31 expression : logic_expression
+At line no: 42 expression : logic_expression
 
 0
 
-At line no: 31 statement : RETURN expression SEMICOLON
+At line no: 42 statement : RETURN expression SEMICOLON
 
 return 0;
 
-At line no: 31 statements : statements statement
+At line no: 42 statements : statements statement
 
 int a, b;
 int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
 j = 5 % 3;
-a = j > j;
+a = j + j;
 asd = 213;
 println(a);return 0;
 
-At line no: 32 compound_statement : LCURL statements RCURL
+At line no: 43 compound_statement : LCURL statements RCURL
 
 {int a, b;
 int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
 j = 5 % 3;
-a = j > j;
+a = j + j;
 asd = 213;
 println(a);return 0;}
 
@@ -568,7 +1044,7 @@ println(a);return 0;}
  7--> 
  8--> 
  9--> 
-At line no: 32 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 43 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main()
  {int a, b;
@@ -576,13 +1052,18 @@ int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
 j = 5 % 3;
-a = j > j;
+a = j + j;
 asd = 213;
 println(a);return 0;}
 
-At line no: 32 unit : func_definition
+At line no: 43 unit : func_definition
 
 int main()
  {int a, b;
@@ -590,30 +1071,19 @@ int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
 j = 5 % 3;
-a = j > j;
-asd = 213;
-println(a);return 0;}
-
-
-At line no: 32 program : unit
-
-int main()
- {int a, b;
-int c[53];
-a = 1;
-b = 2 * a;
-a = b / a;
-int j, asd;
-j = 5 % 3;
-a = j > j;
+a = j + j;
 asd = 213;
 println(a);return 0;}
 
 
-
-At line no: 32 start : program
+At line no: 43 program : unit
 
 int main()
  {int a, b;
@@ -621,9 +1091,35 @@ int c[53];
 a = 1;
 b = 2 * a;
 a = b / a;
-int j, asd;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
 j = 5 % 3;
-a = j > j;
+a = j + j;
+asd = 213;
+println(a);return 0;}
+
+
+
+At line no: 43 start : program
+
+int main()
+ {int a, b;
+int c[53];
+a = 1;
+b = 2 * a;
+a = b / a;
+a = 0;
+for(a = 0;
+a < 20;
+a = a + 1){c[a] = a;
+b = c[a];
+println(b);}int j, asd;
+j = 5 % 3;
+a = j + j;
 asd = 213;
 println(a);return 0;}
 
@@ -642,6 +1138,6 @@ println(a);return 0;}
  7--> 
  8--> 
  9--> 
-Total Lines: 32
+Total Lines: 43
 Total Errors: 0
 Total Errors: 0
