@@ -27,6 +27,10 @@ extern vector<string> functionVariableDelcarationList;
 extern vector<pair<string,string> >arrayDeclarationList;
 
 
+extern	vector<SymbolInfo *> paramterListSymbolInfoVector;
+extern	vector<SymbolInfo *> declarationListSymbolInfoVector;
+extern	vector<SymbolInfo *> ArgumentListSymbolInfoVector;
+
 //todo modify this function for checker
 string intToString (int a)
 {
@@ -213,7 +217,7 @@ bool verifyVariableIDIsDeclared(SymbolInfo* ID) {
         return false;
     } else if( tableEntry->isFunction()) {
         addLineNoErr();
-        logfile << "Function " << ID->getName() << " called without brackets and arguments\n\n";
+        logfile << "Function " << ID->getName() << " called without brackets and parameters\n\n";
         return false;
     } else if ( tableEntry->isVariable()) {
         return true;

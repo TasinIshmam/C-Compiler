@@ -27,9 +27,12 @@
 	int error_count = 0;
 
 	SymbolTable *table = new SymbolTable(100, parsertext);
-	vector<SymbolInfo *> para_list;
-	vector<SymbolInfo *> dec_list;
-	vector<SymbolInfo *> arg_list;
+	vector<SymbolInfo *> paramterListSymbolInfoVector; // In a function definition or declaration, the types and names of the input variables defined are the "parameters"
+
+	vector<SymbolInfo *> declarationListSymbolInfoVector;
+
+	vector<SymbolInfo *> ArgumentListSymbolInfoVector; //When a function is called, the variables that are passed are called arguments
+	
 	vector<string> variableDeclarationList;
 	vector<string> functionVariableDelcarationList;
 	vector<pair<string, string>> arrayDeclarationList;
@@ -221,20 +224,20 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 		table->Insert($2->getName(), "ID", "Function");
 		s = table->lookup($2->getName());
 		s->set_isFunction();
-		for (int i = 0; i < para_list.size(); i++)
+		for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 		{
-			s->get_isFunction()->add_number_of_parameter(para_list[i]->getName(), para_list[i]->getReturnType());
-			//cout<<para_list[i]->getReturnType()<<endl;
+			s->get_isFunction()->add_number_of_parameter(paramterListSymbolInfoVector[i]->getName(), paramterListSymbolInfoVector[i]->getReturnType());
+			//cout<<paramterListSymbolInfoVector[i]->getReturnType()<<endl;
 		}
-		para_list.clear();
+		paramterListSymbolInfoVector.clear();
 		s->get_isFunction()->set_return_type($1->getName());
 	}
 	else
 	{
 		int num = s->get_isFunction()->get_number_of_parameter();
-		//	cout<<line_count<<" "<<para_list.size()<<endl;
+		//	cout<<line_count<<" "<<paramterListSymbolInfoVector.size()<<endl;
 		//	$$->setReturnType(s->get_isFunction()->get_return_type());
-		if (num != para_list.size())
+		if (num != paramterListSymbolInfoVector.size())
 		{
 			error_count++;
 			fprintf(error, "Error at Line No.%d:  Invalid number of parameters \n\n", line_count);
@@ -243,9 +246,9 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 		{
 
 			vector<string> para_type = s->get_isFunction()->get_paratype();
-			for (int i = 0; i < para_list.size(); i++)
+			for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 			{
-				if (para_list[i]->getReturnType() != para_type[i])
+				if (paramterListSymbolInfoVector[i]->getReturnType() != para_type[i])
 				{
 					error_count++;
 					fprintf(error, "Error at Line No.%d: Type Mismatch \n\n", line_count);
@@ -257,7 +260,7 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 				error_count++;
 				fprintf(error, "Error at Line No.%d: Return Type Mismatch \n\n", line_count);
 			}
-			para_list.clear();
+			paramterListSymbolInfoVector.clear();
 		}
 	}
 
@@ -302,9 +305,9 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 		if (s->get_isFunction()->get_isdefined() == 0)
 		{
 			int num = s->get_isFunction()->get_number_of_parameter();
-			//	cout<<line_count<<" "<<para_list.size()<<endl;
+			//	cout<<line_count<<" "<<paramterListSymbolInfoVector.size()<<endl;
 			//	$$->setReturnType(s->get_isFunction()->get_return_type());
-			if (num != para_list.size())
+			if (num != paramterListSymbolInfoVector.size())
 			{
 				error_count++;
 				fprintf(error, "Error at Line No.%d:  Invalid number of parameters \n\n", line_count);
@@ -313,9 +316,9 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 			{
 
 				vector<string> para_type = s->get_isFunction()->get_paratype();
-				for (int i = 0; i < para_list.size(); i++)
+				for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 				{
-					if (para_list[i]->getReturnType() != para_type[i])
+					if (paramterListSymbolInfoVector[i]->getReturnType() != para_type[i])
 					{
 						error_count++;
 						fprintf(error, "Error at Line No.%d: Type Mismatch \n\n", line_count);
@@ -327,13 +330,13 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 					error_count++;
 					fprintf(error, "Error at Line No.%d: Return Type Mismatch1 \n\n", line_count);
 				}
-				//	para_list.clear();
+				//	paramterListSymbolInfoVector.clear();
 			}
 			s->get_isFunction()->getclear();
-			for (int i = 0; i < para_list.size(); i++)
+			for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 			{
-				s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntTotable->getNextId()), para_list[i]->getReturnType());
-				//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
+				s->get_isFunction()->add_number_of_parameter(paramterListSymbolInfoVector[i]->getName() + IntTotable->getNextId()), paramterListSymbolInfoVector[i]->getReturnType());
+				//	cout<<paramterListSymbolInfoVector[i]->getReturnType()<<paramterListSymbolInfoVector[i]->getName()<<endl;
 			}
 			s->get_isFunction()->set_isdefined();
 		}
@@ -344,18 +347,18 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN
 		}
 	}
 	else
-	{ //cout<<para_list.size()<<" "<<line_count<<endl;
+	{ //cout<<paramterListSymbolInfoVector.size()<<" "<<line_count<<endl;
 		table->Insert($2->getName(), "ID", "Function");
 		s = table->lookup($2->getName());
 		s->set_isFunction();
 		//cout<<s->get_isFunction()->get_number_of_parameter()<<endl;
 		s->get_isFunction()->set_isdefined();
-		for (int i = 0; i < para_list.size(); i++)
+		for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 		{
-			s->get_isFunction()->add_number_of_parameter(para_list[i]->getName() + IntTotable->getNextId()), para_list[i]->getReturnType());
-			//	cout<<para_list[i]->getReturnType()<<para_list[i]->getName()<<endl;
+			s->get_isFunction()->add_number_of_parameter(paramterListSymbolInfoVector[i]->getName() + IntTotable->getNextId()), paramterListSymbolInfoVector[i]->getReturnType());
+			//	cout<<paramterListSymbolInfoVector[i]->getReturnType()<<paramterListSymbolInfoVector[i]->getName()<<endl;
 		}
-		//	para_list.clear();
+		//	paramterListSymbolInfoVector.clear();
 		s->get_isFunction()->set_return_type($1->getName());
 		//cout<<table->getNextId()<<endl;
 		//cout<<line_count<<" "<<s->get_isFunction()->get_return_type()<<endl;
@@ -386,11 +389,11 @@ compound_statement
 		string code = $$->getCode() +
 					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
 
-		vector<string> para_list = s->get_isFunction()->get_paralist();
+		vector<string> paramterListSymbolInfoVector = s->get_isFunction()->get_paralist();
 		vector<string> var_list = s->get_isFunction()->get_var();
-		for (int i = 0; i < para_list.size(); i++)
+		for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 		{
-			code += "PUSH " + para_list[i] + "\n";
+			code += "PUSH " + paramterListSymbolInfoVector[i] + "\n";
 		}
 		for (int i = 0; i < var_list.size(); i++)
 		{
@@ -402,9 +405,9 @@ compound_statement
 		{
 			code += "POP " + var_list[i] + "\n";
 		}
-		for (int i = para_list.size() - 1; i >= 0; i--)
+		for (int i = paramterListSymbolInfoVector.size() - 1; i >= 0; i--)
 		{
-			code += "POP " + para_list[i] + "\n";
+			code += "POP " + paramterListSymbolInfoVector[i] + "\n";
 		}
 
 		code += "POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n";
@@ -475,11 +478,11 @@ compound_statement
 		string code = $$->getCode() +
 					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
 
-		vector<string> para_list = s->get_isFunction()->get_paralist();
+		vector<string> paramterListSymbolInfoVector = s->get_isFunction()->get_paralist();
 		vector<string> var_list = s->get_isFunction()->get_var();
-		for (int i = 0; i < para_list.size(); i++)
+		for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 		{
-			code += "PUSH " + para_list[i] + "\n";
+			code += "PUSH " + paramterListSymbolInfoVector[i] + "\n";
 		}
 		for (int i = 0; i < var_list.size(); i++)
 		{
@@ -491,9 +494,9 @@ compound_statement
 		{
 			code += "POP " + var_list[i] + "\n";
 		}
-		for (int i = para_list.size() - 1; i >= 0; i--)
+		for (int i = paramterListSymbolInfoVector.size() - 1; i >= 0; i--)
 		{
-			code += "POP " + para_list[i] + "\n";
+			code += "POP " + paramterListSymbolInfoVector[i] + "\n";
 		}
 
 		code += "POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n";
@@ -509,7 +512,7 @@ parameter_list : parameter_list COMMA type_specifier ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : parameter_list->parameter_list COMMA type_specifier ID\n\n", line_count);
 	fprintf(parsertext, "%s,%s %s\n\n", $1->getName().c_str(), $3->getName().c_str(), $4->getName().c_str());
-	para_list.push_back(new SymbolInfo($4->getName(), "ID", $3->getName()));
+	paramterListSymbolInfoVector.push_back(new SymbolInfo($4->getName(), "ID", $3->getName()));
 	$$->setName($1->getName() + "," + $3->getName() + " " + $4->getName());
 }
 | parameter_list COMMA type_specifier
@@ -517,7 +520,7 @@ parameter_list : parameter_list COMMA type_specifier ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : parameter_list->parameter_list COMMA type_specifier\n\n", line_count);
 	fprintf(parsertext, "%s,%s\n\n", $1->getName().c_str(), $3->getName().c_str());
-	para_list.push_back(new SymbolInfo("", "ID", $3->getName()));
+	paramterListSymbolInfoVector.push_back(new SymbolInfo("", "ID", $3->getName()));
 	$$->setName($1->getName() + "," + $3->getName());
 }
 | type_specifier ID
@@ -525,7 +528,7 @@ parameter_list : parameter_list COMMA type_specifier ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : parameter_list->type_specifier ID\n\n", line_count);
 	fprintf(parsertext, "%s %s\n\n", $1->getName().c_str(), $2->getName().c_str());
-	para_list.push_back(new SymbolInfo($2->getName(), "ID", $1->getName()));
+	paramterListSymbolInfoVector.push_back(new SymbolInfo($2->getName(), "ID", $1->getName()));
 	$$->setName($1->getName() + " " + $2->getName());
 }
 | type_specifier
@@ -533,21 +536,21 @@ parameter_list : parameter_list COMMA type_specifier ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : parameter_list->type_specifier\n\n", line_count);
 	fprintf(parsertext, "%s \n\n", $1->getName().c_str());
-	para_list.push_back(new SymbolInfo("", "ID", $1->getName()));
+	paramterListSymbolInfoVector.push_back(new SymbolInfo("", "ID", $1->getName()));
 	$$->setName($1->getName() + " ");
 };
 
 compound_statement : LCURL
 {
 	table->Enter_Scope();
-	//	cout<<line_count<<" "<<para_list.size()<<endl;
-	for (int i = 0; i < para_list.size(); i++)
+	//	cout<<line_count<<" "<<paramterListSymbolInfoVector.size()<<endl;
+	for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 	{
-		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
+		table->Insert(paramterListSymbolInfoVector[i]->getName(), "ID", paramterListSymbolInfoVector[i]->getReturnType());
 		//table->printcurrent();
-		variableDeclarationList.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
+		variableDeclarationList.push_back(paramterListSymbolInfoVector[i]->getName() + IntTotable->getCurrentId()));
 	}
-	para_list.clear();
+	paramterListSymbolInfoVector.clear();
 }
 statements RCURL
 {
@@ -562,13 +565,13 @@ statements RCURL
 | LCURL RCURL
 {
 	table->Enter_Scope();
-	for (int i = 0; i < para_list.size(); i++)
+	for (int i = 0; i < paramterListSymbolInfoVector.size(); i++)
 	{
-		table->Insert(para_list[i]->getName(), "ID", para_list[i]->getReturnType());
+		table->Insert(paramterListSymbolInfoVector[i]->getName(), "ID", paramterListSymbolInfoVector[i]->getReturnType());
 		//table->printcurrent();
-		variableDeclarationList.push_back(para_list[i]->getName() + IntTotable->getCurrentId()));
+		variableDeclarationList.push_back(paramterListSymbolInfoVector[i]->getName() + IntTotable->getCurrentId()));
 	}
-	para_list.clear();
+	paramterListSymbolInfoVector.clear();
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : compound_statement->LCURL RCURL\n\n", line_count);
 	fprintf(parsertext, "{}\n\n");
@@ -590,35 +593,35 @@ variableDeclarationListlaration : type_specifier declaration_list SEMICOLON
 	else
 	{
 		//	functionVariableDelcarationList.clear();
-		for (int i = 0; i < dec_list.size(); i++)
+		for (int i = 0; i < declarationListSymbolInfoVector.size(); i++)
 		{
 
-			if (table->lookupcurrent(dec_list[i]->getName()))
+			if (table->lookupcurrent(declarationListSymbolInfoVector[i]->getName()))
 			{
 				error_count++;
-				fprintf(error, "Error at Line No.%d:  Multiple Declaration of %s \n\n", line_count, dec_list[i]->getName().c_str());
+				fprintf(error, "Error at Line No.%d:  Multiple Declaration of %s \n\n", line_count, declarationListSymbolInfoVector[i]->getName().c_str());
 				continue;
 			}
-			if (dec_list[i]->get_type().size() > 2)
+			if (declarationListSymbolInfoVector[i]->get_type().size() > 2)
 			{
-				arrayDeclarationList.push_back(make_pair(dec_list[i]->getName() + IntTotable->getCurrentId()),
+				arrayDeclarationList.push_back(make_pair(declarationListSymbolInfoVector[i]->getName() + IntTotable->getCurrentId()),
 
-											dec_list[i]->get_type().substr(2, dec_list[i]->get_type().size() - 1)));
+											declarationListSymbolInfoVector[i]->get_type().substr(2, declarationListSymbolInfoVector[i]->get_type().size() - 1)));
 
-				dec_list[i]->set_type(dec_list[i]->get_type().substr(0, dec_list[i]->get_type().size() - 1));
+				declarationListSymbolInfoVector[i]->set_type(declarationListSymbolInfoVector[i]->get_type().substr(0, declarationListSymbolInfoVector[i]->get_type().size() - 1));
 
-				table->Insert(dec_list[i]->getName(), dec_list[i]->get_type(), $1->getName() + "array");
+				table->Insert(declarationListSymbolInfoVector[i]->getName(), declarationListSymbolInfoVector[i]->get_type(), $1->getName() + "array");
 			}
 			else
 			{
-				functionVariableDelcarationList.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
-				table->Insert(dec_list[i]->getName(), dec_list[i]->get_type(), $1->getName());
-				variableDeclarationList.push_back(dec_list[i]->getName() + IntTotable->getCurrentId()));
+				functionVariableDelcarationList.push_back(declarationListSymbolInfoVector[i]->getName() + IntTotable->getCurrentId()));
+				table->Insert(declarationListSymbolInfoVector[i]->getName(), declarationListSymbolInfoVector[i]->get_type(), $1->getName());
+				variableDeclarationList.push_back(declarationListSymbolInfoVector[i]->getName() + IntTotable->getCurrentId()));
 			}
 		}
 	}
 
-	dec_list.clear();
+	declarationListSymbolInfoVector.clear();
 	$$->setName($1->getName() + " " + $2->getName() + ";");
 };
 
@@ -649,7 +652,7 @@ declaration_list : declaration_list COMMA ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : declaration_list->declaration_list COMMA ID\n\n", line_count);
 	fprintf(parsertext, "%s,%s\n\n", $1->getName().c_str(), $3->getName().c_str());
-	dec_list.push_back(new SymbolInfo($3->getName(), "ID"));
+	declarationListSymbolInfoVector.push_back(new SymbolInfo($3->getName(), "ID"));
 	$$->setName($1->getName() + "," + $3->getName());
 }
 | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD
@@ -657,7 +660,7 @@ declaration_list : declaration_list COMMA ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : declaration_list->declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n", line_count);
 	fprintf(parsertext, "%s,%s[%s]\n\n", $1->getName().c_str(), $3->getName().c_str(), $5->getName().c_str());
-	dec_list.push_back(new SymbolInfo($3->getName(), "ID" + $5->getName()));
+	declarationListSymbolInfoVector.push_back(new SymbolInfo($3->getName(), "ID" + $5->getName()));
 	$$->setName($1->getName() + "," + $3->getName() + "[" + $5->getName() + "]");
 }
 | ID
@@ -665,7 +668,7 @@ declaration_list : declaration_list COMMA ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : declaration_list->ID\n\n", line_count);
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
-	dec_list.push_back(new SymbolInfo($1->getName(), "ID"));
+	declarationListSymbolInfoVector.push_back(new SymbolInfo($1->getName(), "ID"));
 	$$->setName($1->getName());
 }
 | ID LTHIRD CONST_INT RTHIRD
@@ -673,7 +676,7 @@ declaration_list : declaration_list COMMA ID
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : declaration_list->ID LTHIRD CONST_INT RTHIRD\n\n", line_count);
 	fprintf(parsertext, "%s[%s]\n\n", $1->getName().c_str(), $3->getName().c_str());
-	dec_list.push_back(new SymbolInfo($1->getName(), "ID" + $3->getName()));
+	declarationListSymbolInfoVector.push_back(new SymbolInfo($1->getName(), "ID" + $3->getName()));
 	$$->setName($1->getName() + "[" + $3->getName() + "]");
 };
 
@@ -1424,9 +1427,9 @@ factor : variable
 		}
 
 		int num = s->get_isFunction()->get_number_of_parameter();
-		//cout<<line_count<<" "<<arg_list.size()<<endl;
+		//cout<<line_count<<" "<<ArgumentListSymbolInfoVector.size()<<endl;
 		$$->setReturnType(s->get_isFunction()->get_return_type());
-		if (num != arg_list.size())
+		if (num != ArgumentListSymbolInfoVector.size())
 		{
 			error_count++;
 			fprintf(error, "Error at Line No.%d:  Invalid number of arguments %s\n\n", line_count, $1->getName().c_str());
@@ -1436,16 +1439,16 @@ factor : variable
 			string code = $3->getCode();
 			//cout<<s->get_isFunction()->get_return_type()<<endl;
 
-			vector<string> para_list = s->get_isFunction()->get_paralist();
+			vector<string> paramterListSymbolInfoVector = s->get_isFunction()->get_paralist();
 			vector<string> para_type = s->get_isFunction()->get_paratype();
 			vector<string> var_list = s->get_isFunction()->get_var();
 
-			for (int i = 0; i < arg_list.size(); i++)
+			for (int i = 0; i < ArgumentListSymbolInfoVector.size(); i++)
 			{
-				code += "MOV AX," + arg_list[i]->getAssemblyID() + "\n";
-				code += "MOV " + para_list[i] + ",AX\n";
-				//cout<<para_list[i]<<" "<<arg_list[i]->getName()<<" "<<arg_list[i]->getAssemblyID()<<endl;
-				if (arg_list[i]->getReturnType() != para_type[i])
+				code += "MOV AX," + ArgumentListSymbolInfoVector[i]->getAssemblyID() + "\n";
+				code += "MOV " + paramterListSymbolInfoVector[i] + ",AX\n";
+				//cout<<paramterListSymbolInfoVector[i]<<" "<<ArgumentListSymbolInfoVector[i]->getName()<<" "<<ArgumentListSymbolInfoVector[i]->getAssemblyID()<<endl;
+				if (ArgumentListSymbolInfoVector[i]->getReturnType() != para_type[i])
 				{
 
 					error_count++;
@@ -1464,7 +1467,7 @@ factor : variable
 			variableDeclarationList.push_back(temp);
 		}
 	}
-	arg_list.clear();
+	ArgumentListSymbolInfoVector.clear();
 	//cout<<line_count<<" "<<$$->getReturnType()<<endl;
 	$$->setName($1->getName() + "(" + $3->getName() + ")");
 }
@@ -1585,7 +1588,7 @@ arguments : arguments COMMA logic_expression
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : arguments->arguments COMMA logic_expression \n\n", line_count);
 	fprintf(parsertext, "%s,%s\n\n", $1->getName().c_str(), $3->getName().c_str());
-	arg_list.push_back($3);
+	ArgumentListSymbolInfoVector.push_back($3);
 	$$->setName($1->getName() + "," + $3->getName());
 	$$->setCode($1->getCode() + $3->getCode());
 }
@@ -1594,7 +1597,7 @@ arguments : arguments COMMA logic_expression
 	$$ = new SymbolInfo();
 	fprintf(parsertext, "Line at %d : arguments->logic_expression\n\n", line_count);
 	fprintf(parsertext, "%s\n\n", $1->getName().c_str());
-	arg_list.push_back($1);
+	ArgumentListSymbolInfoVector.push_back($1);
 	// cout<<$1->getReturnType()<<endl;
 	$$->setName($1->getName());
 	$$->setCode($1->getCode());
