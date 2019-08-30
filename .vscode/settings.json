@@ -26,6 +26,7 @@
       "vector": "cpp",
       "*.txt": "cpp",
       "random": "cpp",
-      "deque": "cpp"
+      "deque": "cpp",
+      "iostream": "cpp"
     }
 }

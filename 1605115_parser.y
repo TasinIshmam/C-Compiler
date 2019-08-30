@@ -93,7 +93,7 @@ start : program	{
 		finalCode += ".CODE\n";
 		
 		finalCode += main_code;
-		finalCode += "JMP LReturnmain\nLReturnmain:\nMOV AH, 4CH \nINT 21H\n";
+		finalCode += "RETURNMAIN:\nMOV AH, 4CH \nINT 21H\n";
 		finalCode += $1->getCode();
 		finalCode += outdecProcCode;
 
@@ -194,7 +194,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 	SymbolInfo *tableEntry = symbolTable.lookup(functionName);
 	if (tableEntry == nullptr) { //function did not have a declaration. So do it now.
 	   insertIDToSymbolTable(generateEntry);
-		symbolTable.printAllScopeTable(scratchfile);
+		//symbolTable.printAllScopeTable(scratchfile);
 
 	} else {
 		if (!checkFunctionSymbolInfoEquality(generateEntry, tableEntry)) {
@@ -583,6 +583,13 @@ statement : var_declaration	{
 		 logfile << "statement : RETURN expression SEMICOLON\n\n";
 		 logfile << $$->getName() <<endl << endl;
 
+		 		string code = $2->getCode();
+		code += "MOV AX," + $2->getAssemblyID() + "\n";
+		code += "JMP RETURNMAIN\n";
+
+		//todo hardcoded to return from main. If you want to support all functions then modify
+		$$->setCode(code);
+
 		//  string code = $2->getCode();
 		// code += "MOV AX," + $2->getAssemblyID() + "\n";
 		// code += "MOV " + currentFunctionGlobalString + "_return,AX\n";
@@ -651,8 +658,8 @@ variable : ID	{
 
 		string codes = "";
 		codes += $3->getCode();
-		codes += "\tMOV BX," + $3->getAssemblyID() + "\n";
-		codes+="\tADD BX,BX\n"; 
+		codes += "MOV BX," + $3->getAssemblyID() + "\n";
+		codes+="ADD BX,BX\n"; 
 		$$->setAssemblyArrayMember(true);
 
 
@@ -996,7 +1003,7 @@ factor	: variable  {
 			$$->setReturnType("int");
 
 			string temp = generateNewTempVariable();
-			string code = "\tMOV " + temp + "," + $1->getName() + "\n";
+			string code = "MOV " + temp + "," + $1->getName() + "\n";
 			$$->setAssemblyID(temp);
 			$$->setCode(code);
 
@@ -1010,7 +1017,7 @@ factor	: variable  {
 			$$->setReturnType("float");
 
 			string temp = generateNewTempVariable();
-			string code = "\tMOV " + temp + "," + $1->getName() + "\n";
+			string code = "MOV " + temp + "," + $1->getName() + "\n";
 			$$->setAssemblyID(temp);
 			$$->setCode(code);
 	 }
@@ -1129,7 +1136,7 @@ int main(int argc,char *argv[])
 
 	   logfile.open("1605115_log.txt");
 	   scratchfile.open("scratch.txt");
-	   asmCodeFile.open("outputCode.asm");
+	   asmCodeFile.open("code.asm");
 
 		
 
@@ -1150,6 +1157,6 @@ int main(int argc,char *argv[])
 	scratchfile.close();
 	asmCodeFile.close();
 
-
+	optimizeCode();
 	return 0;
 }

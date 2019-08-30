@@ -752,4 +752,182 @@ bool checkFunctionSymbolInfoEquality(SymbolInfo* functionDefinitionSymbolInfo, S
     return true;
 }
 
+
+
+
+// trim from start (in place)
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string &s) {
+    ltrim(s);
+    rtrim(s);
+}
+
+// trim from start (copying)
+static inline std::string ltrim_copy(std::string s) {
+    ltrim(s);
+    return s;
+}
+
+// trim from end (copying)
+static inline std::string rtrim_copy(std::string s) {
+    rtrim(s);
+    return s;
+}
+
+// trim from both ends (copying)
+static inline std::string trim_copy(std::string s) {
+    trim(s);
+    return s;
+}
+
+string findCmd(string line)
+{
+	int i = 0;
+	int len = line.size();
+	// while(line[i]!=' ') i++;
+
+	for(i = 0; line[i]!=' '; i++) {
+
+		if(i >= len) {
+			return "";
+		}
+	}
+	return line.substr(0,i);
+}
+
+
+string findDestArg(string line)
+{
+	int i=0;
+	int len = line.size();
+	// while(line[i]!=' ') i++;
+
+	for(i = 0; line[i]!=' '; i++) {
+
+		if(i >= len) {
+			return "";
+		}
+	}
+	i++;
+	int j = i + 1;
+	
+	//while(line[j] != ',' && j<line.size()) j++;
+
+	for( ; line[j] != ',' ; j++) {
+		
+		if(j >= line.size()) {
+			return "";
+		}
+	}
+	return trim_copy(line.substr(i, j-i));
+}
+
+
+string findSrcArg(string line)
+{
+	int len = line.size();
+	int i = 0;
+	//while(line[i] != ',') i++;
+
+		for(i = 0; line[i]!= ','; i++) {
+
+		if(i >= len) {
+			return "";
+		}
+	}
+
+	i += 1;
+	return trim_copy(line.substr(i, len-i));
+}
+
+void optimizeCode()
+{	
+
+	ifstream inputStream("code.asm");
+	ofstream outputStream("optimized-code.asm");
+
+	
+	string prevLine = "";
+	string currentLine = "";
+
+	while(1) {
+	getline(inputStream, prevLine);
+	
+	if(!inputStream) {
+		inputStream.close();
+		outputStream.close();
+		 return;
+	}
+	
+	if(prevLine != "") break;
+
+	}
+
+
+
+	outputStream << prevLine << endl;
+	
+
+	while(1)
+	{
+		getline(inputStream, currentLine);
+		
+		if(!inputStream) {
+		inputStream.close();
+		outputStream.close();
+		 return;
+		}
+		
+		if(currentLine == "") {
+			continue;
+		}
+
+		
+		// cout << "\nLine: " << currentLine << endl;
+		// cout << "CMD: " << findCmd(currentLine) << endl;
+		// cout << "Source Arg: " << findSrcArg(currentLine) << endl;
+		// cout << "Dest Arg: " << findDestArg(currentLine) << "\n\n";
+
+
+		if(findCmd(prevLine) == "MOV" && findCmd(currentLine) == "MOV")
+		{	
+			
+			if(findSrcArg(prevLine) == findDestArg(currentLine) && findSrcArg(currentLine) == findDestArg(prevLine))
+			{
+				// discard new line
+				outputStream << ";Line Omitted for optimization" << endl;
+
+				//cout << "\nShit detected yo\n";
+				//cout << currentLine << endl;
+				
+				continue;
+			}
+		}
+		
+		outputStream << currentLine << endl;
+
+		prevLine = currentLine;
+		
+	}
+
+	
+			return;
+
+	
+}
+
+
 #endif
