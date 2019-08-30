@@ -540,7 +540,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
          insertIDToSymbolTable(arr);
 
         
-            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getTableId());
+            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getUniqueTableNumber());
 
             arr->setAssemblyID(assemblyID);
             arrayDeclarationList.push_back(make_pair(assemblyID,  arrayLenString) );
@@ -558,7 +558,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
             SymbolInfo* var = createSymbolInfoForVariableID(variableName, typeOfVariables);
             insertIDToSymbolTable(var);
 
-            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getTableId());
+            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getUniqueTableNumber());
 
             var->setAssemblyID(assemblyID);
             variableDeclarationList.push_back(assemblyID);
@@ -588,7 +588,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
 
                 insertIDToSymbolTable(arr);
 
-            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getTableId());
+            string assemblyID = generateAssemblyIdVariable(arr->getName(), symbolTable.getCurrentScope()->getUniqueTableNumber());
 
            arr->setAssemblyID(assemblyID);
            arrayDeclarationList.push_back(make_pair(assemblyID,  arrayLenString) );
@@ -602,7 +602,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
          SymbolInfo* var = createSymbolInfoForVariableID(variableName, typeOfVariables);
             insertIDToSymbolTable(var);
 
-            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getTableId());
+            string assemblyID = generateAssemblyIdVariable(var->getName(), symbolTable.getCurrentScope()->getUniqueTableNumber());
 
             var->setAssemblyID(assemblyID);
             variableDeclarationList.push_back(assemblyID);

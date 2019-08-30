@@ -88,148 +88,237 @@ At line no: 5 type_specifier : INT
 
 int
 
-At line no: 7 type_specifier : INT
+At line no: 6 factor : CONST_INT
+
+0
+
+At line no: 6 unary_expression : factor
+
+0
+
+At line no: 6 term : unary_expression
+
+0
+
+At line no: 6 simple_expression : term
+
+0
+
+At line no: 6 rel_expression : simple_expression
+
+0
+
+At line no: 6 logic_expression : rel_expression
+
+0
+
+At line no: 6 expression : logic_expression
+
+0
+
+At line no: 6 statement : RETURN expression SEMICOLON
+
+return 0;
+
+At line no: 6 statements : statement
+
+return 0;
+
+At line no: 7 compound_statement : LCURL statements RCURL
+
+{return 0;}
+
+
+ ScopeTable # 2
+ 0--> 
+ 1--> 
+ 2--> 
+ 3--> 
+ 4--> 
+ 5--> 
+ 6--> 
+ 7--> 
+ 8--> 
+ 9--> 
+
+ ScopeTable # 1
+ 0--> 
+ 1--> 
+ 2--> 
+ 3--> 
+ 4-->  < otherfunc : ID> 
+ 5--> 
+ 6-->  < otherfunc2 : ID> 
+ 7--> 
+ 8--> 
+ 9--> 
+At line no: 7 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+
+int otherfunc2()
+ {return 0;}
+
+At line no: 7 unit : func_definition
+
+int otherfunc2()
+ {return 0;}
+
+
+At line no: 7 program : program unit
+
+int otherfunc()
+ {return 0;}
+
+int otherfunc2()
+ {return 0;}
+
+
+
+At line no: 10 type_specifier : INT
 
 int
 
-At line no: 7 declaration_list : ID
+At line no: 12 type_specifier : INT
+
+int
+
+At line no: 12 declaration_list : ID
 
 a
 
-At line no: 7 var_declaration : type_specifier declaration_list SEMICOLON
+At line no: 12 var_declaration : type_specifier declaration_list SEMICOLON
 
 int a;
 
 
-At line no: 7 statement : var_declaration
+At line no: 12 statement : var_declaration
 
 int a;
 
 
-At line no: 7 statements : statement
+At line no: 12 statements : statement
 
 int a;
 
 
-At line no: 9 variable : ID
+At line no: 14 variable : ID
 
 a
 
-At line no: 9 factor : CONST_INT
+At line no: 14 factor : CONST_INT
 
 1
 
-At line no: 9 unary_expression : factor
+At line no: 14 unary_expression : factor
 
 1
 
-At line no: 9 term : unary_expression
+At line no: 14 term : unary_expression
 
 1
 
-At line no: 9 simple_expression : term
+At line no: 14 simple_expression : term
 
 1
 
-At line no: 9 factor : CONST_INT
+At line no: 14 factor : CONST_INT
 
 2
 
-At line no: 9 unary_expression : factor
+At line no: 14 unary_expression : factor
 
 2
 
-At line no: 9 term : unary_expression
+At line no: 14 term : unary_expression
 
 2
 
-At line no: 9 simple_expression : simple_expression ADDOP term
+At line no: 14 simple_expression : simple_expression ADDOP term
 
 1 + 2
 
-At line no: 9 factor : CONST_INT
+At line no: 14 factor : CONST_INT
 
 3
 
-At line no: 9 unary_expression : factor
+At line no: 14 unary_expression : factor
 
 3
 
-At line no: 9 term : unary_expression
+At line no: 14 term : unary_expression
 
 3
 
-At line no: 9 simple_expression : simple_expression ADDOP term
+At line no: 14 simple_expression : simple_expression ADDOP term
 
 1 + 2 + 3
 
-At line no: 9 rel_expression : simple_expression
+At line no: 14 rel_expression : simple_expression
 
 1 + 2 + 3
 
-At line no: 9 logic_expression : rel_expression
+At line no: 14 logic_expression : rel_expression
 
 1 + 2 + 3
 
-At line no: 9 expression : variable ASSIGNOP logic_expression
+At line no: 14 expression : variable ASSIGNOP logic_expression
 
 a = 1 + 2 + 3
 
-At line no: 9 expression_statement : expression SEMICOLON
+At line no: 14 expression_statement : expression SEMICOLON
 
 a = 1 + 2 + 3;
 
 
-At line no: 9 statement : expression_statement
+At line no: 14 statement : expression_statement
 
 a = 1 + 2 + 3;
 
 
-At line no: 9 statements : statements statement
+At line no: 14 statements : statements statement
 
 int a;
 a = 1 + 2 + 3;
 
 
-At line no: 11 factor : CONST_INT
+At line no: 16 factor : CONST_INT
 
 0
 
-At line no: 11 unary_expression : factor
+At line no: 16 unary_expression : factor
 
 0
 
-At line no: 11 term : unary_expression
+At line no: 16 term : unary_expression
 
 0
 
-At line no: 11 simple_expression : term
+At line no: 16 simple_expression : term
 
 0
 
-At line no: 11 rel_expression : simple_expression
+At line no: 16 rel_expression : simple_expression
 
 0
 
-At line no: 11 logic_expression : rel_expression
+At line no: 16 logic_expression : rel_expression
 
 0
 
-At line no: 11 expression : logic_expression
+At line no: 16 expression : logic_expression
 
 0
 
-At line no: 11 statement : RETURN expression SEMICOLON
+At line no: 16 statement : RETURN expression SEMICOLON
 
 return 0;
 
-At line no: 11 statements : statements statement
+At line no: 16 statements : statements statement
 
 int a;
 a = 1 + 2 + 3;
 return 0;
 
-At line no: 12 compound_statement : LCURL statements RCURL
+At line no: 17 compound_statement : LCURL statements RCURL
 
 {int a;
 a = 1 + 2 + 3;
@@ -255,18 +344,18 @@ return 0;}
  3--> 
  4-->  < otherfunc : ID> 
  5--> 
- 6--> 
+ 6-->  < otherfunc2 : ID> 
  7--> 
  8--> 
  9--> 
-At line no: 12 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 17 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main()
  {int a;
 a = 1 + 2 + 3;
 return 0;}
 
-At line no: 12 unit : func_definition
+At line no: 17 unit : func_definition
 
 int main()
  {int a;
@@ -274,9 +363,12 @@ a = 1 + 2 + 3;
 return 0;}
 
 
-At line no: 12 program : program unit
+At line no: 17 program : program unit
 
 int otherfunc()
+ {return 0;}
+
+int otherfunc2()
  {return 0;}
 
 int main()
@@ -286,9 +378,12 @@ return 0;}
 
 
 
-At line no: 12 start : program
+At line no: 17 start : program
 
 int otherfunc()
+ {return 0;}
+
+int otherfunc2()
  {return 0;}
 
 int main()
@@ -307,10 +402,10 @@ return 0;}
  3--> 
  4-->  < otherfunc : ID> 
  5--> 
- 6--> 
+ 6-->  < otherfunc2 : ID> 
  7--> 
  8--> 
  9--> 
-Total Lines: 12
+Total Lines: 17
 Total Errors: 0
 Total Errors: 0

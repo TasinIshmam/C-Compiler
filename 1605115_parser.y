@@ -40,10 +40,11 @@ vector<string> variableDeclarationList;
 vector<string> functionVariableDelcarationList;
 vector<pair<string,string> >arrayDeclarationList;
 
-	vector<SymbolInfo *> paramterListSymbolInfoVector;
-	vector<SymbolInfo *> declarationListSymbolInfoVector;
-	vector<SymbolInfo *> ArgumentListSymbolInfoVector;
+	vector<SymbolInfo *> paramterListSymbolInfoVector;  //int func( int a, float b) a,b are parameters
+	vector<SymbolInfo *> declarationListSymbolInfoVector; //variables declared inside the function
+	vector<SymbolInfo *> ArgumentListSymbolInfoVector; //func (5,2.523) 5 and 2.523 are arguments
 
+//our code makes no distinction between argument and parameter while bhaia's does.
 
 
 void yyerror(string s) 
@@ -164,6 +165,8 @@ unit : var_declaration {
      ;
 
 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
+	
+	
 		 $$ = new SymbolInfo($1->getName() + " " +  $2->getName() + " " + $3->getName() + $4->getName() +
 		 $5->getName() +
 		 $6->getName() + "\n" , "func_declaration");

@@ -10,7 +10,8 @@ extern int errorCount;
 extern ofstream logfile;
 extern ofstream scratchfile;
 
-class ArgumentInfo {
+class ArgumentInfo { //even though it's called argument, it is infact a parameter. keep that in mind.
+//our code makes no distinction between argument and parameter while bhaia's does.
 
     string argumentType, argumentName;
 
@@ -54,7 +55,7 @@ public:
         arraySize = arrSize;
     }
 
- 
+
 
 
 
@@ -128,7 +129,7 @@ public:
 //name -> name  (Both are basically underlying c code segment)
 class SymbolInfo {
 private:
-    string name, type, code, assemblyID;   
+    string name, type, code, assemblyID;
     SymbolInfo *nextPtr;
     vector<SymbolInfo*> childSymbols;
     bool isVariableType = false;
@@ -140,7 +141,7 @@ private:
     bool assemblyArrayMember = false;
     int assemblyArrayIdx = -1;
 
-    //note not ID type Symbolinfos can be AssemblyArraymember. While only ID's (stuff that is passed from lexer and goes into symbol table) can have ArrayDataPTr and all that type of stuff. 
+    //note not ID type Symbolinfos can be AssemblyArraymember. While only ID's (stuff that is passed from lexer and goes into symbol table) can have ArrayDataPTr and all that type of stuff.
 
     //so when checking complex types like expression and logical expression to see if they internally represent a array, we should be using assemblyArrayMember not the isArray() functionality which is reserved for ID.
 
@@ -149,10 +150,10 @@ private:
 public:
 
     bool isVariable() {
-       return isVariableType;
+        return isVariableType;
     }
 
-      int getAssemblyArrayIdx() {
+    int getAssemblyArrayIdx() {
         return assemblyArrayIdx;
     }
 
@@ -161,8 +162,8 @@ public:
     }
 
 
-      bool isAssemblyArrayMember() {
-       return assemblyArrayMember;
+    bool isAssemblyArrayMember() {
+        return assemblyArrayMember;
     }
 
     bool setAssemblyArrayMember(bool cond) {
@@ -197,7 +198,7 @@ public:
 
     void initializeVariable (const string &variableType) {
         isVariableType = true;
-       this->setReturnType(variableType);
+        this->setReturnType(variableType);
     }
 
     ArrayInfo* getArrayInfoPtr() {
@@ -239,7 +240,7 @@ public:
         nextPtr = nullptr;
         functionDataPtr = nullptr;
         isVariableType = false;
-                code = "";
+        code = "";
 
 
 
@@ -258,10 +259,10 @@ public:
 
     void setName(const string &name) {
         SymbolInfo::name = name;
-        
+
     }
 
-     const string &getCode() const {
+    const string &getCode() const {
         return code;
     }
 
@@ -269,13 +270,13 @@ public:
         SymbolInfo::code = code;
     }
 
-     const string &getAssemblyID() const {
-         if(assemblyID == ""){
-             scratchfile << "\nError with "  << name;
-             scratchfile << "\nType: " << type << "\n";
-             scratchfile << "Line No: " << line_no << "\n\n";
-             
-         }
+    const string &getAssemblyID() const {
+        if(assemblyID == ""){
+            scratchfile << "\nError with "  << name;
+            scratchfile << "\nType: " << type << "\n";
+            scratchfile << "Line No: " << line_no << "\n\n";
+
+        }
         return assemblyID;
     }
 
@@ -307,7 +308,7 @@ public:
 
         }
 
-       // scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
+        // scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
     }
 
     SymbolInfo *getNext() const {
@@ -338,13 +339,13 @@ class ScopeTable {
     SymbolInfo **hashTable;
     ScopeTable *parentScopeTable;
     int tableId, tableSize;
-
+    int uniqueTableNumber;
     friend class SymbolTable;
 
 public:
 
 
-    ScopeTable(int tableSize, int table_id) {
+    ScopeTable(int tableSize, int table_id, int uniqueTableNumber) {
         hashTable = (SymbolInfo **) malloc(tableSize * sizeof(SymbolInfo *));
         for (int i = 0; i < tableSize; i++) {
             hashTable[i] = nullptr;
@@ -352,7 +353,19 @@ public:
         parentScopeTable = nullptr;
         this->tableId = table_id;
         this->tableSize = tableSize;
+        this->uniqueTableNumber = uniqueTableNumber;
     }
+
+
+    int getUniqueTableNumber() const {
+        return uniqueTableNumber;
+    }
+
+    void setUniqueTableNumber(int uniqueTableNumber) {
+        ScopeTable::uniqueTableNumber = uniqueTableNumber;
+    }
+
+
 
 
     virtual ~ScopeTable() {
@@ -407,7 +420,7 @@ public:
 
     }
 
-protected: 
+protected:
 
     SymbolInfo *lookUp(const string &itemName) {
         int hash = getHash(itemName);
@@ -425,7 +438,7 @@ protected:
 
                 if (iter->getName() == itemName) {
                     // cout << "\nFound in ScopeTable# "
-                      //   << tableId << " at position " << hash << ", " << counter << "\n";
+                    //   << tableId << " at position " << hash << ", " << counter << "\n";
                     return iter;
 
                 }
@@ -440,10 +453,10 @@ protected:
     }
 
 
-    
-public: 
 
-   
+public:
+
+
     bool insert(SymbolInfo *item) {
         int hash = getHash(item->getName());
         int counter = 0;
@@ -458,7 +471,7 @@ public:
             SymbolInfo *iter = hashTable[hash];
 
             if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-              //   cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+                //   cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                 return false;
             }
 
@@ -470,7 +483,7 @@ public:
             while (iter != nullptr) {
 
                 if (iter->getName() == item->getName() && iter->getType() == item->getType()) {
-                //       cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
+                    //       cout << "\n<" << iter->getName() << "," << iter->getType() << ">already exists in ScopeTable# " << tableId << endl;
                     return false;
                 }
 
@@ -516,7 +529,7 @@ public:
                     prev->setNext(iter->getNext());
                     delete iter;
                     // cout << "\nDeleted from ScopeTable# "
-                        // << tableId << " at position " << hash << ", " << counter << "\n";
+                    // << tableId << " at position " << hash << ", " << counter << "\n";
                     return true;
 
                 }
@@ -575,6 +588,8 @@ private:
     int bucketSizeForTables;
 
     int scopeDepth;
+    int scopesCreated = 0;
+
 public:
     virtual ~SymbolTable() {
         delete currentScope;
@@ -597,7 +612,7 @@ public:
         scopeDepth = 1;
         this->bucketSizeForTables = buckets;
 
-        currentScope = new ScopeTable(buckets, scopeDepth++);
+        currentScope = new ScopeTable(buckets, scopeDepth++, ++scopesCreated);
     }
 
     void printAllScopeTable() {
@@ -655,7 +670,7 @@ public:
             SymbolInfo *res = temp->lookUp(name);
 
             if (res != nullptr) {
-                return temp->getTableId();
+                return temp->getUniqueTableNumber();
             }
 
             temp = temp->getParentScopreTable();
@@ -683,7 +698,7 @@ public:
     }
 
     void enterScope() {
-        auto *newScopeTable = new ScopeTable(bucketSizeForTables, scopeDepth++);
+        auto *newScopeTable = new ScopeTable(bucketSizeForTables, scopeDepth++, ++scopesCreated);
         newScopeTable->setParentScopreTable(currentScope);
         currentScope = newScopeTable;
 
@@ -721,6 +736,5 @@ public:
 
 
 };
-
 
 #endif

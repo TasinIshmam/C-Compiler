@@ -2,6 +2,11 @@ int otherfunc() {
     return 0;
 }
 
+int otherfunc2() {
+    return 0;
+}
+
+
 int main(){
 
 int a;
