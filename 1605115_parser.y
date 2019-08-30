@@ -29,6 +29,7 @@ ofstream logfile;
 ofstream scratchfile;
 ofstream asmCodeFile;
 SymbolTable symbolTable(10);
+string curfunction;
 
 
 // vector<SymbolInfo*>para_list;
@@ -97,7 +98,9 @@ start : program	{
 		
 		finalCode += ".CODE\n";
 		
+		//todo modify completely. Bangla bhabe kore for main to work
 		finalCode += main_code;
+
 		finalCode += "RETURNMAIN:\nMOV AH, 4CH \nINT 21H\n";
 		finalCode += $1->getCode();
 		finalCode += outdecProcCode;
@@ -215,15 +218,49 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 
 	functionScopeBeginFlag = true;
 	
+	SymbolInfo* functionSymbolInfoEntry = symbolTable.lookup(functionName);
+
+
 	
 
 	for (int i = 0; i < generateEntry->getFunctionInfoDataPtr()->getArgumentsNumber(); i++) {
+		
 		ArgumentInfo arg = generateEntry->getFunctionInfoDataPtr()->getArguments()[i];
+
+
 		SymbolInfo* argIDEntry = new SymbolInfo(arg.getArgumentName(), "ID");
+
+		string assemblyID = generateAssemblyIdVariable(arg.getArgumentName(), symbolTable.getCurrentScope()->getUniqueTableNumber() );
+
+		arg.setArgumentAssemblyVariableName(assemblyID);
+
+		functionSymbolInfoEntry->getFunctionInfoDataPtr()->getArguments()[i] = arg;
+
+
 		argIDEntry->initializeVariable(arg.getArgumentName());
+		argIDEntry->setAssemblyID(assemblyID);
+
+
+
 		insertIDToSymbolTable(argIDEntry);
 		
 	}
+	//for all parameters inside the function now
+	//symbol table entries as ID types are inserted inside the function scopetable along with assemblyId's
+	//the symbolinfo object for the function itself (which is also in the symbol table) has the assemblyId's of each parameter inside the arguments vector.
+
+
+	
+
+
+	variableDeclarationList.push_back($2->getName() + "_return");
+	curfunction = $2->getName();
+
+	
+	
+
+
+	//todo change name from _return to something less obviously ripped off
 
 	//todo -> Add arguments to the new scope in symboltable
 
@@ -236,6 +273,42 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 addLineNoLog();
 		 logfile << "func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+
+		$$->setCode($2->getName() + " PROC\n");
+
+
+		if ($2->getName() == "main") {
+		$$->setCode($$->getCode() + "    MOV AX,@DATA\nMOV DS,AX \n" + $7->getCode() + "LReturn" + "main" + ":\nMOV AH,4CH\nINT 21H\n");
+		} else {
+			SymbolInfo* functionTableEntry = symbolTable.lookup($2->getName());
+
+
+			string code = $$->getCode() +
+					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
+
+
+			vector<ArgumentInfo> arguments = functionTableEntry->getFunctionInfoDataPtr()->getArguments();
+			
+			//todo arguments order in arguments vector is opposite of real order. So just reverse here and during pop. Different from bhaias.
+			for(int i = 0; i < arguments.size() ;i++) {
+				code += "PUSH " + arguments[i].getArgumentAssemblyVariableName() + "\n";
+			}
+
+			code += $7->getCode() +
+				"LReturn" + $2->getName() + ":\n";	
+
+			for(int i = arguments.size() - 1; i >= 0; i--) {
+					code += "POP " + arguments[i].getArgumentAssemblyVariableName() + "\n";
+			} 
+
+				code += "POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n"; 
+
+			$$->setCode(code + $2->getName() + " ENDP\n");
+		}
+
+		scratchfile << "\n\n" + $$->getCode() << "\n\n";
+
 	 	} 
 		 // FINISH FIRST RULE
 
@@ -257,6 +330,9 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 
 	symbolTable.enterScope();
 
+	curfunction = $2->getName();
+	variableDeclarationList.push_back(curfunction + "_return");
+
 	functionScopeBeginFlag = true;
 	
   } compound_statement	{
@@ -269,6 +345,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 logfile << $$->getName() <<endl << endl;
 
 		 if($2->getName()=="main") {
+			 //todo remove. Bangla bhabe kora for main code.
 			 	main_code += $6->getCode();
 		 }
 	 	}
@@ -592,7 +669,8 @@ statement : var_declaration	{
 
 		 		string code = $2->getCode();
 		code += "MOV AX," + $2->getAssemblyID() + "\n";
-		code += "JMP RETURNMAIN\n";
+		code += "MOV " + curfunction + "_return,AX\n";
+		code += "JMP LReturn" + curfunction + "\n";
 
 		//todo hardcoded to return from main. If you want to support all functions then modify
 		$$->setCode(code);

@@ -2,6 +2,22 @@ At line no: 1 type_specifier : INT
 
 int
 
+At line no: 1 type_specifier : INT
+
+int
+
+At line no: 1 parameter_list : type_specifier ID
+
+int arg1
+
+At line no: 1 type_specifier : INT
+
+int
+
+At line no: 1 parameter_list : parameter_list COMMA type_specifier ID
+
+int arg1, int arg2
+
 At line no: 2 factor : CONST_INT
 
 0
@@ -46,11 +62,11 @@ At line no: 3 compound_statement : LCURL statements RCURL
  ScopeTable # 2
  0--> 
  1--> 
- 2--> 
+ 2-->  < arg1 : ID> 
  3--> 
  4--> 
  5--> 
- 6--> 
+ 6-->  < arg2 : ID> 
  7--> 
  8--> 
  9--> 
@@ -66,27 +82,43 @@ At line no: 3 compound_statement : LCURL statements RCURL
  7--> 
  8--> 
  9--> 
-At line no: 3 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 3 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
 At line no: 3 unit : func_definition
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
 
 At line no: 3 program : unit
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
 
 
 At line no: 5 type_specifier : INT
 
 int
+
+At line no: 5 type_specifier : INT
+
+int
+
+At line no: 5 parameter_list : type_specifier ID
+
+int arg3
+
+At line no: 5 type_specifier : INT
+
+int
+
+At line no: 5 parameter_list : parameter_list COMMA type_specifier ID
+
+int arg3, int arg4
 
 At line no: 6 factor : CONST_INT
 
@@ -130,11 +162,11 @@ At line no: 7 compound_statement : LCURL statements RCURL
 
 
  ScopeTable # 2
- 0--> 
+ 0-->  < arg3 : ID> 
  1--> 
  2--> 
  3--> 
- 4--> 
+ 4-->  < arg4 : ID> 
  5--> 
  6--> 
  7--> 
@@ -152,24 +184,24 @@ At line no: 7 compound_statement : LCURL statements RCURL
  7--> 
  8--> 
  9--> 
-At line no: 7 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 7 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
-int otherfunc2()
- {return 0;}
+int otherfunc2(int arg3, int arg4)
+{return 0;}
 
 At line no: 7 unit : func_definition
 
-int otherfunc2()
- {return 0;}
+int otherfunc2(int arg3, int arg4)
+{return 0;}
 
 
 At line no: 7 program : program unit
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
-int otherfunc2()
- {return 0;}
+int otherfunc2(int arg3, int arg4)
+{return 0;}
 
 
 
@@ -365,11 +397,11 @@ return 0;}
 
 At line no: 17 program : program unit
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
-int otherfunc2()
- {return 0;}
+int otherfunc2(int arg3, int arg4)
+{return 0;}
 
 int main()
  {int a;
@@ -380,11 +412,11 @@ return 0;}
 
 At line no: 17 start : program
 
-int otherfunc()
- {return 0;}
+int otherfunc(int arg1, int arg2)
+{return 0;}
 
-int otherfunc2()
- {return 0;}
+int otherfunc2(int arg3, int arg4)
+{return 0;}
 
 int main()
  {int a;

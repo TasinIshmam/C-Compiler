@@ -27,6 +27,8 @@
       "*.txt": "cpp",
       "random": "cpp",
       "deque": "cpp",
-      "iostream": "cpp"
+      "iostream": "cpp",
+      "memory": "cpp",
+      "complex": "cpp"
     }
 }

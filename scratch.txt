@@ -1,0 +1,48 @@
+
+
+otherfunc PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg22
+PUSH arg12
+MOV t0,0
+MOV AX,t0
+MOV otherfunc_return,AX
+JMP LReturnotherfunc
+LReturnotherfunc:
+POP arg12
+POP arg22
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+otherfunc ENDP
+
+
+
+
+otherfunc2 PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg43
+PUSH arg33
+MOV t1,0
+MOV AX,t1
+MOV otherfunc2_return,AX
+JMP LReturnotherfunc2
+LReturnotherfunc2:
+POP arg33
+POP arg43
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+otherfunc2 ENDP
+
+

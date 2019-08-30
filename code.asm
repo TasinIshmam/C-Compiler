@@ -1,8 +1,11 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
+otherfunc_return dw ?
 t0 dw ?
+otherfunc2_return dw ?
 t1 dw ?
+main_return dw ?
 a4 dw ?
 t2 dw ?
 t3 dw ?
@@ -30,10 +33,51 @@ MOV AX,t6
 MOV a4,AX
 MOV t7,0
 MOV AX,t7
-JMP RETURNMAIN
+MOV main_return,AX
+JMP LReturnmain
 RETURNMAIN:
 MOV AH, 4CH 
 INT 21H
+otherfunc PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg22
+PUSH arg12
+MOV t0,0
+MOV AX,t0
+MOV otherfunc_return,AX
+JMP LReturnotherfunc
+LReturnotherfunc:
+POP arg12
+POP arg22
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+otherfunc ENDP
+otherfunc2 PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg43
+PUSH arg33
+MOV t1,0
+MOV AX,t1
+MOV otherfunc2_return,AX
+JMP LReturnotherfunc2
+LReturnotherfunc2:
+POP arg33
+POP arg43
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+otherfunc2 ENDP
  
 OUTDEC PROC  
     PUSH AX 

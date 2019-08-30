@@ -13,7 +13,7 @@ extern ofstream scratchfile;
 class ArgumentInfo { //even though it's called argument, it is infact a parameter. keep that in mind.
 //our code makes no distinction between argument and parameter while bhaia's does.
 
-    string argumentType, argumentName;
+    string argumentType, argumentName, argumentAssemblyVariableName = "";
 
 public:
 
@@ -32,6 +32,14 @@ public:
 
     void setArgumentType(const string &argumentType) {
         ArgumentInfo::argumentType = argumentType;
+    }
+
+     const string &getArgumentAssemblyVariableName() const {
+        return argumentAssemblyVariableName;
+    }
+
+    void setArgumentAssemblyVariableName(const string &argumentAssemblyVariableName) {
+        ArgumentInfo::argumentAssemblyVariableName = argumentAssemblyVariableName;
     }
 
     const string &getArgumentName() const {
@@ -78,7 +86,7 @@ public:
 
     }
 
-    const vector<ArgumentInfo> &getArguments() const {
+     vector<ArgumentInfo> &getArguments()  {
         return arguments;
     }
 
