@@ -9,5 +9,5 @@ int main(){
     }
     println(a);
     println(b);
-    println(i);
+    println(c);
 }

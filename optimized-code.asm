@@ -1,164 +1,73 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
-arg12 dw ?
-funcOneParamReturnVariable dw ?
+mainReturnVariable dw ?
+i2 dw ?
+b2 dw ?
+a2 dw ?
 temp0 dw ?
 temp1 dw ?
-arg3 dw ?
-voidfunctionReturnVariable dw ?
-arg34 dw ?
-arg24 dw ?
-funcVoidTwoParamReturnVariable dw ?
 temp2 dw ?
-funcNoparamReturnVariable dw ?
 temp3 dw ?
-mainReturnVariable dw ?
-b6 dw ?
-a6 dw ?
 temp4 dw ?
 temp5 dw ?
 temp6 dw ?
-a7 dw ?
 temp7 dw ?
-temp8 dw ?
-temp9 dw ?
-temp10 dw ?
-temp11 dw ?
-temp12 dw ?
-temp13 dw ?
 .CODE
-funcOneParam PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-PUSH arg12
-MOV temp0,2
-MOV AX,arg12
-ADD AX,temp0
-MOV temp1,AX
-;Line Omitted for optimization
-MOV funcOneParamReturnVariable,AX
-JMP LabelReturnfuncOneParam
-LabelReturnfuncOneParam:
-POP arg12
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-funcOneParam ENDP
-voidfunction PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-PUSH arg3
-MOV AX,arg3
-CALL OUTDEC
-LabelReturnvoidfunction:
-POP arg3
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-voidfunction ENDP
-funcVoidTwoParam PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-PUSH arg34
-PUSH arg24
-MOV AX,arg24
-ADD AX,arg34
-MOV temp2,AX
-;Line Omitted for optimization
-MOV funcVoidTwoParamReturnVariable,AX
-JMP LabelReturnfuncVoidTwoParam
-LabelReturnfuncVoidTwoParam:
-POP arg24
-POP arg34
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-funcVoidTwoParam ENDP
-funcNoparam PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-MOV temp3,5
-MOV AX,temp3
-MOV funcNoparamReturnVariable,AX
-JMP LabelReturnfuncNoparam
-LabelReturnfuncNoparam:
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-funcNoparam ENDP
 main PROC
     MOV AX,@DATA
 MOV DS,AX 
-MOV temp4,1
-MOV AX,temp4
-MOV a6,AX
-MOV temp5,7
+MOV temp0,0
+MOV AX,temp0
+MOV b2,AX
+MOV temp1,0
+MOV AX,temp1
+MOV i2,AX
+;Loop Begin
+Label4:
+;$4 code Begin
+MOV temp2,4
+MOV AX,i2
+CMP AX,temp2
+JL Label0
+MOV temp3,0
+JMP Label1
+Label0:
+MOV temp3,1
+Label1:
+;$4 code End
+MOV AX,temp3
+CMP AX,0
+JE Label5
+;$7 code Begin
+MOV temp5,3
 MOV AX,temp5
-MOV arg12,AX
-CALL funcOneParam
-MOV AX,funcOneParamReturnVariable
+MOV a2,AX
+Label2:
+MOV AX,a2
 MOV temp6,AX
-;Line Omitted for optimization
-MOV b6,AX
-;Line Omitted for optimization
+DEC a2
+MOV AX,temp6
+CMP AX,0
+JE Label3
+MOV AX,b2
+MOV temp7,AX
+INC b2
+JMP Label2
+Label3:
+;$5 code Begin
+MOV AX,i2
+MOV temp4,AX
+INC i2
+JMP Label4
+Label5:
+;Loop END
+MOV AX,a2
 CALL OUTDEC
-MOV temp7,6
-MOV AX,temp7
-MOV a7,AX
-;Line Omitted for optimization
-MOV arg12,AX
-CALL funcOneParam
-MOV AX,funcOneParamReturnVariable
-MOV temp8,AX
-;Line Omitted for optimization
-MOV a7,AX
-;Line Omitted for optimization
+MOV AX,b2
 CALL OUTDEC
-MOV AX,a7
-MOV arg12,AX
-CALL funcOneParam
-MOV AX,funcOneParamReturnVariable
-MOV temp9,AX
-;Line Omitted for optimization
-MOV arg3,AX
-CALL voidfunction
-MOV AX,voidfunctionReturnVariable
-MOV temp10,AX
-CALL funcNoparam
-MOV AX,funcNoparamReturnVariable
-MOV temp11,AX
-;Line Omitted for optimization
-MOV a6,AX
-;Line Omitted for optimization
-MOV arg24,AX
-MOV AX,b6
-MOV arg34,AX
-CALL funcVoidTwoParam
-MOV AX,funcVoidTwoParamReturnVariable
-MOV temp12,AX
-;Line Omitted for optimization
-MOV a6,AX
-MOV temp13,0
-MOV AX,temp13
-MOV mainReturnVariable,AX
-JMP LabelReturnmain
+MOV AX,i2
+CALL OUTDEC
 LabelReturnmain:
 MOV AH,4CH
 INT 21H

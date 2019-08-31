@@ -14,10 +14,9 @@ extern FILE *yyin;
 int line_no = 1;
 int errorCount = 0;
 
-string main_code = "\nMAIN PROC\n\nMOV AX, @DATA\nMOV DS, AX\n\n";
 
+//todo remove scratch file stuff
 
-string outdecProcCode = " \nOUTDEC PROC  \n    PUSH AX \n    PUSH BX \n    PUSH CX \n    PUSH DX  \n    CMP AX,0 \n    JGE LabelBEGIN \n    PUSH AX \n    MOV DL,'-' \n    MOV AH,2 \n    INT 21H \n    POP AX \n    NEG AX \n    \n    LabelBEGIN: \n    XOR CX,CX \n    MOV BX,10 \n    \n    LabelRepeat: \n    XOR DX,DX \n    DIV BX \n    PUSH DX \n    INC CX \n    OR AX,AX \n    JNE LabelRepeat \n    MOV AH,2 \n    \n    PRINT_LOOP: \n    POP DX \n    ADD DL,30H \n    INT 21H \n    LOOP PRINT_LOOP \n    \n    MOV AH,2\n    MOV DL,10\n    INT 21H\n    \n    MOV DL,13\n    INT 21H\n	\n    POP DX \n    POP CX \n    POP BX \n    POP AX \n    ret \nOUTDEC ENDP\nEND MAIN\n";
 
 
 bool functionScopeBeginFlag = false;
@@ -30,21 +29,15 @@ SymbolTable symbolTable(10);
 string curfunction;
 
 
-// vector<SymbolInfo*>para_list;
-// vector<SymbolInfo*>arg_list;
-// vector<SymbolInfo*>dec_list;
 
 
 
 vector<string> variableDeclarationList;
-vector<string> functionVariableDelcarationList;
 vector<pair<string,string> >arrayDeclarationList;
 
-	vector<SymbolInfo *> paramterListSymbolInfoVector;  //int func( int a, float b) a,b are parameters
-	vector<SymbolInfo *> declarationListSymbolInfoVector; //variables declared inside the function
-	vector<SymbolInfo *> ArgumentListSymbolInfoVector; //func (5,2.523) 5 and 2.523 are arguments
 
-//our code makes no distinction between argument and parameter while bhaia's does.
+vector<SymbolInfo *> ArgumentListSymbolInfoVector; //func (5,2.523) 5 and 2.523 are arguments
+
 
 
 void yyerror(string s) 
@@ -97,7 +90,6 @@ start : program	{
 		
 		finalCode += ".CODE\n";
 		
-		//finalCode += main_code;
 
 		finalCode += $1->getCode();
 		
@@ -313,7 +305,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 			$$->setCode(code + $2->getName() + " ENDP\n");
 		}
 
-		scratchfile << "\n\n" + $$->getCode() << "\n\n";
+		// scratchfile << "\n\n" + $$->getCode() << "\n\n";
 
 	 	} 
 		 // FINISH FIRST RULE
@@ -373,7 +365,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 			$$->setCode(code + $2->getName() + " ENDP\n");
 		}
 
-				scratchfile << "\n\n" + $$->getCode() << "\n\n";
+				// scratchfile << "\n\n" + $$->getCode() << "\n\n";
 
 	 	}
  		;
@@ -417,7 +409,6 @@ compound_statement : LCURL {
 		symbolTable.enterScope();
 	}
 } statements RCURL 	{
-	//todo finish for function
 		 $$ = new SymbolInfo($1->getName() + $3->getName() + $4->getName(), "compound_statement");
 		 $$->addChildSymbol($1); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
@@ -773,7 +764,7 @@ variable : ID	{
 		$$->setCode(codes);
 		$$->setAssemblyID(assemblyName);
 
-		scratchfile << "variable with code created. CODE: \n" << codes;
+		// scratchfile << "variable with code created. CODE: \n" << codes;
 
 	 }
 	 ;
@@ -846,7 +837,7 @@ logic_expression : rel_expression 	{
 
 		 string code = $1->getCode() + $3->getCode();
 
-		 		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+		 		 //// scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
 		 string tempVar = generateNewTempVariable();
 		 $$->setAssemblyID(tempVar);
@@ -857,7 +848,7 @@ logic_expression : rel_expression 	{
 
 
 
-		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+		 //// scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 	 	}
 		 ;
 
@@ -887,12 +878,12 @@ rel_expression	: simple_expression {
 		 $$->setAssemblyID(tempVar);
 
 		 string code = $1->getCode() + $3->getCode();
-				 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+				 		 // scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
 		 code += generateCodeForRelop($1->getAssemblyID(), $2->getName(), $3->getAssemblyID(), $$->getAssemblyID());
 
 		 $$->setCode(code);
-		 		 scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
+		 		 // scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 
 	 	}
 		;
@@ -1096,6 +1087,10 @@ factor	: variable  {
 
 		SymbolInfo* functionSymbolInfoEntry = symbolTable.lookup($1->getName());
 
+
+		if(functionSymbolInfoEntry != nullptr) { 
+
+		
 		vector<ArgumentInfo> parameters = functionSymbolInfoEntry->getFunctionInfoDataPtr()->getArgumentsCopy();
 
 		reverse(parameters.begin(), parameters.end());
@@ -1113,8 +1108,17 @@ factor	: variable  {
 		code += "CALL " + $1->getName() + "\n";
 		code += "MOV AX," + $1->getName() + "ReturnVariable\n";
 
+		
+
+		} else {
+			 addLineNoErr();
+        logfile << "Function called without declaration\n\n";
+        
+		}
+
 		string temp = generateNewTempVariable();
 		code += "MOV " + temp + ",AX\n";
+
 		$$->setCode(code);
 		$$->setAssemblyID(temp);
 		ArgumentListSymbolInfoVector.clear();
@@ -1285,8 +1289,8 @@ int main(int argc,char *argv[])
 		exit(1);
 	}
 
-	   logfile.open("1605115_log.txt");
-	   scratchfile.open("scratch.txt");
+	   logfile.open("log.txt");
+	   //scratchfile.open("scratch.txt");
 	   asmCodeFile.open("code.asm");
 
 		
@@ -1296,16 +1300,15 @@ int main(int argc,char *argv[])
 	yyparse();
 
 
-	symbolTable.printAllScopeTable(logfile);
+	//symbolTable.printAllScopeTable(logfile);
 
 
 	logfile << "Total Lines: " << line_no << endl;
 	logfile << "Total Errors: " << errorCount << endl;
-	logfile << "Total Errors: " << errorCount << endl;
 
 
 	logfile.close();
-	scratchfile.close();
+	//scratchfilescratchfile.close();
 	asmCodeFile.close();
 
 	optimizeCode();

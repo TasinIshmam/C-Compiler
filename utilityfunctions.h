@@ -23,12 +23,9 @@ int tempCount = 0;
 
 
 extern vector<string> variableDeclarationList;
-extern vector<string> functionVariableDelcarationList;
 extern vector<pair<string,string> >arrayDeclarationList;
 
 
-extern	vector<SymbolInfo *> paramterListSymbolInfoVector;
-extern	vector<SymbolInfo *> declarationListSymbolInfoVector;
 extern	vector<SymbolInfo *> ArgumentListSymbolInfoVector;
 
 
@@ -55,26 +52,6 @@ return name + to_string(tableId);
 
 
 
-string generateCodeForPrintLn(string varName)
-{		
-	
-	string code = "";
-	
-
-	
-		
-		code = code + "MOV AX, " + varName + "\n";
-		code = code + "CALL OUTDEC\n";
-		code = code + "MOV AH, 2\n";
-		code = code + "MOV DL, 0DH\n";
-		code = code + "INT 21H\n";
-		code = code + "MOV AH, 2\n";
-		code = code + "MOV DL, 0AH\n";
-		code = code + "INT 21H\n";
-	
-
-return code;
-}
 
 
 string generateCodeForRelop(string expressionAssemblyId1 ,string relOperator ,string expressionAssemblyId2, string tempVariableForParentExpression) {
@@ -282,8 +259,7 @@ bool functionCallValidationWithArgumentTypeCheck(SymbolInfo* id, SymbolInfo* arg
 
 bool checkIfValidFunctionReturnTypeInExpression(SymbolInfo* token) {
 
-    //todo cal in parser. Will basically just check if token has return type void or not. Will have to be called in every grammar rule which isn't
-    //of the form A -> B   in the chain from factor all the way up to expression.
+    
 
     if(token->getReturnType() == "void") {
         addLineNoErr();
@@ -576,7 +552,7 @@ void symbolTableEntryForVarDeclaration(SymbolInfo *typeSpecifier, SymbolInfo *de
         int arrayLen = stoi(arrayLenString);
 
 
-       scratchfile << arrayName << arrayLen << endl << endl;
+       //scratchfile << arrayName << arrayLen << endl << endl;
        SymbolInfo* arr = createSymbolInfoForArrayID(arrayName, typeOfVariables, arrayLen);
 
                 insertIDToSymbolTable(arr);

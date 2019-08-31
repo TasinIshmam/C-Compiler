@@ -10,9 +10,7 @@ extern int errorCount;
 extern ofstream logfile;
 extern ofstream scratchfile;
 
-class ArgumentInfo { //even though it's called argument, it is infact a parameter. keep that in mind.
-//our code makes no distinction between argument and parameter while bhaia's does.
-
+class ArgumentInfo { //Should have been parameter Info. This is actually used for parameters, bit didn't recall the distinction when creating.
     string argumentType, argumentName, argumentAssemblyVariableName = "";
 
 public:
@@ -279,9 +277,9 @@ public:
 
     const string &getAssemblyID() const {
         if(assemblyID == ""){
-            scratchfile << "\nError with "  << name;
-            scratchfile << "\nType: " << type << "\n";
-            scratchfile << "Line No: " << line_no << "\n\n";
+            // scratchfile << "\nError with "  << name;
+            // scratchfile << "\nType: " << type << "\n";
+            // scratchfile << "Line No: " << line_no << "\n\n";
 
         }
         return assemblyID;
@@ -315,7 +313,7 @@ public:
 
         }
 
-        // scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
+        // // scratchfile <<  name << " of type " << type << " return type set to " << retType << "\n";
     }
 
     SymbolInfo *getNext() const {
@@ -646,7 +644,7 @@ public:
 
     SymbolInfo *lookup(const string &name) {
         if(containsWhiteSpace(name)) {
-            scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            // scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
             // cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
             return nullptr;
         }
@@ -668,7 +666,7 @@ public:
     int lookupScopeId (const string &name) {
 
         if(containsWhiteSpace(name)) {
-            scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
+            // scratchfile << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
             // cout << "Warning: Cannot look up name with white space in it. Cancelling lookup and returning nullptr for search string: " << name << endl << endl;
             return -1;
         }

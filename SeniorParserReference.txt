@@ -1516,7 +1516,6 @@ factor : variable
 	$$->setReturnType($1->getReturnType());
 	string temp = generateNewTempVariable();
 	string code = "";
-	//todo find if this actually works.
 	if ($1->get_type() == "array")
 	{
 		code += "MOV AX," + $1->getAssemblyID() + "[BX]\n";
