@@ -1447,7 +1447,7 @@ factor : variable
 			{
 				code += "MOV AX," + ArgumentListSymbolInfoVector[i]->getAssemblyID() + "\n";
 				code += "MOV " + paramterListSymbolInfoVector[i] + ",AX\n";
-				//cout<<paramterListSymbolInfoVector[i]<<" "<<ArgumentListSymbolInfoVector[i]->getName()<<" "<<ArgumentListSymbolInfoVector[i]->getAssemblyID()<<endl;
+			
 				if (ArgumentListSymbolInfoVector[i]->getReturnType() != para_type[i])
 				{
 

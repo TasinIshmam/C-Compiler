@@ -37,6 +37,7 @@ string curfunction;
 // vector<SymbolInfo*>dec_list;
 
 
+
 vector<string> variableDeclarationList;
 vector<string> functionVariableDelcarationList;
 vector<pair<string,string> >arrayDeclarationList;
@@ -99,9 +100,9 @@ start : program	{
 		finalCode += ".CODE\n";
 		
 		//todo modify completely. Bangla bhabe kore for main to work
-		finalCode += main_code;
+		//finalCode += main_code;
 
-		finalCode += "RETURNMAIN:\nMOV AH, 4CH \nINT 21H\n";
+		//finalCode += "RETURNMAIN:\nMOV AH, 4CH \nINT 21H\n";
 		finalCode += $1->getCode();
 		finalCode += outdecProcCode;
 
@@ -243,6 +244,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 
 
 		insertIDToSymbolTable(argIDEntry);
+		variableDeclarationList.push_back(assemblyID);
 		
 	}
 	//for all parameters inside the function now
@@ -344,10 +346,31 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 logfile << "func_definition : type_specifier ID LPAREN RPAREN compound_statement\n\n";
 		 logfile << $$->getName() <<endl << endl;
 
-		 if($2->getName()=="main") {
-			 //todo remove. Bangla bhabe kora for main code.
-			 	main_code += $6->getCode();
-		 }
+		$$->setCode($2->getName() + " PROC\n");
+
+
+		if ($2->getName() == "main") {
+		$$->setCode($$->getCode() + "    MOV AX,@DATA\nMOV DS,AX \n" + $6->getCode() + "LReturn" + "main" + ":\nMOV AH,4CH\nINT 21H\n");
+		} else {
+			SymbolInfo* functionTableEntry = symbolTable.lookup($2->getName());
+
+
+			string code = $$->getCode() +
+					  "PUSH AX\nPUSH BX \nPUSH CX \nPUSH DX\n";
+
+
+		
+
+			code += $6->getCode() +
+				"LReturn" + $2->getName() + ":\n";	
+
+				code += "POP DX\nPOP CX\nPOP BX\nPOP AX\nret\n"; 
+
+			$$->setCode(code + $2->getName() + " ENDP\n");
+		}
+
+				scratchfile << "\n\n" + $$->getCode() << "\n\n";
+
 	 	}
  		;
 
@@ -397,7 +420,7 @@ compound_statement : LCURL {
 		 logfile << "compound_statement : LCURL statements RCURL\n\n";
 		 logfile << $$->getName() <<endl << endl;
 		
-		 symbolTable.printAllScopeTable(logfile);
+		 //symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
 
 		 $$->setCode($3->getCode());
@@ -809,6 +832,11 @@ logic_expression : rel_expression 	{
 		 $$->setReturnType($1->getReturnType());
 		 $$->setCode($1->getCode());
 		 $$->setAssemblyID($1->getAssemblyID());
+
+		//  if($1->getAssemblyID() == "t5") {
+		// 	 cout << "\n\n";
+		// 	 cout << $$->getCode();
+		//  }
 	
 		  	}
 		 | rel_expression LOGICOP rel_expression {
@@ -831,6 +859,8 @@ logic_expression : rel_expression 	{
 		code += generateCodeForLogicOp($1->getAssemblyID(), $2->getName(), $3->getAssemblyID(), $$->getAssemblyID());
 
 		$$->setCode(code);
+
+
 
 		 //scratchfile << "\n\nCODE TEST\n\n" << code << "\n";
 	 	}
@@ -1064,7 +1094,37 @@ factor	: variable  {
 
 		 //todo Evaluate function called with appropriate number of variables etc etc
 		functionCallValidationWithArgumentTypeCheck($1, $3);
-		 $$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));		 
+		 $$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));	
+
+		string code = $3->getCode();
+
+		// cout << "arguments list code ---- \n";
+		// cout << code << "\n";
+
+		SymbolInfo* functionSymbolInfoEntry = symbolTable.lookup($1->getName());
+
+		vector<ArgumentInfo> parameters = functionSymbolInfoEntry->getFunctionInfoDataPtr()->getArgumentsCopy();
+
+		reverse(parameters.begin(), parameters.end());
+
+
+
+		for(int i = 0 ; i < parameters.size(); i++) {
+
+			code += "MOV AX," + ArgumentListSymbolInfoVector[i]->getAssemblyID() + "\n";
+
+			code += "MOV " + parameters[i].getArgumentAssemblyVariableName() + ",AX\n";
+
+		}
+
+		code += "CALL " + $1->getName() + "\n";
+		code += "MOV AX," + $1->getName() + "_return\n";
+
+		string temp = generateNewTempVariable();
+		code += "MOV " + temp + ",AX\n";
+		$$->setCode(code);
+		$$->setAssemblyID(temp);
+		ArgumentListSymbolInfoVector.clear();
 
 		 
 	}
@@ -1091,6 +1151,8 @@ factor	: variable  {
 			string code = "MOV " + temp + "," + $1->getName() + "\n";
 			$$->setAssemblyID(temp);
 			$$->setCode(code);
+
+		//	cout << code;
 
 	 }
 	| CONST_FLOAT	{
@@ -1182,6 +1244,8 @@ argument_list : arguments {
 		 addLineNoLog();
 		 logfile << "argument_list : arguments\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		$$->setCode($1->getCode());
+
 	 	}
 			  |  {
 				  $$ = new SymbolInfo("", "argument_list");
@@ -1198,6 +1262,11 @@ arguments : arguments COMMA logic_expression {
 		 addLineNoLog();
 		 logfile << "arguments : arguments COMMA logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+		 	 ArgumentListSymbolInfoVector.push_back($3);
+			$$->setCode($1->getCode() + $3->getCode());
+
+
+
 	 	}
 	      | logic_expression {
 		 $$ = new SymbolInfo($1->getName() , "arguments");
@@ -1205,6 +1274,10 @@ arguments : arguments COMMA logic_expression {
 		 addLineNoLog();
 		 logfile << "arguments : logic_expression\n\n";
 		 logfile << $$->getName() <<endl << endl;
+
+		 ArgumentListSymbolInfoVector.push_back($1);
+		 	$$->setCode($1->getCode());
+
 	 	}
 	      ;
 

@@ -1,443 +1,761 @@
-At line no: 1 type_specifier : INT
+At line no: 27 type_specifier : INT
 
 int
 
-At line no: 1 type_specifier : INT
+At line no: 27 type_specifier : INT
 
 int
 
-At line no: 1 parameter_list : type_specifier ID
+At line no: 27 parameter_list : type_specifier ID
 
 int arg1
 
-At line no: 1 type_specifier : INT
+At line no: 29 variable : ID
+
+arg1
+
+At line no: 29 factor : variable
+
+arg1
+
+At line no: 29 unary_expression : factor
+
+arg1
+
+At line no: 29 term : unary_expression
+
+arg1
+
+At line no: 29 simple_expression : term
+
+arg1
+
+At line no: 29 factor : CONST_INT
+
+2
+
+At line no: 29 unary_expression : factor
+
+2
+
+At line no: 29 term : unary_expression
+
+2
+
+At line no: 29 simple_expression : simple_expression ADDOP term
+
+arg1 + 2
+
+At line no: 29 rel_expression : simple_expression
+
+arg1 + 2
+
+At line no: 29 logic_expression : rel_expression
+
+arg1 + 2
+
+At line no: 29 expression : logic_expression
+
+arg1 + 2
+
+At line no: 29 statement : RETURN expression SEMICOLON
+
+return arg1 + 2;
+
+At line no: 29 statements : statement
+
+return arg1 + 2;
+
+At line no: 30 compound_statement : LCURL statements RCURL
+
+{return arg1 + 2;}
+
+At line no: 30 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+At line no: 30 unit : func_definition
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+
+At line no: 30 program : unit
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+
+
+At line no: 32 type_specifier : INT
 
 int
 
-At line no: 1 parameter_list : parameter_list COMMA type_specifier ID
-
-int arg1, int arg2
-
-At line no: 2 factor : CONST_INT
-
-0
-
-At line no: 2 unary_expression : factor
-
-0
-
-At line no: 2 term : unary_expression
-
-0
-
-At line no: 2 simple_expression : term
-
-0
-
-At line no: 2 rel_expression : simple_expression
-
-0
-
-At line no: 2 logic_expression : rel_expression
-
-0
-
-At line no: 2 expression : logic_expression
-
-0
-
-At line no: 2 statement : RETURN expression SEMICOLON
-
-return 0;
-
-At line no: 2 statements : statement
-
-return 0;
-
-At line no: 3 compound_statement : LCURL statements RCURL
-
-{return 0;}
-
-
- ScopeTable # 2
- 0--> 
- 1--> 
- 2-->  < arg1 : ID> 
- 3--> 
- 4--> 
- 5--> 
- 6-->  < arg2 : ID> 
- 7--> 
- 8--> 
- 9--> 
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2--> 
- 3--> 
- 4-->  < otherfunc : ID> 
- 5--> 
- 6--> 
- 7--> 
- 8--> 
- 9--> 
-At line no: 3 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
-
-int otherfunc(int arg1, int arg2)
-{return 0;}
-
-At line no: 3 unit : func_definition
-
-int otherfunc(int arg1, int arg2)
-{return 0;}
-
-
-At line no: 3 program : unit
-
-int otherfunc(int arg1, int arg2)
-{return 0;}
-
-
-
-At line no: 5 type_specifier : INT
+At line no: 32 type_specifier : INT
 
 int
 
-At line no: 5 type_specifier : INT
+At line no: 32 parameter_list : type_specifier ID
+
+int arg2
+
+At line no: 32 type_specifier : INT
 
 int
 
-At line no: 5 parameter_list : type_specifier ID
+At line no: 32 parameter_list : parameter_list COMMA type_specifier ID
 
-int arg3
+int arg2, int arg3
 
-At line no: 5 type_specifier : INT
+At line no: 33 variable : ID
 
-int
+arg2
 
-At line no: 5 parameter_list : parameter_list COMMA type_specifier ID
+At line no: 33 factor : variable
 
-int arg3, int arg4
+arg2
 
-At line no: 6 factor : CONST_INT
+At line no: 33 unary_expression : factor
 
-0
+arg2
 
-At line no: 6 unary_expression : factor
+At line no: 33 term : unary_expression
 
-0
+arg2
 
-At line no: 6 term : unary_expression
+At line no: 33 simple_expression : term
 
-0
+arg2
 
-At line no: 6 simple_expression : term
+At line no: 33 variable : ID
 
-0
+arg3
 
-At line no: 6 rel_expression : simple_expression
+At line no: 33 factor : variable
 
-0
+arg3
 
-At line no: 6 logic_expression : rel_expression
+At line no: 33 unary_expression : factor
 
-0
+arg3
 
-At line no: 6 expression : logic_expression
+At line no: 33 term : unary_expression
 
-0
+arg3
 
-At line no: 6 statement : RETURN expression SEMICOLON
+At line no: 33 simple_expression : simple_expression ADDOP term
 
-return 0;
+arg2 + arg3
 
-At line no: 6 statements : statement
+At line no: 33 rel_expression : simple_expression
 
-return 0;
+arg2 + arg3
 
-At line no: 7 compound_statement : LCURL statements RCURL
+At line no: 33 logic_expression : rel_expression
 
-{return 0;}
+arg2 + arg3
 
+At line no: 33 expression : logic_expression
 
- ScopeTable # 2
- 0-->  < arg3 : ID> 
- 1--> 
- 2--> 
- 3--> 
- 4-->  < arg4 : ID> 
- 5--> 
- 6--> 
- 7--> 
- 8--> 
- 9--> 
+arg2 + arg3
 
- ScopeTable # 1
- 0--> 
- 1--> 
- 2--> 
- 3--> 
- 4-->  < otherfunc : ID> 
- 5--> 
- 6-->  < otherfunc2 : ID> 
- 7--> 
- 8--> 
- 9--> 
-At line no: 7 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+At line no: 33 statement : RETURN expression SEMICOLON
 
-int otherfunc2(int arg3, int arg4)
-{return 0;}
+return arg2 + arg3;
 
-At line no: 7 unit : func_definition
+At line no: 33 statements : statement
 
-int otherfunc2(int arg3, int arg4)
-{return 0;}
+return arg2 + arg3;
+
+At line no: 34 compound_statement : LCURL statements RCURL
+
+{return arg2 + arg3;}
+
+At line no: 34 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
+
+At line no: 34 unit : func_definition
+
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
 
 
-At line no: 7 program : program unit
+At line no: 34 program : program unit
 
-int otherfunc(int arg1, int arg2)
-{return 0;}
+int funcOneParam(int arg1)
+{return arg1 + 2;}
 
-int otherfunc2(int arg3, int arg4)
-{return 0;}
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
 
 
 
-At line no: 10 type_specifier : INT
+At line no: 36 type_specifier : INT
 
 int
 
-At line no: 12 type_specifier : INT
+At line no: 38 factor : CONST_INT
+
+5
+
+At line no: 38 unary_expression : factor
+
+5
+
+At line no: 38 term : unary_expression
+
+5
+
+At line no: 38 simple_expression : term
+
+5
+
+At line no: 38 rel_expression : simple_expression
+
+5
+
+At line no: 38 logic_expression : rel_expression
+
+5
+
+At line no: 38 expression : logic_expression
+
+5
+
+At line no: 38 statement : RETURN expression SEMICOLON
+
+return 5;
+
+At line no: 38 statements : statement
+
+return 5;
+
+At line no: 39 compound_statement : LCURL statements RCURL
+
+{return 5;}
+
+At line no: 39 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+
+int funcNoparam()
+ {return 5;}
+
+At line no: 39 unit : func_definition
+
+int funcNoparam()
+ {return 5;}
+
+
+At line no: 39 program : program unit
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
+
+int funcNoparam()
+ {return 5;}
+
+
+
+At line no: 41 type_specifier : INT
 
 int
 
-At line no: 12 declaration_list : ID
+At line no: 42 type_specifier : INT
+
+int
+
+At line no: 42 declaration_list : ID
 
 a
 
-At line no: 12 var_declaration : type_specifier declaration_list SEMICOLON
+At line no: 42 declaration_list : declaration_list COMMA ID
 
-int a;
+a, b
 
+At line no: 42 var_declaration : type_specifier declaration_list SEMICOLON
 
-At line no: 12 statement : var_declaration
-
-int a;
-
-
-At line no: 12 statements : statement
-
-int a;
+int a, b;
 
 
-At line no: 14 variable : ID
+At line no: 42 statement : var_declaration
+
+int a, b;
+
+
+At line no: 42 statements : statement
+
+int a, b;
+
+
+At line no: 43 variable : ID
 
 a
 
-At line no: 14 factor : CONST_INT
+At line no: 43 factor : CONST_INT
 
 1
 
-At line no: 14 unary_expression : factor
+At line no: 43 unary_expression : factor
 
 1
 
-At line no: 14 term : unary_expression
+At line no: 43 term : unary_expression
 
 1
 
-At line no: 14 simple_expression : term
+At line no: 43 simple_expression : term
 
 1
 
-At line no: 14 factor : CONST_INT
+At line no: 43 rel_expression : simple_expression
 
-2
+1
 
-At line no: 14 unary_expression : factor
+At line no: 43 logic_expression : rel_expression
 
-2
+1
 
-At line no: 14 term : unary_expression
+At line no: 43 expression : variable ASSIGNOP logic_expression
 
-2
+a = 1
 
-At line no: 14 simple_expression : simple_expression ADDOP term
+At line no: 43 expression_statement : expression SEMICOLON
 
-1 + 2
-
-At line no: 14 factor : CONST_INT
-
-3
-
-At line no: 14 unary_expression : factor
-
-3
-
-At line no: 14 term : unary_expression
-
-3
-
-At line no: 14 simple_expression : simple_expression ADDOP term
-
-1 + 2 + 3
-
-At line no: 14 rel_expression : simple_expression
-
-1 + 2 + 3
-
-At line no: 14 logic_expression : rel_expression
-
-1 + 2 + 3
-
-At line no: 14 expression : variable ASSIGNOP logic_expression
-
-a = 1 + 2 + 3
-
-At line no: 14 expression_statement : expression SEMICOLON
-
-a = 1 + 2 + 3;
+a = 1;
 
 
-At line no: 14 statement : expression_statement
+At line no: 43 statement : expression_statement
 
-a = 1 + 2 + 3;
-
-
-At line no: 14 statements : statements statement
-
-int a;
-a = 1 + 2 + 3;
+a = 1;
 
 
-At line no: 16 factor : CONST_INT
+At line no: 43 statements : statements statement
+
+int a, b;
+a = 1;
+
+
+At line no: 44 variable : ID
+
+b
+
+At line no: 44 factor : CONST_INT
+
+7
+
+At line no: 44 unary_expression : factor
+
+7
+
+At line no: 44 term : unary_expression
+
+7
+
+At line no: 44 simple_expression : term
+
+7
+
+At line no: 44 rel_expression : simple_expression
+
+7
+
+At line no: 44 logic_expression : rel_expression
+
+7
+
+At line no: 44 arguments : logic_expression
+
+7
+
+At line no: 44 argument_list : arguments
+
+7
+
+At line no: 44 factor : ID LPAREN argument_list RPAREN
+
+funcOneParam(7)
+
+At line no: 44 unary_expression : factor
+
+funcOneParam(7)
+
+At line no: 44 term : unary_expression
+
+funcOneParam(7)
+
+At line no: 44 simple_expression : term
+
+funcOneParam(7)
+
+At line no: 44 rel_expression : simple_expression
+
+funcOneParam(7)
+
+At line no: 44 logic_expression : rel_expression
+
+funcOneParam(7)
+
+At line no: 44 expression : variable ASSIGNOP logic_expression
+
+b = funcOneParam(7)
+
+At line no: 44 expression_statement : expression SEMICOLON
+
+b = funcOneParam(7);
+
+
+At line no: 44 statement : expression_statement
+
+b = funcOneParam(7);
+
+
+At line no: 44 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+
+
+At line no: 45 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+println(b);
+
+At line no: 45 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);
+
+At line no: 47 variable : ID
+
+a
+
+At line no: 47 argument_list : 
+
+
+
+At line no: 47 factor : ID LPAREN argument_list RPAREN
+
+funcNoparam()
+
+At line no: 47 unary_expression : factor
+
+funcNoparam()
+
+At line no: 47 term : unary_expression
+
+funcNoparam()
+
+At line no: 47 simple_expression : term
+
+funcNoparam()
+
+At line no: 47 rel_expression : simple_expression
+
+funcNoparam()
+
+At line no: 47 logic_expression : rel_expression
+
+funcNoparam()
+
+At line no: 47 expression : variable ASSIGNOP logic_expression
+
+a = funcNoparam()
+
+At line no: 47 expression_statement : expression SEMICOLON
+
+a = funcNoparam();
+
+
+At line no: 47 statement : expression_statement
+
+a = funcNoparam();
+
+
+At line no: 47 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+
+
+At line no: 49 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+println(a);
+
+At line no: 49 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);
+
+At line no: 51 variable : ID
+
+a
+
+At line no: 51 variable : ID
+
+a
+
+At line no: 51 factor : variable
+
+a
+
+At line no: 51 unary_expression : factor
+
+a
+
+At line no: 51 term : unary_expression
+
+a
+
+At line no: 51 simple_expression : term
+
+a
+
+At line no: 51 rel_expression : simple_expression
+
+a
+
+At line no: 51 logic_expression : rel_expression
+
+a
+
+At line no: 51 arguments : logic_expression
+
+a
+
+At line no: 51 variable : ID
+
+b
+
+At line no: 51 factor : variable
+
+b
+
+At line no: 51 unary_expression : factor
+
+b
+
+At line no: 51 term : unary_expression
+
+b
+
+At line no: 51 simple_expression : term
+
+b
+
+At line no: 51 rel_expression : simple_expression
+
+b
+
+At line no: 51 logic_expression : rel_expression
+
+b
+
+At line no: 51 arguments : arguments COMMA logic_expression
+
+a,b
+
+At line no: 51 argument_list : arguments
+
+a,b
+
+At line no: 51 factor : ID LPAREN argument_list RPAREN
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 unary_expression : factor
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 term : unary_expression
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 simple_expression : term
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 rel_expression : simple_expression
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 logic_expression : rel_expression
+
+funcVoidTwoParam(a,b)
+
+At line no: 51 expression : variable ASSIGNOP logic_expression
+
+a = funcVoidTwoParam(a,b)
+
+At line no: 51 expression_statement : expression SEMICOLON
+
+a = funcVoidTwoParam(a,b);
+
+
+At line no: 51 statement : expression_statement
+
+a = funcVoidTwoParam(a,b);
+
+
+At line no: 51 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+
+
+At line no: 52 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+println(a);
+
+At line no: 52 statements : statements statement
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);
+
+At line no: 53 factor : CONST_INT
 
 0
 
-At line no: 16 unary_expression : factor
+At line no: 53 unary_expression : factor
 
 0
 
-At line no: 16 term : unary_expression
+At line no: 53 term : unary_expression
 
 0
 
-At line no: 16 simple_expression : term
+At line no: 53 simple_expression : term
 
 0
 
-At line no: 16 rel_expression : simple_expression
+At line no: 53 rel_expression : simple_expression
 
 0
 
-At line no: 16 logic_expression : rel_expression
+At line no: 53 logic_expression : rel_expression
 
 0
 
-At line no: 16 expression : logic_expression
+At line no: 53 expression : logic_expression
 
 0
 
-At line no: 16 statement : RETURN expression SEMICOLON
+At line no: 53 statement : RETURN expression SEMICOLON
 
 return 0;
 
-At line no: 16 statements : statements statement
+At line no: 53 statements : statements statement
 
-int a;
-a = 1 + 2 + 3;
-return 0;
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;
 
-At line no: 17 compound_statement : LCURL statements RCURL
+At line no: 54 compound_statement : LCURL statements RCURL
 
-{int a;
-a = 1 + 2 + 3;
-return 0;}
+{int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;}
+
+At line no: 54 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+
+int main()
+ {int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;}
+
+At line no: 54 unit : func_definition
+
+int main()
+ {int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;}
 
 
- ScopeTable # 2
+At line no: 54 program : program unit
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
+
+int funcNoparam()
+ {return 5;}
+
+int main()
+ {int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;}
+
+
+
+At line no: 54 start : program
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+int funcVoidTwoParam(int arg2, int arg3)
+{return arg2 + arg3;}
+
+int funcNoparam()
+ {return 5;}
+
+int main()
+ {int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);a = funcNoparam();
+println(a);a = funcVoidTwoParam(a,b);
+println(a);return 0;}
+
+
+
+
+
+ ScopeTable # 1
  0--> 
  1--> 
- 2--> 
+ 2-->  < funcOneParam : ID>  < main : ID> 
  3--> 
  4--> 
  5--> 
- 6--> 
+ 6-->  < funcNoparam : ID> 
  7--> 
- 8-->  < a : ID> 
+ 8-->  < funcVoidTwoParam : ID> 
  9--> 
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2-->  < main : ID> 
- 3--> 
- 4-->  < otherfunc : ID> 
- 5--> 
- 6-->  < otherfunc2 : ID> 
- 7--> 
- 8--> 
- 9--> 
-At line no: 17 func_definition : type_specifier ID LPAREN RPAREN compound_statement
-
-int main()
- {int a;
-a = 1 + 2 + 3;
-return 0;}
-
-At line no: 17 unit : func_definition
-
-int main()
- {int a;
-a = 1 + 2 + 3;
-return 0;}
-
-
-At line no: 17 program : program unit
-
-int otherfunc(int arg1, int arg2)
-{return 0;}
-
-int otherfunc2(int arg3, int arg4)
-{return 0;}
-
-int main()
- {int a;
-a = 1 + 2 + 3;
-return 0;}
-
-
-
-At line no: 17 start : program
-
-int otherfunc(int arg1, int arg2)
-{return 0;}
-
-int otherfunc2(int arg3, int arg4)
-{return 0;}
-
-int main()
- {int a;
-a = 1 + 2 + 3;
-return 0;}
-
-
-
-
-
- ScopeTable # 1
- 0--> 
- 1--> 
- 2-->  < main : ID> 
- 3--> 
- 4-->  < otherfunc : ID> 
- 5--> 
- 6-->  < otherfunc2 : ID> 
- 7--> 
- 8--> 
- 9--> 
-Total Lines: 17
+Total Lines: 54
 Total Errors: 0
 Total Errors: 0

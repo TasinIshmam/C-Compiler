@@ -90,6 +90,10 @@ public:
         return arguments;
     }
 
+    vector<ArgumentInfo> getArgumentsCopy()  {
+        return arguments;
+    }
+
     void addArguments(const string &argumentType, const string &argumentName) {
 
         ArgumentInfo argumentInfo(argumentType, argumentName);
@@ -415,8 +419,8 @@ public:
         ScopeTable::tableSize = tableSize;
     }
 
-    int getHash(string key) {
-        int hash = 0;
+    unsigned int getHash(string key) {
+        unsigned int hash = 0;
 
         for (char i : key) {
             hash = hash + (int) i << 2;
@@ -431,8 +435,9 @@ public:
 protected:
 
     SymbolInfo *lookUp(const string &itemName) {
-        int hash = getHash(itemName);
+        unsigned int hash = getHash(itemName);
         int counter = 0;
+        
 
         if (hashTable[hash] == nullptr) {
             // cout << "\nSymbol Not found in Scopetable# " << tableId << endl;

@@ -1,80 +1,126 @@
 .MODEL SMALL
 .STACK 100H
 .DATA 
-otherfunc_return dw ?
+arg12 dw ?
+funcOneParam_return dw ?
 t0 dw ?
-otherfunc2_return dw ?
 t1 dw ?
-main_return dw ?
-a4 dw ?
+arg33 dw ?
+arg23 dw ?
+funcVoidTwoParam_return dw ?
 t2 dw ?
+funcNoparam_return dw ?
 t3 dw ?
+main_return dw ?
+b5 dw ?
+a5 dw ?
 t4 dw ?
 t5 dw ?
 t6 dw ?
 t7 dw ?
+t8 dw ?
+t9 dw ?
 .CODE
-MAIN PROC
-MOV AX, @DATA
-MOV DS, AX
-MOV t2,1
-MOV t3,2
-MOV AX,t2
-ADD AX,t3
-MOV t4,AX
-MOV t5,3
+funcOneParam PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg12
+MOV t0,2
+MOV AX,arg12
+ADD AX,t0
+MOV t1,AX
+;Line Omitted for optimization
+MOV funcOneParam_return,AX
+JMP LReturnfuncOneParam
+LReturnfuncOneParam:
+POP arg12
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+funcOneParam ENDP
+funcVoidTwoParam PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+PUSH arg33
+PUSH arg23
+MOV AX,arg23
+ADD AX,arg33
+MOV t2,AX
+;Line Omitted for optimization
+MOV funcVoidTwoParam_return,AX
+JMP LReturnfuncVoidTwoParam
+LReturnfuncVoidTwoParam:
+POP arg23
+POP arg33
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+funcVoidTwoParam ENDP
+funcNoparam PROC
+PUSH AX
+PUSH BX 
+PUSH CX 
+PUSH DX
+MOV t3,5
+MOV AX,t3
+MOV funcNoparam_return,AX
+JMP LReturnfuncNoparam
+LReturnfuncNoparam:
+POP DX
+POP CX
+POP BX
+POP AX
+ret
+funcNoparam ENDP
+main PROC
+    MOV AX,@DATA
+MOV DS,AX 
+MOV t4,1
 MOV AX,t4
-ADD AX,t5
+MOV a5,AX
+MOV t5,7
+MOV AX,t5
+MOV arg12,AX
+CALL funcOneParam
+MOV AX,funcOneParam_return
 MOV t6,AX
 ;Line Omitted for optimization
-MOV a4,AX
-MOV t7,0
-MOV AX,t7
+MOV b5,AX
+;Line Omitted for optimization
+CALL OUTDEC
+CALL funcNoparam
+MOV AX,funcNoparam_return
+MOV t7,AX
+;Line Omitted for optimization
+MOV a5,AX
+;Line Omitted for optimization
+CALL OUTDEC
+MOV AX,a5
+MOV arg23,AX
+MOV AX,b5
+MOV arg33,AX
+CALL funcVoidTwoParam
+MOV AX,funcVoidTwoParam_return
+MOV t8,AX
+;Line Omitted for optimization
+MOV a5,AX
+;Line Omitted for optimization
+CALL OUTDEC
+MOV t9,0
+MOV AX,t9
 MOV main_return,AX
 JMP LReturnmain
-RETURNMAIN:
-MOV AH, 4CH 
+LReturnmain:
+MOV AH,4CH
 INT 21H
-otherfunc PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-PUSH arg22
-PUSH arg12
-MOV t0,0
-MOV AX,t0
-MOV otherfunc_return,AX
-JMP LReturnotherfunc
-LReturnotherfunc:
-POP arg12
-POP arg22
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-otherfunc ENDP
-otherfunc2 PROC
-PUSH AX
-PUSH BX 
-PUSH CX 
-PUSH DX
-PUSH arg43
-PUSH arg33
-MOV t1,0
-MOV AX,t1
-MOV otherfunc2_return,AX
-JMP LReturnotherfunc2
-LReturnotherfunc2:
-POP arg33
-POP arg43
-POP DX
-POP CX
-POP BX
-POP AX
-ret
-otherfunc2 ENDP
  
 OUTDEC PROC  
     PUSH AX 

@@ -29,6 +29,9 @@
       "deque": "cpp",
       "iostream": "cpp",
       "memory": "cpp",
-      "complex": "cpp"
+      "complex": "cpp",
+      "string_view": "cpp",
+      "initializer_list": "cpp",
+      "valarray": "cpp"
     }
 }
