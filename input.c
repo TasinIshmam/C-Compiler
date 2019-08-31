@@ -29,6 +29,10 @@ int funcOneParam(int arg1){
     return arg1 + 2;
 }
 
+void voidfunction(int arg) {
+  println(arg);
+}
+
 int funcVoidTwoParam(int arg2, int arg3){
   return arg2 + arg3;
 }
@@ -43,12 +47,21 @@ int main(){
     a=1;
     b = funcOneParam(7);
     println(b);
+    
+    {
+        int a;
+        a = 6;
+        a = funcOneParam(a);
+        println(a);
+
+        voidfunction(funcOneParam(a));
+    }
 
     a = funcNoparam();
 
-    println(a);
+   // println(a);
 
     a=funcVoidTwoParam(a,b);
-    println(a);
+    //println(a);
     return 0;
 }

@@ -1,257 +1,172 @@
-At line no: 27 type_specifier : INT
-
 int
 
-At line no: 27 type_specifier : INT
-
 int
-
-At line no: 27 parameter_list : type_specifier ID
 
 int arg1
 
-At line no: 29 variable : ID
+arg1
 
 arg1
 
-At line no: 29 factor : variable
+arg1
 
 arg1
 
-At line no: 29 unary_expression : factor
-
 arg1
-
-At line no: 29 term : unary_expression
-
-arg1
-
-At line no: 29 simple_expression : term
-
-arg1
-
-At line no: 29 factor : CONST_INT
 
 2
 
-At line no: 29 unary_expression : factor
+2
 
 2
 
-At line no: 29 term : unary_expression
-
-2
-
-At line no: 29 simple_expression : simple_expression ADDOP term
+arg1 + 2
 
 arg1 + 2
 
-At line no: 29 rel_expression : simple_expression
-
 arg1 + 2
 
-At line no: 29 logic_expression : rel_expression
-
 arg1 + 2
-
-At line no: 29 expression : logic_expression
-
-arg1 + 2
-
-At line no: 29 statement : RETURN expression SEMICOLON
 
 return arg1 + 2;
 
-At line no: 29 statements : statement
-
 return arg1 + 2;
 
-At line no: 30 compound_statement : LCURL statements RCURL
-
 {return arg1 + 2;}
-
-At line no: 30 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
 
-At line no: 30 unit : func_definition
-
 int funcOneParam(int arg1)
 {return arg1 + 2;}
 
-
-At line no: 30 program : unit
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
 
 
 
-At line no: 32 type_specifier : INT
+void
 
 int
 
-At line no: 32 type_specifier : INT
+int arg
+
+println(arg);
+
+println(arg);
+
+{println(arg);}
+
+void voidfunction(int arg)
+{println(arg);}
+
+void voidfunction(int arg)
+{println(arg);}
+
+
+int funcOneParam(int arg1)
+{return arg1 + 2;}
+
+void voidfunction(int arg)
+{println(arg);}
+
+
 
 int
 
-At line no: 32 parameter_list : type_specifier ID
+int
 
 int arg2
 
-At line no: 32 type_specifier : INT
-
 int
-
-At line no: 32 parameter_list : parameter_list COMMA type_specifier ID
 
 int arg2, int arg3
 
-At line no: 33 variable : ID
+arg2
 
 arg2
 
-At line no: 33 factor : variable
+arg2
 
 arg2
 
-At line no: 33 unary_expression : factor
-
 arg2
-
-At line no: 33 term : unary_expression
-
-arg2
-
-At line no: 33 simple_expression : term
-
-arg2
-
-At line no: 33 variable : ID
 
 arg3
 
-At line no: 33 factor : variable
+arg3
 
 arg3
 
-At line no: 33 unary_expression : factor
-
 arg3
 
-At line no: 33 term : unary_expression
-
-arg3
-
-At line no: 33 simple_expression : simple_expression ADDOP term
+arg2 + arg3
 
 arg2 + arg3
 
-At line no: 33 rel_expression : simple_expression
-
 arg2 + arg3
 
-At line no: 33 logic_expression : rel_expression
-
 arg2 + arg3
-
-At line no: 33 expression : logic_expression
-
-arg2 + arg3
-
-At line no: 33 statement : RETURN expression SEMICOLON
 
 return arg2 + arg3;
 
-At line no: 33 statements : statement
-
 return arg2 + arg3;
-
-At line no: 34 compound_statement : LCURL statements RCURL
 
 {return arg2 + arg3;}
-
-At line no: 34 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
 
-At line no: 34 unit : func_definition
-
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
 
-
-At line no: 34 program : program unit
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
 
+void voidfunction(int arg)
+{println(arg);}
+
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
 
 
 
-At line no: 36 type_specifier : INT
-
 int
 
-At line no: 38 factor : CONST_INT
+5
 
 5
 
-At line no: 38 unary_expression : factor
+5
 
 5
 
-At line no: 38 term : unary_expression
+5
 
 5
 
-At line no: 38 simple_expression : term
-
 5
-
-At line no: 38 rel_expression : simple_expression
-
-5
-
-At line no: 38 logic_expression : rel_expression
-
-5
-
-At line no: 38 expression : logic_expression
-
-5
-
-At line no: 38 statement : RETURN expression SEMICOLON
 
 return 5;
 
-At line no: 38 statements : statement
-
 return 5;
-
-At line no: 39 compound_statement : LCURL statements RCURL
 
 {return 5;}
 
-At line no: 39 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+int funcNoparam()
+ {return 5;}
 
 int funcNoparam()
  {return 5;}
 
-At line no: 39 unit : func_definition
-
-int funcNoparam()
- {return 5;}
-
-
-At line no: 39 program : program unit
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
+
+void voidfunction(int arg)
+{println(arg);}
 
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
@@ -261,450 +176,440 @@ int funcNoparam()
 
 
 
-At line no: 41 type_specifier : INT
-
 int
 
-At line no: 42 type_specifier : INT
-
 int
-
-At line no: 42 declaration_list : ID
 
 a
-
-At line no: 42 declaration_list : declaration_list COMMA ID
 
 a, b
 
-At line no: 42 var_declaration : type_specifier declaration_list SEMICOLON
+int a, b;
+
 
 int a, b;
 
 
-At line no: 42 statement : var_declaration
-
 int a, b;
 
-
-At line no: 42 statements : statement
-
-int a, b;
-
-
-At line no: 43 variable : ID
 
 a
 
-At line no: 43 factor : CONST_INT
+1
 
 1
 
-At line no: 43 unary_expression : factor
+1
 
 1
 
-At line no: 43 term : unary_expression
-
 1
 
-At line no: 43 simple_expression : term
-
 1
-
-At line no: 43 rel_expression : simple_expression
-
-1
-
-At line no: 43 logic_expression : rel_expression
-
-1
-
-At line no: 43 expression : variable ASSIGNOP logic_expression
 
 a = 1
 
-At line no: 43 expression_statement : expression SEMICOLON
-
 a = 1;
 
 
-At line no: 43 statement : expression_statement
-
 a = 1;
 
-
-At line no: 43 statements : statements statement
 
 int a, b;
 a = 1;
 
 
-At line no: 44 variable : ID
-
 b
 
-At line no: 44 factor : CONST_INT
+7
 
 7
 
-At line no: 44 unary_expression : factor
+7
 
 7
 
-At line no: 44 term : unary_expression
+7
 
 7
 
-At line no: 44 simple_expression : term
-
 7
 
-At line no: 44 rel_expression : simple_expression
-
 7
-
-At line no: 44 logic_expression : rel_expression
-
-7
-
-At line no: 44 arguments : logic_expression
-
-7
-
-At line no: 44 argument_list : arguments
-
-7
-
-At line no: 44 factor : ID LPAREN argument_list RPAREN
 
 funcOneParam(7)
 
-At line no: 44 unary_expression : factor
+funcOneParam(7)
 
 funcOneParam(7)
 
-At line no: 44 term : unary_expression
+funcOneParam(7)
 
 funcOneParam(7)
 
-At line no: 44 simple_expression : term
-
 funcOneParam(7)
-
-At line no: 44 rel_expression : simple_expression
-
-funcOneParam(7)
-
-At line no: 44 logic_expression : rel_expression
-
-funcOneParam(7)
-
-At line no: 44 expression : variable ASSIGNOP logic_expression
 
 b = funcOneParam(7)
 
-At line no: 44 expression_statement : expression SEMICOLON
-
 b = funcOneParam(7);
 
 
-At line no: 44 statement : expression_statement
-
 b = funcOneParam(7);
 
-
-At line no: 44 statements : statements statement
 
 int a, b;
 a = 1;
 b = funcOneParam(7);
 
 
-At line no: 45 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
-
 println(b);
-
-At line no: 45 statements : statements statement
 
 int a, b;
 a = 1;
 b = funcOneParam(7);
 println(b);
 
-At line no: 47 variable : ID
+int
 
 a
 
-At line no: 47 argument_list : 
+int a;
 
 
+int a;
 
-At line no: 47 factor : ID LPAREN argument_list RPAREN
+
+int a;
+
+
+a
+
+6
+
+6
+
+6
+
+6
+
+6
+
+6
+
+a = 6
+
+a = 6;
+
+
+a = 6;
+
+
+int a;
+a = 6;
+
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+a = funcOneParam(a)
+
+a = funcOneParam(a);
+
+
+a = funcOneParam(a);
+
+
+int a;
+a = 6;
+a = funcOneParam(a);
+
+
+println(a);
+
+int a;
+a = 6;
+a = funcOneParam(a);
+println(a);
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+a
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+funcOneParam(a)
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a))
+
+voidfunction(funcOneParam(a));
+
+
+voidfunction(funcOneParam(a));
+
+
+int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+
+
+{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}
+
+{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}
+
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}
+
+a
+
+
 
 funcNoparam()
 
-At line no: 47 unary_expression : factor
+funcNoparam()
 
 funcNoparam()
 
-At line no: 47 term : unary_expression
+funcNoparam()
 
 funcNoparam()
 
-At line no: 47 simple_expression : term
-
 funcNoparam()
-
-At line no: 47 rel_expression : simple_expression
-
-funcNoparam()
-
-At line no: 47 logic_expression : rel_expression
-
-funcNoparam()
-
-At line no: 47 expression : variable ASSIGNOP logic_expression
 
 a = funcNoparam()
 
-At line no: 47 expression_statement : expression SEMICOLON
+a = funcNoparam();
+
 
 a = funcNoparam();
 
 
-At line no: 47 statement : expression_statement
-
-a = funcNoparam();
-
-
-At line no: 47 statements : statements statement
-
 int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
 
-
-At line no: 49 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
-
-println(a);
-
-At line no: 49 statements : statements statement
-
-int a, b;
-a = 1;
-b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);
-
-At line no: 51 variable : ID
 
 a
 
-At line no: 51 variable : ID
+a
 
 a
 
-At line no: 51 factor : variable
+a
 
 a
 
-At line no: 51 unary_expression : factor
+a
 
 a
 
-At line no: 51 term : unary_expression
-
 a
 
-At line no: 51 simple_expression : term
-
 a
-
-At line no: 51 rel_expression : simple_expression
-
-a
-
-At line no: 51 logic_expression : rel_expression
-
-a
-
-At line no: 51 arguments : logic_expression
-
-a
-
-At line no: 51 variable : ID
 
 b
 
-At line no: 51 factor : variable
+b
 
 b
 
-At line no: 51 unary_expression : factor
+b
 
 b
 
-At line no: 51 term : unary_expression
-
 b
 
-At line no: 51 simple_expression : term
-
 b
-
-At line no: 51 rel_expression : simple_expression
-
-b
-
-At line no: 51 logic_expression : rel_expression
-
-b
-
-At line no: 51 arguments : arguments COMMA logic_expression
 
 a,b
 
-At line no: 51 argument_list : arguments
-
 a,b
 
-At line no: 51 factor : ID LPAREN argument_list RPAREN
+funcVoidTwoParam(a,b)
 
 funcVoidTwoParam(a,b)
 
-At line no: 51 unary_expression : factor
+funcVoidTwoParam(a,b)
 
 funcVoidTwoParam(a,b)
 
-At line no: 51 term : unary_expression
-
 funcVoidTwoParam(a,b)
 
-At line no: 51 simple_expression : term
-
 funcVoidTwoParam(a,b)
-
-At line no: 51 rel_expression : simple_expression
-
-funcVoidTwoParam(a,b)
-
-At line no: 51 logic_expression : rel_expression
-
-funcVoidTwoParam(a,b)
-
-At line no: 51 expression : variable ASSIGNOP logic_expression
 
 a = funcVoidTwoParam(a,b)
 
-At line no: 51 expression_statement : expression SEMICOLON
+a = funcVoidTwoParam(a,b);
+
 
 a = funcVoidTwoParam(a,b);
 
 
-At line no: 51 statement : expression_statement
-
+int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
 a = funcVoidTwoParam(a,b);
 
 
-At line no: 51 statements : statements statement
-
-int a, b;
-a = 1;
-b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-
-
-At line no: 52 statement : PRINTLN LPAREN ID RPAREN SEMICOLON
-
-println(a);
-
-At line no: 52 statements : statements statement
-
-int a, b;
-a = 1;
-b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);
-
-At line no: 53 factor : CONST_INT
+0
 
 0
 
-At line no: 53 unary_expression : factor
+0
 
 0
 
-At line no: 53 term : unary_expression
+0
 
 0
 
-At line no: 53 simple_expression : term
-
 0
-
-At line no: 53 rel_expression : simple_expression
-
-0
-
-At line no: 53 logic_expression : rel_expression
-
-0
-
-At line no: 53 expression : logic_expression
-
-0
-
-At line no: 53 statement : RETURN expression SEMICOLON
 
 return 0;
 
-At line no: 53 statements : statements statement
-
 int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;
-
-At line no: 54 compound_statement : LCURL statements RCURL
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;
 
 {int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;}
-
-At line no: 54 func_definition : type_specifier ID LPAREN RPAREN compound_statement
-
-int main()
- {int a, b;
-a = 1;
-b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;}
-
-At line no: 54 unit : func_definition
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;}
 
 int main()
  {int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;}
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;}
 
+int main()
+ {int a, b;
+a = 1;
+b = funcOneParam(7);
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;}
 
-At line no: 54 program : program unit
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
+
+void voidfunction(int arg)
+{println(arg);}
 
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
@@ -716,16 +621,21 @@ int main()
  {int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;}
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;}
 
 
-
-At line no: 54 start : program
 
 int funcOneParam(int arg1)
 {return arg1 + 2;}
+
+void voidfunction(int arg)
+{println(arg);}
 
 int funcVoidTwoParam(int arg2, int arg3)
 {return arg2 + arg3;}
@@ -737,16 +647,20 @@ int main()
  {int a, b;
 a = 1;
 b = funcOneParam(7);
-println(b);a = funcNoparam();
-println(a);a = funcVoidTwoParam(a,b);
-println(a);return 0;}
+println(b);{int a;
+a = 6;
+a = funcOneParam(a);
+println(a);voidfunction(funcOneParam(a));
+}a = funcNoparam();
+a = funcVoidTwoParam(a,b);
+return 0;}
 
 
 
 
 
  ScopeTable # 1
- 0--> 
+ 0-->  < voidfunction : ID> 
  1--> 
  2-->  < funcOneParam : ID>  < main : ID> 
  3--> 
@@ -756,6 +670,6 @@ println(a);return 0;}
  7--> 
  8-->  < funcVoidTwoParam : ID> 
  9--> 
-Total Lines: 54
+Total Lines: 67
 Total Errors: 0
 Total Errors: 0

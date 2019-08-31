@@ -31,33 +31,26 @@ extern	vector<SymbolInfo *> paramterListSymbolInfoVector;
 extern	vector<SymbolInfo *> declarationListSymbolInfoVector;
 extern	vector<SymbolInfo *> ArgumentListSymbolInfoVector;
 
-//todo modify this function for checker
-string intToString (int a)
-{
-    stringstream temp;
-    temp<<a;
-    return temp.str();
-}
+
 
 string newLabel()
 {
-	string lb= "L" + to_string( labelCount);
+	string lb= "Label" + to_string( labelCount);
 	labelCount++;
 	return lb;
 }
 
 string generateNewTempVariable()
 {
-	string temp = "t" + to_string(tempCount);
+	string temp = "temp" + to_string(tempCount);
     variableDeclarationList.push_back(temp);
-    	//todo investigate what you just commented out
 	tempCount++;
 	return temp;
 }
 
 
 string generateAssemblyIdVariable(string name, int tableId ) {
-return name + intToString(tableId);
+return name + to_string(tableId);
 }
 
 
