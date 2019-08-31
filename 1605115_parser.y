@@ -81,7 +81,7 @@ start : program	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "start : program\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 
 		 string finalCode = ".MODEL SMALL\n.STACK 100H\n.DATA \n";
@@ -130,7 +130,7 @@ program : program unit	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 // addLineNoLog();
 		 // logfile << "program : program unit\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 	$$->setCode($1->getCode() + $2->getCode());
 	 	}
 	| unit	{
@@ -138,7 +138,7 @@ program : program unit	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "program : unit\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 	$$->setCode($1->getCode());
 
 	 	}
@@ -150,7 +150,7 @@ unit : var_declaration {
 		 // addLineNoLog();
 		 
 		 // logfile << "unit : var_declaration\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 	$$->setCode($1->getCode());
 
@@ -160,7 +160,7 @@ unit : var_declaration {
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "unit : func_declaration\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 	$$->setCode($1->getCode());
 
 	 	}
@@ -169,7 +169,7 @@ unit : var_declaration {
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "unit : func_definition\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 	$$->setCode($1->getCode());
 
 	 	}
@@ -186,7 +186,7 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 $$->addChildSymbol($6);
 		 // addLineNoLog();
 		 // logfile << "func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON \n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		
 		createSymbolTableEntryForFunctionID($1, $2, $4);
 
@@ -198,7 +198,7 @@ func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON 	{
 		 $$->addChildSymbol($5);
 		 // addLineNoLog();
 		 // logfile << "func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON	\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		createSymbolTableEntryForFunctionID($1, $2);
 
 	 	}
@@ -279,7 +279,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 $$->addChildSymbol($7);
 		 // addLineNoLog();
 		 // logfile << "func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 
 		$$->setCode($2->getName() + " PROC\n");
@@ -348,7 +348,7 @@ func_definition : type_specifier ID LPAREN parameter_list RPAREN {
 		 $$->addChildSymbol($6);
 		 // addLineNoLog();
 		 // logfile << "func_definition : type_specifier ID LPAREN RPAREN compound_statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		$$->setCode($2->getName() + " PROC\n");
 
@@ -384,28 +384,28 @@ parameter_list  : parameter_list COMMA type_specifier ID	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
 		 // logfile << "parameter_list : parameter_list COMMA type_specifier ID\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
 		| parameter_list COMMA type_specifier	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + " " + $3->getName(), "parameter_list");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "parameter_list : parameter_list COMMA type_specifier\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		| type_specifier ID	{
 		 $$ = new SymbolInfo($1->getName() + " " + $2->getName() , "parameter_list");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 // addLineNoLog();
 		 // logfile << "parameter_list : type_specifier ID\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
 		| type_specifier	{
 		 $$ = new SymbolInfo($1->getName()  + " " , "parameter_list");
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "parameter_list : type_specifier\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		;
 
@@ -422,7 +422,7 @@ compound_statement : LCURL {
 		 $$->addChildSymbol($1); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
 		 // logfile << "compound_statement : LCURL statements RCURL\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		
 		 //symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
@@ -440,7 +440,7 @@ compound_statement : LCURL {
 		 $$->addChildSymbol($1); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "compound_statement : LCURL RCURL\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 //symbolTable.printAllScopeTable(logfile);
 		 symbolTable.exitScope();
@@ -454,7 +454,7 @@ var_declaration : type_specifier declaration_list SEMICOLON	{
 		 
 		 // addLineNoLog();
 		 // logfile << "var_declaration : type_specifier declaration_list SEMICOLON\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		
 		 symbolTableEntryForVarDeclaration($1, $2);
 	 	}
@@ -465,21 +465,21 @@ type_specifier  : INT 	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "type_specifier : INT\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		| FLOAT {
 		 $$ = new SymbolInfo($1->getName() , "type_specifier");
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "type_specifier : FLOAT\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		| VOID {
 		 $$ = new SymbolInfo($1->getName() , "type_specifier");
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "type_specifier : VOID\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		;
 
@@ -489,7 +489,7 @@ declaration_list : declaration_list COMMA ID	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "declaration_list : declaration_list COMMA ID\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + " " +  $3->getName() + $4->getName() +
@@ -500,21 +500,21 @@ declaration_list : declaration_list COMMA ID	{
 		 $$->addChildSymbol($6);
 		 // addLineNoLog();
 		 // logfile << "declaration_list : declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		  | ID	{
 		 $$ = new SymbolInfo($1->getName() , "declaration_list");
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "declaration_list : ID\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		  | ID LTHIRD CONST_INT RTHIRD	{
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + $3->getName() + $4->getName(), "declaration_list");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
 		 // logfile << "declaration_list : ID LTHIRD CONST_INT RTHIRD\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
  		  ;
 
@@ -523,7 +523,7 @@ statements : statement	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "statements : statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 			$$->setCode($1->getCode());
 	 	}
@@ -532,7 +532,7 @@ statements : statement	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 // addLineNoLog();
 		 // logfile << "statements : statements statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 	$$->setCode($1->getCode() + $2->getCode());
 	 	}
@@ -543,14 +543,14 @@ statement : var_declaration	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "statement : var_declaration\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
 	  | expression_statement {
 		 $$ = new SymbolInfo($1->getName() , "statement");
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "statement : expression_statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		$$->setName($1->getName());
 		$$->setCode($1->getCode());
 	 	}
@@ -559,7 +559,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "statement : compound_statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setName($1->getName());
 		$$->setCode($1->getCode());
 	 	}
@@ -572,7 +572,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($7);
 		 // addLineNoLog();
 		 // logfile << "statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		string code = $3->getCode();
 		string label1 = newLabel();
@@ -595,7 +595,6 @@ statement : var_declaration	{
 		code += ";Loop END\n";
 		$$->setCode(code);
 
-		//todo change arouond logic for copychecker mara prevention
 
 	 	}
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE	{
@@ -605,7 +604,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($5);
 		 // addLineNoLog();
 		 // logfile << "statement : IF LPAREN expression RPAREN statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		string code = $3->getCode();
 		string label1 = newLabel();
@@ -626,7 +625,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($7);
 		 // addLineNoLog();
 		 // logfile << "statement : IF LPAREN expression RPAREN statement ELSE statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 string code = $3->getCode();
 		string label1 = newLabel();
@@ -649,7 +648,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($5);
 		 // addLineNoLog();
 		 // logfile << "statement : WHILE LPAREN expression RPAREN statement\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		string code = "";
 		string label1 = newLabel();
@@ -672,7 +671,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($5);
 		 // addLineNoLog();
 		 // logfile << "statement : PRINTLN LPAREN ID RPAREN SEMICOLON\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 SymbolInfo* symbolTableEntry = symbolTable.lookup($3->getName());
 
@@ -692,7 +691,7 @@ statement : var_declaration	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "statement : RETURN expression SEMICOLON\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 		string code = $2->getCode();
 		code += "MOV AX," + $2->getAssemblyID() + "\n";
@@ -711,14 +710,14 @@ expression_statement : SEMICOLON	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "expression_statement : SEMICOLON\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 	 	}
 			| expression SEMICOLON  {
 		 $$ = new SymbolInfo($1->getName() + $2->getName() + "\n"  , "expression_statement");
 		 $$->addChildSymbol($1); $$->addChildSymbol($2);
 		 // addLineNoLog();
 		 // logfile << "expression_statement : expression SEMICOLON\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 $$->setCode($1->getCode());
 		$$->setAssemblyID($1->getAssemblyID());
@@ -731,7 +730,7 @@ variable : ID	{
 				$$->addChildSymbol($1);
 				// addLineNoLog();
 				 // logfile << "variable : ID" << endl << endl;
-				 logfile << $1->getName() << endl << endl;
+				//logfile << $1->getName() << endl << endl;
 
 				verifyVariableIDIsDeclared($1);
 				$$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));	
@@ -751,7 +750,7 @@ variable : ID	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
 		 // logfile << "variable : ID LTHIRD expression RTHIRD\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		verifyArrayIDIsDeclared($1);
 		if( $3->getReturnType() != "int"){
@@ -784,7 +783,7 @@ expression : logic_expression	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "expression : logic_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType($1->getReturnType());
 
 		 	$$->setCode($1->getCode());
@@ -800,7 +799,7 @@ expression : logic_expression	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "expression : variable ASSIGNOP logic_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		evaluateTypeConversionForASSIGNOP($1, $3);
 		 $$->setReturnType($1->getReturnType());
 
@@ -824,7 +823,7 @@ logic_expression : rel_expression 	{
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "logic_expression : rel_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType($1->getReturnType());
 		 $$->setCode($1->getCode());
 		 $$->setAssemblyID($1->getAssemblyID());
@@ -840,7 +839,7 @@ logic_expression : rel_expression 	{
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "logic_expression : rel_expression LOGICOP rel_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType("int");
 		 
 		 evaluateTypeConsistencyForOperands($1,$3);
@@ -867,7 +866,7 @@ rel_expression	: simple_expression {
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "rel_expression : simple_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType($1->getReturnType());
 
 		 $$->setCode($1->getCode());
@@ -878,7 +877,7 @@ rel_expression	: simple_expression {
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "rel_expression : simple_expression RELOP simple_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 $$->setReturnType("int");
 
 		 evaluateTypeConsistencyForOperands($1,$3);
@@ -903,7 +902,7 @@ simple_expression : term {
 		$$->addChildSymbol($1);
 		// addLineNoLog();
 		// logfile << "simple_expression : term\n\n";
-		logfile << $$->getName() <<endl << endl;
+		// logfile << $$->getName() <<endl << endl;
 		$$->setReturnType($1->getReturnType());
 		$$->setCode($1->getCode());
 		$$->setAssemblyID($1->getAssemblyID());
@@ -915,7 +914,7 @@ simple_expression : term {
 		$$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		// addLineNoLog();
 		// logfile << "simple_expression : simple_expression ADDOP term\n\n";
-		logfile << $$->getName() <<endl << endl;
+		// logfile << $$->getName() <<endl << endl;
 		$$->setReturnType(evaluateReturnTypeForADDOP($1,$3));
 
 		string code = $1->getCode() + $3->getCode();
@@ -941,7 +940,7 @@ term :	unary_expression {
 						$$->addChildSymbol($1);
 						// addLineNoLog();
 						// logfile << "term : unary_expression\n\n";
-						logfile << $$->getName() << endl << endl;
+						// logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
 						$$->setCode($1->getCode());
 						$$->setAssemblyID($1->getAssemblyID());
@@ -951,7 +950,7 @@ term :	unary_expression {
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "term : term MULOP unary_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 $$->setReturnType(evaluateReturnTypeForMULOP($1, $2, $3));
 
@@ -1001,7 +1000,7 @@ unary_expression : ADDOP unary_expression  {
 						$$->addChildSymbol($1); $$->addChildSymbol($2);
 						// addLineNoLog();
 						// logfile << "unary_expression : ADDOP unary_expression\n\n";
-						logfile << $$->getName() << endl << endl;
+						// logfile << $$->getName() << endl << endl;
 						if( checkIfValidFunctionReturnTypeInExpression($2) ) {
 							string retType = $2->getReturnType();
 							$$->setReturnType(retType);
@@ -1031,7 +1030,7 @@ unary_expression : ADDOP unary_expression  {
 						$$->addChildSymbol($1); $$->addChildSymbol($2);
 						// addLineNoLog();
 						// logfile << "unary_expression : NOT unary_expression\n\n";
-						logfile << $$->getName() << endl << endl;
+						// logfile << $$->getName() << endl << endl;
 						checkIfValidFunctionReturnTypeInExpression($2);
 						$$->setReturnType("int");
 						
@@ -1050,7 +1049,7 @@ unary_expression : ADDOP unary_expression  {
 						$$->addChildSymbol($1);
 						// addLineNoLog();
 						// logfile << "unary_expression : factor\n\n";
-						logfile << $$->getName() << endl << endl;
+						// logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
 						$$->setCode($1->getCode());
 						$$->setAssemblyID($1->getAssemblyID());
@@ -1064,7 +1063,7 @@ factor	: variable  {
 
 						// addLineNoLog();
 						// logfile << "factor : variable\n\n";
-						logfile << $$->getName() << endl << endl;
+						// logfile << $$->getName() << endl << endl;
 						$$->setReturnType($1->getReturnType());
 						string currentCode = $1->getCode();
 						if($1->isAssemblyArrayMember()) {
@@ -1085,7 +1084,7 @@ factor	: variable  {
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3); $$->addChildSymbol($4);
 		 // addLineNoLog();
 		 // logfile << "factor : ID LPAREN argument_list RPAREN\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		functionCallValidationWithArgumentTypeCheck($1, $3);
 		 $$->setReturnType(getReturnTypeOfSymbolTableEntry($1->getName()));	
@@ -1127,7 +1126,7 @@ factor	: variable  {
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "factor : LPAREN expression RPAREN\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 $$->setReturnType($2->getReturnType());
 		 $$->setCode($2->getCode());
@@ -1138,7 +1137,7 @@ factor	: variable  {
 			$$->addChildSymbol($1);
 			// addLineNoLog();
 			// logfile << "factor : CONST_INT\n\n";
-			logfile << $$->getName() << endl << endl;
+			// logfile << $$->getName() << endl << endl;
 			$$->setReturnType("int");
 
 			string temp = generateNewTempVariable();
@@ -1154,7 +1153,7 @@ factor	: variable  {
 			$$->addChildSymbol($1);
 			// addLineNoLog();
 			// logfile << "factor : CONST_FLOAT\n\n";
-			logfile << $$->getName() << endl << endl;
+			// logfile << $$->getName() << endl << endl;
 			$$->setReturnType("float");
 
 			string temp = generateNewTempVariable();
@@ -1167,7 +1166,7 @@ factor	: variable  {
 			$$->addChildSymbol($1); $$->addChildSymbol($2);
 			// addLineNoLog();
 			// logfile << "factor : variable INCOP\n\n";
-			logfile << $$->getName() << endl << endl;
+			// logfile << $$->getName() << endl << endl;
 
 			$$->setReturnType($1->getReturnType());
 
@@ -1203,7 +1202,7 @@ factor	: variable  {
 			$$->addChildSymbol($1); $$->addChildSymbol($2);
 			// addLineNoLog();
 			// logfile << "factor : variable DECOP\n\n";
-			logfile << $$->getName() << endl << endl;
+			// logfile << $$->getName() << endl << endl;
 
 			$$->setReturnType($1->getReturnType());
 
@@ -1237,7 +1236,7 @@ argument_list : arguments {
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "argument_list : arguments\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		$$->setCode($1->getCode());
 
 	 	}
@@ -1246,7 +1245,7 @@ argument_list : arguments {
 		 		 
 				 // addLineNoLog();
 		 		// logfile << "argument_list : \n\n";
-		 		logfile << $$->getName() <<endl << endl;
+		 		// logfile << $$->getName() <<endl << endl;
 			  }
 			  ;
 
@@ -1255,7 +1254,7 @@ arguments : arguments COMMA logic_expression {
 		 $$->addChildSymbol($1); $$->addChildSymbol($2); $$->addChildSymbol($3);
 		 // addLineNoLog();
 		 // logfile << "arguments : arguments COMMA logic_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 		 	 ArgumentListSymbolInfoVector.push_back($3);
 			$$->setCode($1->getCode() + $3->getCode());
 
@@ -1267,7 +1266,7 @@ arguments : arguments COMMA logic_expression {
 		 $$->addChildSymbol($1);
 		 // addLineNoLog();
 		 // logfile << "arguments : logic_expression\n\n";
-		 logfile << $$->getName() <<endl << endl;
+		 // logfile << $$->getName() <<endl << endl;
 
 		 ArgumentListSymbolInfoVector.push_back($1);
 		 	$$->setCode($1->getCode());
