@@ -13,6 +13,8 @@ temp4 dw ?
 temp5 dw ?
 temp6 dw ?
 temp7 dw ?
+temp8 dw ?
+temp9 dw ?
 .CODE
 main PROC
     MOV AX,@DATA
@@ -62,6 +64,12 @@ INC i2
 JMP Label4
 Label5:
 ;Loop END
+MOV temp8,1
+MOV AX,a2
+ADD AX,temp8
+MOV temp9,AX
+MOV AX,temp9
+MOV a2,AX
 MOV AX,a2
 CALL OUTDEC
 MOV AX,b2

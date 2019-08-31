@@ -7,6 +7,8 @@ int main(){
             b++;
         }
     }
+
+    a = a + 1;
     println(a);
     println(b);
     println(i);

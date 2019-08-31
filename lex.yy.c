@@ -766,8 +766,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "1605115_scanner.l"
-#line 5 "1605115_scanner.l"
+#line 1 "1605115.l"
+#line 5 "1605115.l"
 #define YYSTYPE SymbolInfo*
 
 #include<bits/stdc++.h>
@@ -1073,7 +1073,7 @@ YY_DECL
 		}
 
 	{
-#line 123 "1605115_scanner.l"
+#line 123 "1605115.l"
 
 
 
@@ -1146,17 +1146,17 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 126 "1605115_scanner.l"
+#line 126 "1605115.l"
 {}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 127 "1605115_scanner.l"
+#line 127 "1605115.l"
 {}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 132 "1605115_scanner.l"
+#line 132 "1605115.l"
 {
 	return 0;
 	//todo might need to change. Not sure if we need to return.
@@ -1164,7 +1164,7 @@ case YY_STATE_EOF(INITIAL):
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 137 "1605115_scanner.l"
+#line 137 "1605115.l"
 {string symbol(yytext);
 	updateLineNo(yylineno);
  	yylval = getSymbolInfo(symbol, "CONST_INT");
@@ -1173,7 +1173,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 143 "1605115_scanner.l"
+#line 143 "1605115.l"
 {string symbol(yytext);
  	yylval = getSymbolInfo(symbol, "CONST_FLOAT");
 	updateLineNo(yylineno);
@@ -1182,7 +1182,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 150 "1605115_scanner.l"
+#line 150 "1605115.l"
 {string symbol(yytext);
  //updateLogFile("CHAR_CONST", symbol, yylineno);
  symbol = stringFormatter(symbol);
@@ -1196,7 +1196,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 164 "1605115_scanner.l"
+#line 164 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1206,7 +1206,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 171 "1605115_scanner.l"
+#line 171 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1216,7 +1216,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 179 "1605115_scanner.l"
+#line 179 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1226,7 +1226,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 187 "1605115_scanner.l"
+#line 187 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1236,7 +1236,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 194 "1605115_scanner.l"
+#line 194 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1246,7 +1246,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 201 "1605115_scanner.l"
+#line 201 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1256,7 +1256,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 208 "1605115_scanner.l"
+#line 208 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1266,7 +1266,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 215 "1605115_scanner.l"
+#line 215 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1276,7 +1276,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 222 "1605115_scanner.l"
+#line 222 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1286,7 +1286,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 229 "1605115_scanner.l"
+#line 229 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1297,7 +1297,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 237 "1605115_scanner.l"
+#line 237 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1307,7 +1307,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 244 "1605115_scanner.l"
+#line 244 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1317,7 +1317,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 251 "1605115_scanner.l"
+#line 251 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1327,7 +1327,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 258 "1605115_scanner.l"
+#line 258 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1337,7 +1337,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 265 "1605115_scanner.l"
+#line 265 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1347,7 +1347,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 272 "1605115_scanner.l"
+#line 272 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1357,7 +1357,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 279 "1605115_scanner.l"
+#line 279 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1367,7 +1367,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 286 "1605115_scanner.l"
+#line 286 "1605115.l"
 { updateLineNo(yylineno);
  	
 	string yyString(yytext); string yytextString = getUpper(yyString);
@@ -1418,7 +1418,7 @@ YY_RULE_SETUP
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 333 "1605115_scanner.l"
+#line 333 "1605115.l"
 {updateLineNo(yylineno);
  	
 	string symbol(yytext);
@@ -1428,14 +1428,14 @@ YY_RULE_SETUP
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 338 "1605115_scanner.l"
+#line 338 "1605115.l"
 {updateLineNo(yylineno);
  	string symbol(yytext); }
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 343 "1605115_scanner.l"
+#line 343 "1605115.l"
 {updateLineNo(yylineno);
  	
 	
@@ -1443,7 +1443,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 349 "1605115_scanner.l"
+#line 349 "1605115.l"
 {updateLineNo(yylineno);
  	 string symbol(yytext);  
 yylval = getSymbolInfo(symbol, "ID");
@@ -1452,7 +1452,7 @@ return ID;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 359 "1605115_scanner.l"
+#line 359 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//INVALID PREFIX ON ID OR INVALID SUFFIX ON NUMBER
@@ -1460,7 +1460,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 364 "1605115_scanner.l"
+#line 364 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//TOO MANY DECILMAL POINT ERROR 
@@ -1468,7 +1468,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 369 "1605115_scanner.l"
+#line 369 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//MULTI CHARACTER COUNT ERROR 
@@ -1476,7 +1476,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 374 "1605115_scanner.l"
+#line 374 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//EMPTY CHARACTER CONSTANT ERROR 
@@ -1484,7 +1484,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 379 "1605115_scanner.l"
+#line 379 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//UNTERMINATE CAHRACTER ERROR 
@@ -1493,7 +1493,7 @@ YY_RULE_SETUP
 case 33:
 /* rule 33 can match eol */
 YY_RULE_SETUP
-#line 384 "1605115_scanner.l"
+#line 384 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//UNTERMINATED STRING ERROR 
@@ -1502,7 +1502,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 391 "1605115_scanner.l"
+#line 391 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//ILL FORMED NUMBER 
@@ -1511,7 +1511,7 @@ YY_RULE_SETUP
 case 35:
 /* rule 35 can match eol */
 YY_RULE_SETUP
-#line 396 "1605115_scanner.l"
+#line 396 "1605115.l"
 {updateLineNo(yylineno);
  	
 	//UNFINISHED COMMENT 
@@ -1519,7 +1519,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 403 "1605115_scanner.l"
+#line 403 "1605115.l"
 { updateLineNo(yylineno);
  	
 	//UNRECOGNIZED CHARACTER
@@ -1527,7 +1527,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 408 "1605115_scanner.l"
+#line 408 "1605115.l"
 ECHO;
 	YY_BREAK
 #line 1534 "lex.yy.c"
@@ -2545,7 +2545,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 408 "1605115_scanner.l"
+#line 408 "1605115.l"
 
 
 
