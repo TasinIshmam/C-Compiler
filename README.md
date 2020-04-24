@@ -13,7 +13,9 @@ A simple compiler for a subset of the C Programming Language.  Generates x86 Ass
 **1.** Clone this repository
 
 **2.** Run compile.sh in the root. It will prompt you to provide the 'C' file name. This compiles your input file, checks compile errors (lexical/syntax/symantic) which are written in log.txt inside the 'logs' folder. In case of a successful compilation,the generated assembly code can be found in the assembly folder.
+
 **3.** In order to run the generated assembly, use a *8086 Microprocessor emulator. Example: [emu8086](https://emu8086-microprocessor-emulator.en.softonic.com/)
+
 **4.** Use debug.sh to use gdb debugger for any issues.
 
 
