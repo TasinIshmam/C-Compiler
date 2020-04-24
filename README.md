@@ -1,6 +1,6 @@
 ### C Compiler
 
-A simple compiler for a subset of the C Programming Language. 
+A simple compiler for a subset of the C Programming Language.  Generates x86 Assembly. Written in C++ 
 
 **Sustem Compatibility:** **Linux** 
 *This software was written and tested on Ubuntu/Debian environment. I cannot guarantee full compatilibty with other distros without proper testing.*
