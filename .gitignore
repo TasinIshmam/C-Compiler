@@ -4,17 +4,19 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+cmake-build-debug/
 
-a.out
+**/a.out
 clipboard
-y.o
-y.tab.c
-y.tab.h
-logtemplatecode.txt
-lex.yy.c
-I.o
-l.o
+**/y.o
+**/y.tab.c
+**/y.tab.h
+**/logtemplatecode.txt
+**/lex.yy.c
+**/I.o
+**/l.o
 spec/
 
-1605115/
-1605115.zip
+**/1605115/
+**/1605115.zip
+**/log.txt

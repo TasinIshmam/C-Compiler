@@ -1,4 +1,0 @@
-+ " " + 
-+ "\n" 
-
-$$->setReturnType($1->getReturnType());

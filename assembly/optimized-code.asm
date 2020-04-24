@@ -2,9 +2,8 @@
 .STACK 100H
 .DATA 
 mainReturnVariable dw ?
+val2 dw ?
 i2 dw ?
-b2 dw ?
-a2 dw ?
 temp0 dw ?
 temp1 dw ?
 temp2 dw ?
@@ -15,67 +14,87 @@ temp6 dw ?
 temp7 dw ?
 temp8 dw ?
 temp9 dw ?
+temp10 dw ?
+temp11 dw ?
+a2 dw 20 dup(?)
 .CODE
 main PROC
     MOV AX,@DATA
 MOV DS,AX 
 MOV temp0,0
 MOV AX,temp0
-MOV b2,AX
-MOV temp1,0
-MOV AX,temp1
 MOV i2,AX
 ;Loop Begin
-Label4:
+Label2:
 ;$4 code Begin
-MOV temp2,4
+MOV temp1,15
 MOV AX,i2
-CMP AX,temp2
+CMP AX,temp1
 JL Label0
-MOV temp3,0
+MOV temp2,0
 JMP Label1
 Label0:
-MOV temp3,1
+MOV temp2,1
 Label1:
 ;$4 code End
-MOV AX,temp3
-CMP AX,0
-JE Label5
-;$7 code Begin
-MOV temp5,3
-MOV AX,temp5
-MOV a2,AX
-Label2:
-MOV AX,a2
-MOV temp6,AX
-DEC a2
-MOV AX,temp6
+MOV AX,temp2
 CMP AX,0
 JE Label3
-MOV AX,b2
-MOV temp7,AX
-INC b2
-JMP Label2
-Label3:
+;$7 code Begin
+MOV BX,i2
+ADD BX,BX
+MOV temp4,1
+MOV AX,i2
+ADD AX,temp4
+MOV temp5,AX
+;Line Omitted for optimization
+MOV a2[BX],AX
 ;$5 code Begin
 MOV AX,i2
-MOV temp4,AX
+MOV temp3,AX
 INC i2
-JMP Label4
-Label5:
+JMP Label2
+Label3:
 ;Loop END
-MOV temp8,1
-MOV AX,a2
-ADD AX,temp8
-MOV temp9,AX
-;Line Omitted for optimization
-MOV a2,AX
-;Line Omitted for optimization
-CALL OUTDEC
-MOV AX,b2
-CALL OUTDEC
+MOV temp6,0
+MOV AX,temp6
+MOV i2,AX
+;Loop Begin
+Label6:
+;$4 code Begin
+MOV temp7,15
 MOV AX,i2
+CMP AX,temp7
+JL Label4
+MOV temp8,0
+JMP Label5
+Label4:
+MOV temp8,1
+Label5:
+;$4 code End
+MOV AX,temp8
+CMP AX,0
+JE Label7
+;$7 code Begin
+MOV BX,i2
+ADD BX,BX
+MOV AX, a2[BX]
+MOV temp10,AX
+;Line Omitted for optimization
+MOV val2,AX
+;Line Omitted for optimization
 CALL OUTDEC
+;$5 code Begin
+MOV AX,i2
+MOV temp9,AX
+INC i2
+JMP Label6
+Label7:
+;Loop END
+MOV temp11,0
+MOV AX,temp11
+MOV mainReturnVariable,AX
+JMP LabelReturnmain
 LabelReturnmain:
 MOV AH,4CH
 INT 21H

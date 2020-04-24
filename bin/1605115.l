@@ -5,8 +5,8 @@
 #define YYSTYPE SymbolInfo*
 
 #include<bits/stdc++.h>
-#include "1605115_symboltable.h"
-#include "y.tab.h"
+#include "./1605115_symboltable.h"
+#include "./y.tab.h"
 
 using namespace std;
 

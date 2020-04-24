@@ -1,3 +1,0 @@
-/home/tasin/Documents/Level3Term1/Compiler Sessional/Offline 4 Home/Offline 4 ICG MINE/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/tasin/Documents/Level3Term1/Compiler Sessional/Offline 4 Home/Offline 4 ICG MINE/cmake-build-debug/CMakeFiles/Offline_4_ICG_MINE.dir
-/home/tasin/Documents/Level3Term1/Compiler Sessional/Offline 4 Home/Offline 4 ICG MINE/cmake-build-debug/CMakeFiles/edit_cache.dir

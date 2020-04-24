@@ -1,8 +1,8 @@
 %{
 #include <bits/stdc++.h>
 #define YYSTYPE SymbolInfo*
-#include "1605115_symboltable.h"
-#include "utilityfunctions.h"
+#include "./1605115_symboltable.h"
+#include "./utilityfunctions.h"
 
 using namespace std;
 
@@ -1302,6 +1302,12 @@ int main(int argc,char *argv[])
 
 	//symbolTable.printAllScopeTable(logfile);
 
+	
+	if (errorCount == 0) {
+		logfile << "Compilation Successful" << endl;
+	} else {
+		logfile << "Compilation Finished with errors" << endl; 
+	}
 
 	logfile << "Total Lines: " << line_no << endl;
 	logfile << "Total Errors: " << errorCount << endl;
